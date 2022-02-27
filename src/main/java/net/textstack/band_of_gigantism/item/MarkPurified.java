@@ -18,7 +18,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.config.BOGItems;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import org.jetbrains.annotations.NotNull;
@@ -78,7 +77,7 @@ public class MarkPurified extends Item implements ICurioItem {
     public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
-        if (worldIn==null||!BOGItems.descriptionEnable()) return; //c.description_enable.get()
+        if (!c.description_enable.get()) return;
 
         tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {

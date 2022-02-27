@@ -10,8 +10,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.config.BOGItems;
-import net.textstack.band_of_gigantism.config.BOGMarks;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
@@ -51,15 +49,15 @@ public class MarkForgotten extends Item implements ICurioItem {
     public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
-        if (worldIn==null||!BOGItems.descriptionEnable()) return; //c.description_enable.get()
+        if (!c.description_enable.get()) return;
 
         tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_forgotten_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markForgottenResistance(), LoreStatHelper.Stat.RESISTANCE, true)); //c.mark_forgotten_resistance.get().floatValue()
+            tooltip.add(LoreStatHelper.displayStat(c.mark_forgotten_resistance.get().floatValue(), LoreStatHelper.Stat.RESISTANCE, true));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_forgotten_description_0"));
-            tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markForgottenCriticalDamage(), LoreStatHelper.Stat.CRITICAL_DAMAGE, true)); //c.mark_forgotten_critical_damage.get().floatValue()
+            tooltip.add(LoreStatHelper.displayStat(c.mark_forgotten_critical_damage.get().floatValue(), LoreStatHelper.Stat.CRITICAL_DAMAGE, true));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_forgotten_description_1"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_forgotten_description_shift_0"));

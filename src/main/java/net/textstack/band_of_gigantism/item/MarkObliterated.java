@@ -15,8 +15,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.config.BOGItems;
-import net.textstack.band_of_gigantism.config.BOGMarks;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
@@ -52,21 +50,21 @@ public class MarkObliterated extends Item implements ICurioItem {
     public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
-        if (worldIn==null||!BOGItems.descriptionEnable()) return; //c.description_enable.get()
+        if (!c.description_enable.get()) return;
 
         tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markObliteratedDamage(), LoreStatHelper.Stat.DAMAGE,true)); //c.mark_obliterated_damage.get().floatValue()
+            tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE,true));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_0"));
-            tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markObliteratedKnockback(), LoreStatHelper.Stat.KNOCKBACK,true)); //c.mark_obliterated_knockback.get().floatValue()
+            tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_knockback.get().floatValue(), LoreStatHelper.Stat.KNOCKBACK,true));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_1"));
-            tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markObliteratedHealth(), LoreStatHelper.Stat.MAX_HEALTH)); //c.mark_obliterated_health.get()
+            tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_health.get(), LoreStatHelper.Stat.MAX_HEALTH));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_2"));
-            tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markObliteratedArmor(), LoreStatHelper.Stat.ARMOR)); //c.mark_obliterated_armor.get()
+            tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_armor.get(), LoreStatHelper.Stat.ARMOR));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_3"));
-            tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markObliteratedArmorToughness(), LoreStatHelper.Stat.ARMOR_TOUGHNESS)); //c.mark_obliterated_armor_toughness.get()
+            tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_armor_toughness.get(), LoreStatHelper.Stat.ARMOR_TOUGHNESS));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_4"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_shift_0"));
