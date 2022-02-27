@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " XX",
+    " XX",
+    "#  "
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "#": {
+      "item": "minecraft:iron_sword"
+    }
+  },
+  "result": {
+    "item": "band_of_gigantism:frying_pan"
+  }
+}

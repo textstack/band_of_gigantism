@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "band_of_gigantism:item/frying_pan"
+  }
+}

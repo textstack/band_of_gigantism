@@ -1,0 +1,22 @@
+{
+  "mappings": {
+    "net/textstack/band_of_gigantism/mixin/MixinEntityPredicate": {
+      "canTarget": "Lnet/minecraft/entity/EntityPredicate;func_221015_a(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/LivingEntity;)Z"
+    },
+    "net/textstack/band_of_gigantism/mixin/MixinFoodStats": {
+      "Lnet/minecraft/world/GameRules;getBoolean(Lnet/minecraft/world/GameRules$RuleKey;)Z": "Lnet/minecraft/world/GameRules;func_223586_b(Lnet/minecraft/world/GameRules$RuleKey;)Z",
+      "tick": "Lnet/minecraft/util/FoodStats;func_75118_a(Lnet/minecraft/entity/player/PlayerEntity;)V"
+    }
+  },
+  "data": {
+    "searge": {
+      "net/textstack/band_of_gigantism/mixin/MixinEntityPredicate": {
+        "canTarget": "Lnet/minecraft/entity/EntityPredicate;func_221015_a(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/LivingEntity;)Z"
+      },
+      "net/textstack/band_of_gigantism/mixin/MixinFoodStats": {
+        "Lnet/minecraft/world/GameRules;getBoolean(Lnet/minecraft/world/GameRules$RuleKey;)Z": "Lnet/minecraft/world/GameRules;func_223586_b(Lnet/minecraft/world/GameRules$RuleKey;)Z",
+        "tick": "Lnet/minecraft/util/FoodStats;func_75118_a(Lnet/minecraft/entity/player/PlayerEntity;)V"
+      }
+    }
+  }
+}

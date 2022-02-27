@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "entries": [
+    "band_of_gigantism:end_city_treasure",
+    "band_of_gigantism:pillager_outpost",
+    "band_of_gigantism:shipwreck_treasure",
+    "band_of_gigantism:woodland_mansion",
+    "band_of_gigantism:bastion_treasure",
+    "band_of_gigantism:village_toolsmith",
+    "band_of_gigantism:abandoned_mineshaft",
+    "band_of_gigantism:stronghold_crossing",
+    "band_of_gigantism:stronghold_corridor",
+    "band_of_gigantism:simple_dungeon",
+    "band_of_gigantism:spawn_bonus_chest",
+    "band_of_gigantism:buried_treasure",
+    "band_of_gigantism:desert_pyramid",
+    "band_of_gigantism:ruined_portal",
+    "band_of_gigantism:jungle_temple",
+    "band_of_gigantism:igloo_chest",
+    "band_of_gigantism:bastion_other",
+    "band_of_gigantism:nether_bridge",
+    "band_of_gigantism:underwater_ruin_big",
+    "band_of_gigantism:piglin_brute"
+  ]
+}

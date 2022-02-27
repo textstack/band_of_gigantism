@@ -1,0 +1,26 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/desert_pyramid"
+    }
+  ],
+  "addition": [
+    {
+      "item": "band_of_gigantism:mark_true",
+      "chance": 0.1
+    },
+    {
+      "item": "band_of_gigantism:lesser_band_generic",
+      "chance": 0.15
+    },
+    {
+      "item": "band_of_gigantism:shrink_band_generic",
+      "chance": 0.025
+    },
+    {
+      "item": "band_of_gigantism:band_generic",
+      "chance": 0.025
+    }
+  ]
+}

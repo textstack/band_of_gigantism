@@ -1,0 +1,15 @@
+Java Launcher: C:\Users\Jaden Barker\.gradle\jdks\jdk8u322-b06\bin\java.exe
+Arguments: '--task, SRG_TO_MCP, --input, C:\Users\Jaden Barker\.gradle\caches\modules-2\files-2.1\top.theillusivec4.curios\curios-forge\1.16.5-4.0.5.3\6c251a4ddd377fc409497e04251eacdc20fd73f2\curios-forge-1.16.5-4.0.5.3-api.jar, --output, C:\Users\Jaden Barker\.gradle\caches\forge_gradle\deobf_dependencies\top\theillusivec4\curios\curios-forge\1.16.5-4.0.5.3_mapped_snapshot_20210309-1.16.5\curios-forge-1.16.5-4.0.5.3_mapped_snapshot_20210309-1.16.5-api.jar, --mcp, C:\Users\Jaden Barker\.gradle\caches\forge_gradle\maven_downloader\de\oceanlabs\mcp\mcp_snapshot\20210309-1.16.5\mcp_snapshot-20210309-1.16.5.zip, --strip-signatures'
+Classpath:
+ - C:\Users\Jaden Barker\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\installertools\1.2.8\installertools-1.2.8-fatjar.jar
+Working directory: D:\Desktop\minecraft mods\bandofgigantism\build\_RenameSrg2Mcp_-788251459
+Main class: net.minecraftforge.installertools.ConsoleTool
+====================================
+Task: SRG_TO_MCP
+Input:  C:\Users\Jaden Barker\.gradle\caches\modules-2\files-2.1\top.theillusivec4.curios\curios-forge\1.16.5-4.0.5.3\6c251a4ddd377fc409497e04251eacdc20fd73f2\curios-forge-1.16.5-4.0.5.3-api.jar
+Output: C:\Users\Jaden Barker\.gradle\caches\forge_gradle\deobf_dependencies\top\theillusivec4\curios\curios-forge\1.16.5-4.0.5.3_mapped_snapshot_20210309-1.16.5\curios-forge-1.16.5-4.0.5.3_mapped_snapshot_20210309-1.16.5-api.jar
+MCP:    C:\Users\Jaden Barker\.gradle\caches\forge_gradle\maven_downloader\de\oceanlabs\mcp\mcp_snapshot\20210309-1.16.5\mcp_snapshot-20210309-1.16.5.zip
+Loading MCP Data
+Processing ZIP file
+Stripped Manifest of sha digests
+Process complete

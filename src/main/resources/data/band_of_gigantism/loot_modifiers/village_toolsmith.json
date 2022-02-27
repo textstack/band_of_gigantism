@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/village/village_toolsmith"
+    }
+  ],
+  "addition": [
+    {
+      "item": "band_of_gigantism:lesser_band_generic",
+      "chance": 0.01
+    },
+    {
+      "item": "band_of_gigantism:shrink_band_generic",
+      "chance": 0.01
+    }
+  ]
+}

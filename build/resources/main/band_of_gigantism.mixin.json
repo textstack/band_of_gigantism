@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.textstack.band_of_gigantism.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8.4",
+  "mixins": [
+    "MixinEntityPredicate",
+    "MixinFoodStats"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "band_of_gigantism.mixin-refmap.json"
+}

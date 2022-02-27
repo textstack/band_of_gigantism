@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+TweakOrder: 0
+Implementation-Title: bandofgigantism
+MixinConfigs: band_of_gigantism.mixin.json
+Implementation-Version: 1.16.5-1.1.0
+Specification-Vendor: idklol
+Specification-Title: bandofgigantism
+Implementation-Timestamp: 2022-02-27T01:19:00-0800
+TweakClass: org.spongepowered.asm.launch.MixinTweaker
+Specification-Version: 1
+Implementation-Vendor: idklol
+
