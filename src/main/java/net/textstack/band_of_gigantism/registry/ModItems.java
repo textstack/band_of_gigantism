@@ -12,10 +12,6 @@ import net.textstack.band_of_gigantism.item.*;
 @SuppressWarnings("unused")
 public class ModItems {
 
-    /*private static final float band_generic_scale = BOGConfig.INSTANCE.band_generic_scale.get().floatValue();
-    private static final float lesser_band_generic_scale = BOGConfig.INSTANCE.lesser_band_generic_scale.get().floatValue();
-    private static final float shrink_band_generic_scale = BOGConfig.INSTANCE.shrink_band_generic_scale.get().floatValue();*/
-
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, BandOfGigantism.MODID);
 
@@ -65,7 +61,7 @@ public class ModItems {
             () -> new FryingPan(ItemTier.IRON, 10, -3.2f, new Item.Properties().group(ItemGroup.COMBAT).rarity(Rarity.COMMON).maxStackSize(1).defaultMaxDamage(500)));
 
     public static final RegistryObject<Item> GOLDEN_FRYING_PAN = ITEMS.register("golden_frying_pan",
-            () -> new GoldenFryingPan(ItemTier.GOLD, 12, -3.2f, new Item.Properties().group(ItemGroup.COMBAT).rarity(Rarity.EPIC).maxStackSize(1).defaultMaxDamage(0).isImmuneToFire()));
+            () -> new GoldenFryingPan(ItemTier.GOLD, 12, -3.2f, new Item.Properties().group(ItemGroup.COMBAT).rarity(Rarity.EPIC).maxStackSize(1).defaultMaxDamage(4095).isImmuneToFire()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
