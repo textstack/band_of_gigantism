@@ -17,7 +17,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.config.BOGItems;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
@@ -127,14 +126,14 @@ public class BandGlobetrotters extends Item implements ICurioItem {
     public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
-        if (worldIn==null||!BOGItems.descriptionEnable()) return; //c.description_enable.get()
+        if (!c.description_enable.get()) return;
 
         tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
             int storedTime = this.getStoredEnergy(stack);
-            float limit = BOGItems.bandGlobetrottersLimit();
-            float scale = (float) BOGItems.bandGlobetrottersScale();
-            float limitScale = (float) BOGItems.bandGlobetrottersLimitScale();
+            float limit = c.band_globetrotters_limit.get();
+            float scale = c.band_globetrotters_scale.get().floatValue();
+            float limitScale = c.band_globetrotters_limit_scale.get().floatValue();
 
             float storedTimeMaxToScale = limit / Math.abs(limitScale-scale);
             float newScale = scale+storedTime/storedTimeMaxToScale;
@@ -143,7 +142,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayScale(newScale));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.band_generic_description_percent", "\u00A76" + newScalePercent + "%"));
-            tooltip.add(LoreStatHelper.displayStat((float) BOGItems.bandGlobetrottersDamage(), LoreStatHelper.Stat.DAMAGE,true)); //c.band_globetrotters_damage.get()
+            tooltip.add(LoreStatHelper.displayStat(c.band_globetrotters_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE,true));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.globetrotters_band_description_0", "\u00A76" + band_globetrotters_damage_percent + "%"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_0"));

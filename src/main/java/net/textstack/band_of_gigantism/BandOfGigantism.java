@@ -11,7 +11,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.network.Network;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.event.EventHandlerMyBallsInYourMouth;
@@ -50,7 +49,6 @@ public class BandOfGigantism
         ModSoundEvents.register(eventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, BOGConfig.SPEC);
-        Network.init();
 
         eventBus.addListener(this::setup);
         // Register the enqueueIMC method for modloading

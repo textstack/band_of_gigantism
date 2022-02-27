@@ -21,8 +21,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.config.BOGItems;
-import net.textstack.band_of_gigantism.config.BOGMarks;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
@@ -136,7 +134,7 @@ public class MarkUnknown extends Item implements ICurioItem {
     public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
-        if (worldIn==null||!BOGItems.descriptionEnable()) return; //c.description_enable.get()
+        if (!c.description_enable.get()) return;
 
         tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
@@ -182,12 +180,12 @@ public class MarkUnknown extends Item implements ICurioItem {
             switch (randomRegen) {
                 case 5:
                 case 6:
-                case 1: tooltip.add(LoreStatHelper.displayStat(-(float) BOGMarks.markUnknownHealing(), LoreStatHelper.Stat.HEALING, true)); //c.mark_unknown_healing.get().floatValue()
+                case 1: tooltip.add(LoreStatHelper.displayStat(-c.mark_unknown_healing.get().floatValue(), LoreStatHelper.Stat.HEALING, true));
                     //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_3_negative"));
                     break;
                 case 7:
                 case 8:
-                case 2: tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markUnknownHealing(), LoreStatHelper.Stat.HEALING, true));
+                case 2: tooltip.add(LoreStatHelper.displayStat(c.mark_unknown_healing.get().floatValue(), LoreStatHelper.Stat.HEALING, true));
                     //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_3_positive"));
             }
 
@@ -195,12 +193,12 @@ public class MarkUnknown extends Item implements ICurioItem {
             switch (randomRegen) {
                 case 5:
                 case 7:
-                case 3: tooltip.add(LoreStatHelper.displayStat(-(float) BOGMarks.markUnknownFlatResistance(), LoreStatHelper.Stat.FLAT_RESISTANCE)); //c.mark_unknown_flat_resistance.get().floatValue()
+                case 3: tooltip.add(LoreStatHelper.displayStat(-c.mark_unknown_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
                     //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_3_negative_res"));
                     break;
                 case 6:
                 case 8:
-                case 4: tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markUnknownFlatResistance(), LoreStatHelper.Stat.FLAT_RESISTANCE));
+                case 4: tooltip.add(LoreStatHelper.displayStat(c.mark_unknown_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
                     //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_3_positive_res"));
             }
 
@@ -290,14 +288,14 @@ public class MarkUnknown extends Item implements ICurioItem {
         int[] random = getRandom(stack);
         int[] output = {0,0};
 
-        output[0] = (int) ((random[0]/6400.0f)*BOGMarks.markUnknownHealth() - BOGMarks.markUnknownHealth()); //c.mark_unknown_health.get()
+        output[0] = (int) ((random[0]/6400.0f)*c.mark_unknown_health.get() - c.mark_unknown_health.get());
         if (output[0] > 0) {
             output[0] = output[0] * 2;
         } else {
             output[0] = output[0] + output[0] % 2;
         }
 
-        output[1] = (int) (((random[1]/6400.0f)*BOGMarks.markUnknownSpeed() - BOGMarks.markUnknownSpeed())*100); //c.mark_unknown_speed.get().floatValue()
+        output[1] = (int) (((random[1]/6400.0f)*c.mark_unknown_speed.get().floatValue() - c.mark_unknown_speed.get().floatValue())*100);
 
         return output;
     }

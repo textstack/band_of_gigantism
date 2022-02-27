@@ -16,8 +16,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.config.BOGItems;
-import net.textstack.band_of_gigantism.config.BOGMarks;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
@@ -59,15 +57,15 @@ public class MarkJudged extends Item implements ICurioItem {
     public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
-        if (worldIn==null||!BOGItems.descriptionEnable()) return; //c.description_enable.get()
+        if (!c.description_enable.get()) return;
 
         tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_judged_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markJudgedDamage(), LoreStatHelper.Stat.DAMAGE)); //c.mark_judged_damage.get().floatValue()
+            tooltip.add(LoreStatHelper.displayStat(c.mark_judged_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_judged_description_0"));
-            tooltip.add(LoreStatHelper.displayStat((float) BOGMarks.markJudgedSpeed(), LoreStatHelper.Stat.SPEED, true)); //c.mark_judged_speed.get().floatValue()
+            tooltip.add(LoreStatHelper.displayStat(c.mark_judged_speed.get().floatValue(), LoreStatHelper.Stat.SPEED, true));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_judged_description_1"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_judged_description_shift_0"));

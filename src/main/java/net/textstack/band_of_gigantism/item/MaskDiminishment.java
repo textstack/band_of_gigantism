@@ -11,7 +11,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.config.BOGItems;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
 import org.jetbrains.annotations.NotNull;
@@ -101,16 +100,16 @@ public class MaskDiminishment extends Item implements ICurioItem {
     public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
-        if (worldIn==null||!BOGItems.descriptionEnable()) return; //c.description_enable.get()
+        if (!c.description_enable.get()) return;
 
         tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mask_diminishment_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(LoreStatHelper.displayScale((float) BOGItems.maskDiminishmentScale())); //c.mask_diminishment_scale.get().floatValue()
+            tooltip.add(LoreStatHelper.displayScale(c.mask_diminishment_scale.get().floatValue()));
             //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shrink_band_generic_description_percent", "\u00A76" + mask_diminishment_scale_percent + "%"));
 
-            if (BOGItems.maskDiminishmentSpecial()) { //c.mask_diminishment_special.get()
+            if (c.mask_diminishment_special.get()) {
                 tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
                 tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mask_diminishment_description_0"));
                 tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mask_diminishment_description_1"));
