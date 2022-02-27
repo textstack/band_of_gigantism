@@ -9,7 +9,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.ServerChatEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
@@ -31,16 +30,6 @@ import java.util.Objects;
 public class EventHandlerMyBallsInYourMouth {
 
     BOGConfig c = BOGConfig.INSTANCE;
-
-    /*private static final float mark_descended_regeneration = c.mark_descended_regeneration.get().floatValue();
-    private static final float mark_faded_healing = c.mark_faded_healing.get().floatValue();
-    private static final float mark_faded_flat_resistance = c.mark_faded_flat_resistance.get().floatValue();
-    private static final int mark_forgotten_duration = c.mark_forgotten_duration.get();
-    private static final float mark_forgotten_critical_damage = c.mark_forgotten_critical_damage.get().floatValue();
-    private static final float mark_forgotten_resistance = c.mark_forgotten_resistance.get().floatValue();
-    private static final float mark_unknown_healing = c.mark_unknown_healing.get().floatValue();
-    private static final float mark_unknown_flat_resistance = c.mark_unknown_flat_resistance.get().floatValue();
-    private static final boolean marks_color_chat = c.marks_color_chat.get();*/
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onLivingHeal(LivingHealEvent event) {
@@ -131,8 +120,8 @@ public class EventHandlerMyBallsInYourMouth {
         }
     }
 
-    //i think these do stuff?
-    @SubscribeEvent
+    //i think these do stuff? possibly not necessary for now
+    /*@SubscribeEvent
     public void onPlayerTick(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
@@ -145,7 +134,7 @@ public class EventHandlerMyBallsInYourMouth {
                 player.setAbsorptionAmount(0F);
             }
         }
-    }
+    }*/
 
     @SubscribeEvent
     public void onCriticalHit(CriticalHitEvent event) {

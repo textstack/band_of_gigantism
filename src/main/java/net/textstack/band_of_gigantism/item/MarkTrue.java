@@ -21,8 +21,6 @@ public class MarkTrue extends Item {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*private static final boolean description_enable = c.description_enable.get();*/
-
     public MarkTrue(Properties properties) {
         super(properties);
     }

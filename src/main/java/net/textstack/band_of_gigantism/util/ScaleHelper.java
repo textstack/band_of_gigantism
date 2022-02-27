@@ -7,8 +7,6 @@ import virtuoel.pehkui.api.ScaleType;
 
 public class ScaleHelper {
 
-    private static final int scale_speed = BOGConfig.INSTANCE.scale_speed.get();
-
     /**
      * Scales specified ScaleTypes of the entity to the set value
      *
@@ -32,7 +30,7 @@ public class ScaleHelper {
 
                 int localTickDelay;
                 if (setDelay <=0) {
-                    localTickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - value) * scale_speed),5);
+                    localTickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - value) * BOGConfig.INSTANCE.scale_speed.get()),5);
                     if (scale == scales[1]) {
                         tickDelay = localTickDelay;
                     }

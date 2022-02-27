@@ -39,14 +39,6 @@ public class BandGlobetrotters extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*private static final float band_globetrotters_scale = c.band_globetrotters_scale.get().floatValue();
-    private static final int band_globetrotters_limit = c.band_globetrotters_limit.get();
-    private static final float band_globetrotters_limit_scale = c.band_globetrotters_limit_scale.get().floatValue();
-    private static final float band_globetrotters_damage = c.band_globetrotters_damage.get().floatValue();
-    private static final boolean description_enable = c.description_enable.get();*/
-
-    //private static final int band_globetrotters_damage_percent = (int) Math.abs(100*band_globetrotters_damage);
-
     private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.DEFENSE,
             ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.MOTION};
     private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
@@ -137,13 +129,10 @@ public class BandGlobetrotters extends Item implements ICurioItem {
 
             float storedTimeMaxToScale = limit / Math.abs(limitScale-scale);
             float newScale = scale+storedTime/storedTimeMaxToScale;
-            //int newScalePercent = (int) Math.floor((newScale - 1) * 100);
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.globetrotters_band_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayScale(newScale));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.band_generic_description_percent", "\u00A76" + newScalePercent + "%"));
             tooltip.add(LoreStatHelper.displayStat(c.band_globetrotters_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE,true));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.globetrotters_band_description_0", "\u00A76" + band_globetrotters_damage_percent + "%"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_0"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_1"));

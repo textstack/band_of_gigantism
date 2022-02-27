@@ -26,11 +26,6 @@ public class MarkForgotten extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*private static final int marks_duration = c.marks_duration.get();
-    private static final float mark_forgotten_critical_damage = c.mark_forgotten_critical_damage.get().floatValue();
-    private static final float mark_forgotten_resistance = c.mark_forgotten_resistance.get().floatValue();
-    private static final boolean description_enable = c.description_enable.get();*/
-
     public MarkForgotten(Properties properties) {
         super(properties);
     }
@@ -56,9 +51,7 @@ public class MarkForgotten extends Item implements ICurioItem {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_forgotten_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_forgotten_resistance.get().floatValue(), LoreStatHelper.Stat.RESISTANCE, true));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_forgotten_description_0"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_forgotten_critical_damage.get().floatValue(), LoreStatHelper.Stat.CRITICAL_DAMAGE, true));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_forgotten_description_1"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_forgotten_description_shift_0"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_forgotten_description_shift_1"));

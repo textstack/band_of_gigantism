@@ -40,13 +40,6 @@ public class MarkUnknown extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*private static final int marks_duration = c.marks_duration.get();
-    private static final float mark_unknown_healing = c.mark_unknown_healing.get().floatValue();
-    private static final float mark_unknown_flat_resistance = c.mark_unknown_flat_resistance.get().floatValue();
-    private static final float mark_unknown_speed = c.mark_unknown_speed.get().floatValue();
-    private static final int mark_unknown_health = c.mark_unknown_health.get();
-    private static final boolean description_enable = c.description_enable.get();*/
-
     public MarkUnknown(Properties properties) {
         super(properties);
     }
@@ -181,12 +174,10 @@ public class MarkUnknown extends Item implements ICurioItem {
                 case 5:
                 case 6:
                 case 1: tooltip.add(LoreStatHelper.displayStat(-c.mark_unknown_healing.get().floatValue(), LoreStatHelper.Stat.HEALING, true));
-                    //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_3_negative"));
                     break;
                 case 7:
                 case 8:
                 case 2: tooltip.add(LoreStatHelper.displayStat(c.mark_unknown_healing.get().floatValue(), LoreStatHelper.Stat.HEALING, true));
-                    //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_3_positive"));
             }
 
             //flat damage resist/vuln
@@ -194,12 +185,10 @@ public class MarkUnknown extends Item implements ICurioItem {
                 case 5:
                 case 7:
                 case 3: tooltip.add(LoreStatHelper.displayStat(-c.mark_unknown_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
-                    //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_3_negative_res"));
                     break;
                 case 6:
                 case 8:
                 case 4: tooltip.add(LoreStatHelper.displayStat(c.mark_unknown_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
-                    //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_3_positive_res"));
             }
 
             //effect

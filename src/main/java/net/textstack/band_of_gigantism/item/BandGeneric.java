@@ -29,26 +29,18 @@ public class BandGeneric extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*boolean description_enable = c.description_enable.get();
-    float band_generic_scale = c.band_generic_scale.get().floatValue();
-    float lesser_band_generic_scale = c.lesser_band_generic_scale.get().floatValue();
-    float shrink_band_generic_scale = c.shrink_band_generic_scale.get().floatValue();*/
-
-
     private final int itemVal;
     private final boolean setShiny;
     private final SoundEvent setEquipSound;
     private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.DEFENSE,
             ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.KNOCKBACK};
     private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
-    //private final int newScalePercent;
 
     public BandGeneric(Properties properties, int itemVal, boolean isShiny, SoundEvent equipSound) {
         super(properties);
         this.itemVal = itemVal;
         this.setShiny = isShiny;
         this.setEquipSound = equipSound;
-        //this.newScalePercent = (int) (Math.abs(setScale-1)*100);
     }
 
     @Override
@@ -114,12 +106,8 @@ public class BandGeneric extends Item implements ICurioItem {
 
             if (setScale < 1) {
                 tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shrink_band_generic_description_flavor"));
-                //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-                //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shrink_band_generic_description_percent", "\u00A76" + newScalePercent + "%"));
             } else {
                 tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.band_generic_description_flavor"));
-                //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-                //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.band_generic_description_percent", "\u00A76" + newScalePercent + "%"));
             }
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayScale(setScale));

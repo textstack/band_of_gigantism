@@ -36,13 +36,6 @@ public class MarkDescended extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*private static final int marks_duration = c.marks_duration.get();
-    private static final int mark_descended_ascend = c.mark_descended_ascend.get();
-    private static final int mark_descended_duration = c.mark_descended_duration.get();
-    private static final int mark_descended_armor = c.mark_descended_armor.get();
-    private static final float mark_descended_regeneration = c.mark_descended_regeneration.get().floatValue();
-    private static final boolean description_enable = c.description_enable.get();*/
-
     public MarkDescended(Properties properties) {
         super(properties);
     }
@@ -112,9 +105,7 @@ public class MarkDescended extends Item implements ICurioItem {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_descended_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_descended_armor.get(), LoreStatHelper.Stat.ARMOR));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_descended_description_0"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_descended_regeneration.get().floatValue(), LoreStatHelper.Stat.REGENERATION,true));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_descended_description_1"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_descended_description_shift_0"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_descended_description_shift_1"));

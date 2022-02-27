@@ -33,11 +33,6 @@ public class MarkJudged extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*int marks_duration = c.marks_duration.get();
-    float mark_judged_damage = c.mark_judged_damage.get().floatValue();
-    float mark_judged_speed = c.mark_judged_speed.get().floatValue();
-    boolean description_enable = c.description_enable.get();*/
-
     public MarkJudged(Properties properties) {
         super(properties);
     }
@@ -64,11 +59,8 @@ public class MarkJudged extends Item implements ICurioItem {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_judged_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_judged_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_judged_description_0"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_judged_speed.get().floatValue(), LoreStatHelper.Stat.SPEED, true));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_judged_description_1"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_judged_description_shift_0"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_judged_description_shift_1"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_generic_description"));

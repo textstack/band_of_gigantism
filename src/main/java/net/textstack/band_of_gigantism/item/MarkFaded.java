@@ -33,12 +33,6 @@ public class MarkFaded extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*private static final int marks_duration = BOGConfig.INSTANCE.marks_duration.get();
-    private static final float mark_faded_healing = BOGConfig.INSTANCE.mark_faded_healing.get().floatValue();
-    private static final float mark_faded_flat_resistance = BOGConfig.INSTANCE.mark_faded_flat_resistance.get().floatValue();
-    private static final float mark_faded_damage = BOGConfig.INSTANCE.mark_faded_damage.get().floatValue();
-    private static final boolean description_enable = BOGConfig.INSTANCE.description_enable.get();*/
-
     public MarkFaded(Properties properties) {
         super(properties);
     }
@@ -64,12 +58,9 @@ public class MarkFaded extends Item implements ICurioItem {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_faded_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_faded_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_faded_description_0"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_faded_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE, true));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_faded_description_1"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_faded_healing.get().floatValue(), LoreStatHelper.Stat.HEALING, true));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_faded_description_shift_0"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_faded_description_shift_1"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_generic_description"));

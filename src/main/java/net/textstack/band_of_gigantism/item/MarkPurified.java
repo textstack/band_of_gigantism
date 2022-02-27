@@ -34,11 +34,6 @@ public class MarkPurified extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*private static final int marks_duration = c.marks_duration.get();
-    private static final float mark_purified_ratio = c.mark_purified_ratio.get().floatValue();
-    private static final float mark_purified_ratio_tough = c.mark_purified_ratio_tough.get().floatValue();
-    private static final boolean description_enable = c.description_enable.get();*/
-
     public MarkPurified(Properties properties) {
         super(properties);
     }

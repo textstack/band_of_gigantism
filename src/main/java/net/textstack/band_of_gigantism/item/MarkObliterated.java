@@ -31,8 +31,6 @@ public class MarkObliterated extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*private static final boolean description_enable = c.description_enable.get();*/
-
     public MarkObliterated(Properties properties) {
         super(properties);
     }
@@ -57,15 +55,10 @@ public class MarkObliterated extends Item implements ICurioItem {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE,true));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_0"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_knockback.get().floatValue(), LoreStatHelper.Stat.KNOCKBACK,true));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_1"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_health.get(), LoreStatHelper.Stat.MAX_HEALTH));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_2"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_armor.get(), LoreStatHelper.Stat.ARMOR));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_3"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_armor_toughness.get(), LoreStatHelper.Stat.ARMOR_TOUGHNESS));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_4"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_shift_0"));
         } else {

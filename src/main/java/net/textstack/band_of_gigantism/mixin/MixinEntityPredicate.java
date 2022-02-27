@@ -19,8 +19,6 @@ public class MixinEntityPredicate {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*private static final int mark_judged_duration = c.mark_judged_duration.get();*/
-
     public MixinEntityPredicate() {}
 
     @Inject(

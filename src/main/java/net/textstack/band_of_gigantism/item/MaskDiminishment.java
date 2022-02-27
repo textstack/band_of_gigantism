@@ -29,11 +29,6 @@ public class MaskDiminishment extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    /*private static final float mask_diminishment_scale = c.mask_diminishment_scale.get().floatValue();
-    private static final boolean description_enable = c.description_enable.get();*/
-
-    //private static final int mask_diminishment_scale_percent = (int) (Math.abs(1-mask_diminishment_scale)*100);
-
     private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.REACH,ScaleTypes.VISIBILITY};
     private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM};
 
@@ -107,7 +102,6 @@ public class MaskDiminishment extends Item implements ICurioItem {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mask_diminishment_description_flavor"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayScale(c.mask_diminishment_scale.get().floatValue()));
-            //tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shrink_band_generic_description_percent", "\u00A76" + mask_diminishment_scale_percent + "%"));
 
             if (c.mask_diminishment_special.get()) {
                 tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
