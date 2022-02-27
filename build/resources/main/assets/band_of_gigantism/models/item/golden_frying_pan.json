@@ -1,6 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "band_of_gigantism:item/golden_frying_pan"
-  }
-}
