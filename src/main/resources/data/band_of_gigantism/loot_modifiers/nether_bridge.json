@@ -17,6 +17,10 @@
     {
       "item": "band_of_gigantism:band_generic",
       "chance": 0.075
+    },
+    {
+      "item": "band_of_gigantism:false_hand",
+      "chance": 0.05
     }
   ]
 }
