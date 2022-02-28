@@ -32,6 +32,7 @@ public class BOGConfig {
 
     //false hand
     public final ForgeConfigSpec.DoubleValue false_hand_flat_resistance;
+    public final ForgeConfigSpec.IntValue false_hand_time;
 
     //globetrotter's band
     public final ForgeConfigSpec.DoubleValue band_globetrotters_scale;
@@ -73,6 +74,7 @@ public class BOGConfig {
     public final ForgeConfigSpec.DoubleValue mark_unknown_flat_resistance;
     public final ForgeConfigSpec.DoubleValue mark_unknown_speed;
     public final ForgeConfigSpec.IntValue mark_unknown_health;
+    public final ForgeConfigSpec.IntValue mark_unknown_time;
 
     //mark of the obliterated
     public final ForgeConfigSpec.DoubleValue mark_obliterated_damage;
@@ -103,6 +105,7 @@ public class BOGConfig {
             BUILDER.pop().comment("False Hand settings").push("false_hand");
 
                 false_hand_flat_resistance = BUILDER.comment("Amount of flat damage resistance added when equipping while flipped (default -2.0)").defineInRange("false_hand_flat_resistance",-2.0,-Float.MAX_VALUE,Float.MAX_VALUE);
+                false_hand_time = BUILDER.comment("Amount of time for a flipped false hand to flip back, in seconds. (default 180)").defineInRange("false_hand_time",180,1,Integer.MAX_VALUE);
             BUILDER.pop().push("marks");
 
                 marks_duration = BUILDER.comment("Duration of the regen-blocking debuff applied when removing marks, in ticks. (default 200)").defineInRange("marks_duration",200,1,Integer.MAX_VALUE);
@@ -138,6 +141,7 @@ public class BOGConfig {
                     mark_unknown_flat_resistance = BUILDER.comment("Amount to add or remove all incoming damage by. (default 0.75)").defineInRange("mark_unknown_flat_resistance",0.75,0,Float.MAX_VALUE);
                     mark_unknown_speed = BUILDER.comment("Upper/lower limit of speed changes. (default 0.5)").defineInRange("mark_unknown_speed",0.5,0,Float.MAX_VALUE);
                     mark_unknown_health = BUILDER.comment("Upper/lower limit of max health changes; upper limit is doubled. (default 10)").defineInRange("mark_unknown_health",10,0,Integer.MAX_VALUE);
+                    mark_unknown_time = BUILDER.comment("Amount of time before the mark's stats are randomized again. (default 300)").defineInRange("mark_unknown_time",300,1,Integer.MAX_VALUE);
                 BUILDER.pop().comment("Mark of the Obliterated settings").push("mark_obliterated");
 
                     mark_obliterated_damage = BUILDER.comment("Amount to increase the player's damage by when equipping. (default 1.0)").defineInRange("mark_obliterated_damage",1.0,-Float.MAX_VALUE,Float.MAX_VALUE);

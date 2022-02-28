@@ -116,7 +116,7 @@ public class MarkUnknown extends Item implements ICurioItem {
             if (storedTime > 0) {
                 this.setInt(stack,"timeLeft",storedTime - 1);
             } else {
-                this.setInt(stack,"timeLeft",299);
+                this.setInt(stack,"timeLeft",c.mark_unknown_time.get()-1);
                 this.setInt(stack,"random",(int) (Math.random()*12800)); //"random" IS the seed, fyi
             }
         }

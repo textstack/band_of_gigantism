@@ -80,7 +80,7 @@ public class FalseHand extends Item implements ICurioItem {
                 if (storedTime > 0) {
                     stack.getOrCreateTag().putInt("timeLeft",storedTime - 1);
                 } else {
-                    stack.getOrCreateTag().putInt("timeLeft",299);
+                    stack.getOrCreateTag().putInt("timeLeft",c.false_hand_time.get()-1);
                     stack.getOrCreateTag().putInt("flipped",0);
                 }
             }
