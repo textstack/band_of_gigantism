@@ -147,10 +147,10 @@ public class MarkUnknown extends Item implements ICurioItem {
                 int displayTime = 1+storedTime/60;
                 tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_minutes","\u00A76" + displayTime));
             } else {
-                int displayTime = 1+storedTime;
                 if (storedTime == 0) {
                     tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_second"));
                 } else {
+                    int displayTime = 1+storedTime;
                     tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_seconds","\u00A76" + displayTime));
                 }
             }

@@ -14,6 +14,7 @@
   "item.band_of_gigantism.mask_diminishment": "Mask of Diminishment",
   "item.band_of_gigantism.frying_pan": "Frying Pan",
   "item.band_of_gigantism.golden_frying_pan": "§6Strange Professional Killstreak Golden Frying Pan",
+  "item.band_of_gigantism.false_hand": "False Hand",
 
   "effect.band_of_gigantism.forgetfulness": "§6Forgetfulness",
   "effect.band_of_gigantism.strains_of_ascent": "§9Strain of Ascent                                                                                                                                                                                                                                      ",
@@ -141,6 +142,12 @@
   "tooltip.band_of_gigantism.golden_frying_pan_description_2": "§9Sheen: Hot Rod",
   "tooltip.band_of_gigantism.golden_frying_pan_description_3": "§9Killstreaks Active",
 
+  "tooltip.band_of_gigantism.false_hand_description_flavor": "§9§oA silky smooth cushioned surface...",
+  "tooltip.band_of_gigantism.false_hand_description_0": "§5Survive a lethal strike.",
+  "tooltip.band_of_gigantism.false_hand_description_1": "§5When this happens, the card is flipped.",
+  "tooltip.band_of_gigantism.false_hand_description_shift_0_minutes": "§5This card will flip in %1$s §5minutes if equipped.",
+  "tooltip.band_of_gigantism.false_hand_description_shift_0_seconds": "§5This card will flip in %1$s §5seconds if equipped.",
+  "tooltip.band_of_gigantism.false_hand_description_shift_0_second": "§5This card will flip in §61 §5second if equipped.",
 
   "tooltip.band_of_gigantism.mark_generic_description": "§5Take §6severe damage §5upon unequipping.",
 

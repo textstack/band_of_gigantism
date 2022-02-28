@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "band_of_gigantism:item/ace_spades"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "band_of_gigantism:false_hand_flipped": 1
+      },
+      "model": "band_of_gigantism:item/false_hand_flipped"
+    }
+  ]
+}

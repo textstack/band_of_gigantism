@@ -57,6 +57,9 @@ public class ModItems {
     public static final RegistryObject<Item> MASK_DIMINISHMENT = ITEMS.register("mask_diminishment",
             () -> new MaskDiminishment(new Item.Properties().group(ItemGroup.TOOLS).rarity(Rarity.EPIC).maxStackSize(1).defaultMaxDamage(0)));
 
+    public static final RegistryObject<Item> FALSE_HAND = ITEMS.register("false_hand",
+            () -> new FalseHand(new Item.Properties().group(ItemGroup.TOOLS).rarity(Rarity.RARE).maxStackSize(1).defaultMaxDamage(0)));
+
     public static final RegistryObject<Item> FRYING_PAN = ITEMS.register("frying_pan",
             () -> new FryingPan(ItemTier.IRON, 10, -3.2f, new Item.Properties().group(ItemGroup.COMBAT).rarity(Rarity.COMMON).maxStackSize(1).defaultMaxDamage(500)));
 

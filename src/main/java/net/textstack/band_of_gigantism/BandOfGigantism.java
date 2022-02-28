@@ -6,11 +6,13 @@ import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.item.FalseHand;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.event.EventHandlerMyBallsInYourMouth;
@@ -50,7 +52,7 @@ public class BandOfGigantism
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, BOGConfig.SPEC);
 
-        eventBus.addListener(this::setup);
+        eventBus.addListener(this::clientSetup);
         // Register the enqueueIMC method for modloading
         eventBus.addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
@@ -62,11 +64,9 @@ public class BandOfGigantism
         //MinecraftForge.EVENT_BUS.register(BOGConfig.class);
     }
 
-    private void setup(final FMLCommonSetupEvent event)
+    private void clientSetup(final FMLClientSetupEvent event)
     {
-        // some preinit code
-        LOGGER.info("band of gigantism!!!!!!!");
-        //LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+        FalseHand.registerVariants();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

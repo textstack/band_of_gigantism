@@ -3,12 +3,14 @@ package net.textstack.band_of_gigantism.event;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.text.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
@@ -70,6 +72,22 @@ public class EventHandlerMyBallsInYourMouth {
         }
     }
 
+    @SubscribeEvent
+    public void onLivingDeathEvent(LivingDeathEvent event) {
+        if (event.getEntityLiving() instanceof PlayerEntity) {
+            LivingEntity living = event.getEntityLiving();
+            if (CurioHelper.hasCurio(living, ModItems.FALSE_HAND.get())) {
+                ItemStack stack = CurioHelper.hasCurioGet(living, ModItems.FALSE_HAND.get());
+                int flipped = stack.getOrCreateTag().getInt("flipped");
+                if (flipped == 0) {
+                    event.setCanceled(true);
+                    living.setHealth(living.getMaxHealth()/2.0f);
+                    stack.getOrCreateTag().putInt("flipped",1);
+                }
+            }
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEntityHurt(LivingHurtEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity) {
@@ -78,6 +96,20 @@ public class EventHandlerMyBallsInYourMouth {
             //for the strains of ascent effect to deal damage as fast as it wants
             if (event.getSource() == MarkDamageSource.BOG_DESCENDED) {
                 living.hurtResistantTime = 0;
+            }
+
+            //flat damage vuln for false hand
+            if (CurioHelper.hasCurio(living,ModItems.FALSE_HAND.get())) {
+                int flipped = CurioHelper.hasCurioGet(living,ModItems.FALSE_HAND.get()).getOrCreateTag().getInt("flipped");
+                if (flipped==1) {
+                    float damageReduce = Math.max(event.getAmount() - c.false_hand_flat_resistance.get().floatValue(),0.0f);
+                    if (damageReduce<=0) {
+                        event.setCanceled(true);
+                        return;
+                    } else {
+                        event.setAmount(damageReduce);
+                    }
+                }
             }
 
             //flat damage resistance/vulnerability

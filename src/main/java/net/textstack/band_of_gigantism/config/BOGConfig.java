@@ -30,6 +30,9 @@ public class BOGConfig {
     //band of dwarfism
     public final ForgeConfigSpec.DoubleValue shrink_band_generic_scale;
 
+    //false hand
+    public final ForgeConfigSpec.DoubleValue false_hand_flat_resistance;
+
     //globetrotter's band
     public final ForgeConfigSpec.DoubleValue band_globetrotters_scale;
     public final ForgeConfigSpec.IntValue band_globetrotters_limit;
@@ -97,6 +100,9 @@ public class BOGConfig {
 
                 band_globetrotters_limit = BUILDER.comment("Maximum amount of time a globetrotter's band can accumulate; when this value is reached the player will be set to the limit scale. This value increases by 1 every 5 seconds. (default 72000)").defineInRange("band_globetrotters_limit",72000,1,Integer.MAX_VALUE);
                 band_globetrotters_damage = BUILDER.comment("Amount to increase all damage by when equipping. (default -0.9)").defineInRange("band_globetrotters_damage",-0.9,-Float.MAX_VALUE,Float.MAX_VALUE);
+            BUILDER.pop().comment("False Hand settings").push("false_hand");
+
+                false_hand_flat_resistance = BUILDER.comment("Amount of flat damage resistance added when equipping while flipped (default -2.0)").defineInRange("false_hand_flat_resistance",-2.0,-Float.MAX_VALUE,Float.MAX_VALUE);
             BUILDER.pop().push("marks");
 
                 marks_duration = BUILDER.comment("Duration of the regen-blocking debuff applied when removing marks, in ticks. (default 200)").defineInRange("marks_duration",200,1,Integer.MAX_VALUE);
