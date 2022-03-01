@@ -59,8 +59,8 @@ public class MarkFaded extends Item implements ICurioItem {
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_faded_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
             tooltip.add(LoreStatHelper.displayStat(c.mark_faded_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE, true));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_faded_healing.get().floatValue(), LoreStatHelper.Stat.HEALING, true));
+            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_faded_description_shift_1"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_generic_description"));
