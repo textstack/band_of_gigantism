@@ -32,6 +32,16 @@ public class FalseHand extends Item implements ICurioItem {
     }
 
     @Override
+    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        ICurioItem.super.onEquip(slotContext, prevStack, stack);
+
+        if (stack.getOrCreateTag().getInt("flipped")==0) {
+            stack.getOrCreateTag().putInt("timeLeft",c.false_hand_time.get()-1);
+            stack.getOrCreateTag().putInt("flipped",0);
+        }
+    }
+
+    @Override
     public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
