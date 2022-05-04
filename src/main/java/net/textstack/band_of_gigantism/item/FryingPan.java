@@ -19,7 +19,7 @@ public class FryingPan extends SwordItem {
         World worldIn = attacker.getEntityWorld();
         if (worldIn.isRemote()) {return super.hitEntity(stack, target, attacker);}
 
-        target.playSound(ModSoundEvents.PAN_HIT.get(),0.5f,1);
+        target.playSound(ModSoundEvents.PAN_HIT.get(),0.3f,1);
 
         return super.hitEntity(stack, target, attacker);
     }
