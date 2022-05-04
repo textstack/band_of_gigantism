@@ -11,5 +11,10 @@
     "sounds": [
       "band_of_gigantism:saxxy_impact_gen_06"
     ]
+  },
+  "card_flip": {
+    "sounds": [
+      "band_of_gigantism:card_flip"
+    ]
   }
 }

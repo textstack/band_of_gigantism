@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.text.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -83,6 +84,7 @@ public class EventHandlerMyBallsInYourMouth {
                     event.setCanceled(true);
                     living.setHealth(living.getMaxHealth()/2.0f);
                     stack.getOrCreateTag().putInt("flipped",1);
+                    living.addPotionEffect(new EffectInstance(Effects.RESISTANCE,100,1,false,false));
                 }
             }
         }

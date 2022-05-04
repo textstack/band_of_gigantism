@@ -18,6 +18,8 @@ public class ModSoundEvents {
 
     public static final RegistryObject<SoundEvent> GOLD_KILL = registerSoundEvent("gold_kill");
 
+    public static final RegistryObject<SoundEvent> CARD_FLIP = registerSoundEvent("card_flip");
+
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
         return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(BandOfGigantism.MODID,name)));
     }
