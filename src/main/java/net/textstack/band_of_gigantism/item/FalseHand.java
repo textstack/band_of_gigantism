@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -15,6 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.registry.ModSoundEvents;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -85,11 +87,16 @@ public class FalseHand extends Item implements ICurioItem {
         int flipped = stack.getOrCreateTag().getInt("flipped");
 
         if (flipped == 1) {
-            if (livingEntity.getEntityWorld().getGameTime() % 20 == 0) {
+            World world = livingEntity.getEntityWorld();
+            if (world.getGameTime() % 20 == 0) {
                 int storedTime = stack.getOrCreateTag().getInt("timeLeft");
                 if (storedTime > 0) {
+//                    if (storedTime >= c.false_hand_time.get()-1) { //really bad way of playing this sound
+//                        livingEntity.playSound(ModSoundEvents.CARD_FLIP.get(),0.5f,1);
+//                    }
                     stack.getOrCreateTag().putInt("timeLeft",storedTime - 1);
                 } else {
+                    livingEntity.playSound(ModSoundEvents.CARD_FLIP.get(),0.5f,1);
                     stack.getOrCreateTag().putInt("timeLeft",c.false_hand_time.get()-1);
                     stack.getOrCreateTag().putInt("flipped",0);
                 }
