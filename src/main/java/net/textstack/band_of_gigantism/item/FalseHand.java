@@ -1,16 +1,15 @@
 package net.textstack.band_of_gigantism.item;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.textstack.band_of_gigantism.BandOfGigantism;
@@ -44,39 +43,39 @@ public class FalseHand extends Item implements ICurioItem {
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
 
             int flipped = stack.getOrCreateTag().getInt("flipped");
 
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.false_hand_description_flavor"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_flavor"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             if (flipped == 0) {
-                tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.false_hand_description_0"));
-                tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.false_hand_description_1"));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_0"));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_1"));
             } else {
                 tooltip.add(LoreStatHelper.displayStat(c.false_hand_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
 
                 int storedTime = stack.getOrCreateTag().getInt("timeLeft");
                 if (storedTime>=60) {
                     int displayTime = 1+storedTime/60;
-                    tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_minutes","\u00A76" + displayTime));
+                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_minutes","\u00A76" + displayTime));
                 } else {
                     if (storedTime == 0) {
-                        tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_second"));
+                        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_second"));
                     } else {
                         int displayTime = 1+storedTime;
-                        tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_seconds","\u00A76" + displayTime));
+                        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_seconds","\u00A76" + displayTime));
                     }
                 }
             }
         } else {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
         }
     }
 
@@ -87,7 +86,7 @@ public class FalseHand extends Item implements ICurioItem {
         int flipped = stack.getOrCreateTag().getInt("flipped");
 
         if (flipped == 1) {
-            World world = livingEntity.getEntityWorld();
+            Level world = livingEntity.getLevel();
             if (world.getGameTime() % 20 == 0) {
                 int storedTime = stack.getOrCreateTag().getInt("timeLeft");
                 if (storedTime > 0) {
@@ -105,8 +104,8 @@ public class FalseHand extends Item implements ICurioItem {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void registerVariants() {
-        ItemModelsProperties.registerProperty(ModItems.FALSE_HAND.get(),new ResourceLocation(BandOfGigantism.MODID,"false_hand_flipped"), (stack, world, entity) -> stack.getOrCreateTag().getInt("flipped"));
+    public static void registerVariants() { //property function has a new mystery integer I just named "thing" for now
+        ItemProperties.register(ModItems.FALSE_HAND.get(),new ResourceLocation(BandOfGigantism.MODID,"false_hand_flipped"), (stack, world, entity, thing) -> stack.getOrCreateTag().getInt("flipped"));
     }
 
     @Override

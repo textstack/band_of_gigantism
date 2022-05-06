@@ -1,12 +1,13 @@
 package net.textstack.band_of_gigantism.event;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.text.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -37,11 +38,11 @@ public class EventHandlerMyBallsInYourMouth {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onLivingHeal(LivingHealEvent event) {
 
-        if (event.getEntityLiving() instanceof PlayerEntity) {
+        if (event.getEntityLiving() instanceof Player) {
             LivingEntity living = event.getEntityLiving();
 
             //disables regen and reduces healing
-            if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get())||Objects.requireNonNull(living).isPotionActive(ModEffects.RECOVERING.get())) {
+            if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get())||Objects.requireNonNull(living).hasEffect(ModEffects.RECOVERING.get())) {
                 if (event.getAmount() <= 1.0f) {
                     event.setCanceled(true);
                     return;
@@ -61,13 +62,8 @@ public class EventHandlerMyBallsInYourMouth {
             if (CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
                 int regenValue = MarkUnknown.regenValue(CurioHelper.hasCurioGet(living, ModItems.MARK_UNKNOWN.get()));
                 switch (regenValue) {
-                    case 5:
-                    case 6:
-                    case 1: event.setAmount(event.getAmount() * (1-c.mark_unknown_healing.get().floatValue()));
-                            break;
-                    case 7:
-                    case 8:
-                    case 2: event.setAmount(event.getAmount() * (1+c.mark_unknown_healing.get().floatValue()));
+                    case 5, 6, 1 -> event.setAmount(event.getAmount() * (1 - c.mark_unknown_healing.get().floatValue()));
+                    case 7, 8, 2 -> event.setAmount(event.getAmount() * (1 + c.mark_unknown_healing.get().floatValue()));
                 }
             }
         }
@@ -75,7 +71,7 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent
     public void onLivingDeathEvent(LivingDeathEvent event) {
-        if (event.getEntityLiving() instanceof PlayerEntity) {
+        if (event.getEntityLiving() instanceof Player) {
             LivingEntity living = event.getEntityLiving();
             if (CurioHelper.hasCurio(living, ModItems.FALSE_HAND.get())) {
                 ItemStack stack = CurioHelper.hasCurioGet(living, ModItems.FALSE_HAND.get());
@@ -84,7 +80,7 @@ public class EventHandlerMyBallsInYourMouth {
                     event.setCanceled(true);
                     living.setHealth(living.getMaxHealth()/2.0f);
                     stack.getOrCreateTag().putInt("flipped",1);
-                    living.addPotionEffect(new EffectInstance(Effects.RESISTANCE,100,1,false,false));
+                    living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,100,1,false,false));
                 }
             }
         }
@@ -92,12 +88,12 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEntityHurt(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof PlayerEntity) {
+        if (event.getEntityLiving() instanceof Player) {
             LivingEntity living = event.getEntityLiving();
 
             //for the strains of ascent effect to deal damage as fast as it wants
             if (event.getSource() == MarkDamageSource.BOG_DESCENDED) {
-                living.hurtResistantTime = 0;
+                living.invulnerableTime = 0;
             }
 
             //flat damage vuln for false hand
@@ -118,20 +114,16 @@ public class EventHandlerMyBallsInYourMouth {
             if (CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
                 int regenValue = MarkUnknown.regenValue(CurioHelper.hasCurioGet(living, ModItems.MARK_UNKNOWN.get()));
                 switch (regenValue) {
-                    case 5:
-                    case 7:
-                    case 3: event.setAmount(event.getAmount()+c.mark_unknown_flat_resistance.get().floatValue());
-                            break;
-                    case 6:
-                    case 8:
-                    case 4:
-                        float damageReduce = Math.max(event.getAmount() - c.mark_unknown_flat_resistance.get().floatValue(),0.0f);
-                        if (damageReduce<=0) {
+                    case 5, 7, 3 -> event.setAmount(event.getAmount() + c.mark_unknown_flat_resistance.get().floatValue());
+                    case 6, 8, 4 -> {
+                        float damageReduce = Math.max(event.getAmount() - c.mark_unknown_flat_resistance.get().floatValue(), 0.0f);
+                        if (damageReduce <= 0) {
                             event.setCanceled(true);
                             return;
                         } else {
                             event.setAmount(damageReduce);
                         }
+                    }
                 }
             }
 
@@ -149,7 +141,7 @@ public class EventHandlerMyBallsInYourMouth {
             //normal (ew) resistance
             if (CurioHelper.hasCurio(living, ModItems.MARK_FORGOTTEN.get())) {
                 event.setAmount(event.getAmount() * (1+c.mark_forgotten_resistance.get().floatValue()));
-                living.addPotionEffect(new EffectInstance(ModEffects.FORGETFULNESS.get(),c.mark_forgotten_duration.get(),0,false,false));
+                living.addEffect(new MobEffectInstance(ModEffects.FORGETFULNESS.get(),c.mark_forgotten_duration.get(),0,false,false));
             }
         }
     }
@@ -172,8 +164,7 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent
     public void onCriticalHit(CriticalHitEvent event) {
-        if (event.getEntityLiving() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+        if (event.getEntityLiving() instanceof Player player) {
 
             //crit increase
             if (CurioHelper.hasCurio(player, ModItems.MARK_FORGOTTEN.get())&&event.isVanillaCritical()) {
@@ -186,18 +177,18 @@ public class EventHandlerMyBallsInYourMouth {
     @SubscribeEvent
     public void onOverlayRenderPre(RenderGameOverlayEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
-        PlayerEntity player = mc.player;
+        Player player = mc.player;
 
-        if (event.getType() == RenderGameOverlayEvent.ElementType.FOOD) {
+        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) { //FOOD
 
             //disable rendering of food
             if (CurioHelper.hasCurio(player, ModItems.MARK_FORGOTTEN.get())) {
                 event.setCanceled(true);
             }
-        } else if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
+        } else if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER) { //HEALTH
 
             //disable rendering of health
-            if (Objects.requireNonNull(player).isPotionActive(ModEffects.FORGETFULNESS.get())) {
+            if (Objects.requireNonNull(player).hasEffect(ModEffects.FORGETFULNESS.get())) {
                 event.setCanceled(true);
                 //return;
             }
@@ -214,9 +205,9 @@ public class EventHandlerMyBallsInYourMouth {
             message = colorMark(living, message);
 
             //insert colored text if required
-            ITextComponent newComponent;
+            Component newComponent;
             if (message != null) {
-                newComponent = new TranslationTextComponent("chat.type.text", event.getUsername(), message);
+                newComponent = new TranslatableComponent("chat.type.text", event.getUsername(), message);
             } else {
                 newComponent = event.getComponent();
             }

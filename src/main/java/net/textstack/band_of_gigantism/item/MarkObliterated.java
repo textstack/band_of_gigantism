@@ -2,17 +2,17 @@ package net.textstack.band_of_gigantism.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
@@ -39,30 +39,30 @@ public class MarkObliterated extends Item implements ICurioItem {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
 
         //kill
-        slotContext.getWearer().attackEntityFrom(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
+        slotContext.getWearer().hurt(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
 
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_flavor"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_obliterated_description_flavor"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE,true));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_knockback.get().floatValue(), LoreStatHelper.Stat.KNOCKBACK,true));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_health.get(), LoreStatHelper.Stat.MAX_HEALTH));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_armor.get(), LoreStatHelper.Stat.ARMOR));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_armor_toughness.get(), LoreStatHelper.Stat.ARMOR_TOUGHNESS));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_obliterated_description_shift_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_obliterated_description_shift_0"));
         } else {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
         }
     }
 

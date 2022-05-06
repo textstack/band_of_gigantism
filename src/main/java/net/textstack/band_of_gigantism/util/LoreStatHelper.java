@@ -1,7 +1,6 @@
 package net.textstack.band_of_gigantism.util;
 
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class LoreStatHelper {
 
@@ -33,34 +32,21 @@ public class LoreStatHelper {
      * @param isPercent whether to display as a percentage, optional
      * @return the TranslationTextComponent of the display
      */
-    public static TranslationTextComponent displayStat(float display, Stat statType, boolean isPercent) {
+    public static TranslatableComponent displayStat(float display, Stat statType, boolean isPercent) {
 
-        String stat;
-        switch (statType) {
-            case DAMAGE: stat = "damage";
-                break;
-            case CRITICAL_DAMAGE: stat = "critical_damage";
-                break;
-            case RESISTANCE: stat = "resistance";
-                break;
-            case FLAT_RESISTANCE: stat = "flat_resistance";
-                break;
-            case HEALING: stat = "healing";
-                break;
-            case REGENERATION: stat = "regeneration";
-                break;
-            case ARMOR: stat = "armor";
-                break;
-            case MAX_HEALTH: stat = "max_health";
-                break;
-            case SPEED: stat = "speed";
-                break;
-            case KNOCKBACK: stat = "knockback";
-                break;
-            case ARMOR_TOUGHNESS: stat = "armor_toughness";
-                break;
-            default: stat = "error";
-        }
+        String stat = switch (statType) {
+            case DAMAGE -> "damage";
+            case CRITICAL_DAMAGE -> "critical_damage";
+            case RESISTANCE -> "resistance";
+            case FLAT_RESISTANCE -> "flat_resistance";
+            case HEALING -> "healing";
+            case REGENERATION -> "regeneration";
+            case ARMOR -> "armor";
+            case MAX_HEALTH -> "max_health";
+            case SPEED -> "speed";
+            case KNOCKBACK -> "knockback";
+            case ARMOR_TOUGHNESS -> "armor_toughness";
+        };
 
         String isNegative;
         if (display < 0) isNegative = "_negative";
@@ -80,10 +66,10 @@ public class LoreStatHelper {
             }
         }
 
-        return new TranslationTextComponent("tooltip.band_of_gigantism."+stat+isNegative,value);
+        return new TranslatableComponent("tooltip.band_of_gigantism."+stat+isNegative,value);
     }
 
-    public static TranslationTextComponent displayStat(float display, Stat statType) {
+    public static TranslatableComponent displayStat(float display, Stat statType) {
         return displayStat(display, statType, false);
     }
 
@@ -94,14 +80,14 @@ public class LoreStatHelper {
      * @param display the new scale the player will be in when equipping
      * @return the TranslationTextComponent of the display
      */
-    public static TranslationTextComponent displayScale(float display) {
+    public static TranslatableComponent displayScale(float display) {
 
         int display_percent = (int) (Math.abs(display-1)*100);
 
         if (display < 1) {
-            return new TranslationTextComponent("tooltip.band_of_gigantism.shrink_band_generic_description_percent", "\u00A76" + display_percent + "%");
+            return new TranslatableComponent("tooltip.band_of_gigantism.shrink_band_generic_description_percent", "\u00A76" + display_percent + "%");
         } else {
-            return new TranslationTextComponent("tooltip.band_of_gigantism.band_generic_description_percent", "\u00A76" + display_percent + "%");
+            return new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_percent", "\u00A76" + display_percent + "%");
         }
     }
 
@@ -112,7 +98,7 @@ public class LoreStatHelper {
      * @param type whether the text will be in a tooltip or title
      * @return the TranslationTextComponent of the name
      */
-    public static TranslationTextComponent displayStrangeName(int kills, StrangeType type) {
+    public static TranslatableComponent displayStrangeName(int kills, StrangeType type) {
 
         //this is how coding works right?
         String nameKey = "strange_0";
@@ -138,15 +124,11 @@ public class LoreStatHelper {
         else if (kills>=10) nameKey = "strange_10";
 
         //determine color
-        String color;
-        switch (type) {
-            case TITLE: color = "title_";
-                break;
-            case TOOLTIP: color = "tooltip_";
-                break;
-            default: color = "";
-        }
+        String color = switch (type) {
+            case TITLE -> "title_";
+            case TOOLTIP -> "tooltip_";
+        };
 
-        return new TranslationTextComponent("tooltip.band_of_gigantism."+color+nameKey);
+        return new TranslatableComponent("tooltip.band_of_gigantism."+color+nameKey);
     }
 }

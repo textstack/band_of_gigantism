@@ -2,20 +2,20 @@ package net.textstack.band_of_gigantism.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierManager;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.registry.ModEffects;
@@ -45,12 +45,12 @@ public class MarkPurified extends Item implements ICurioItem {
         LivingEntity living = slotContext.getWearer();
 
         //deal near-mortal damage, prevent healing for 10 seconds
-        living.attackEntityFrom(MarkDamageSource.BOG_PURIFIED, living.getMaxHealth()-1);
-        living.addPotionEffect(new EffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
+        living.hurt(MarkDamageSource.BOG_PURIFIED, living.getMaxHealth()-1);
+        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
 
         //remove the variable modifiers
-        AttributeModifierManager map = living.getAttributeManager();
-        map.removeModifiers(this.createAttributeMap(living));
+        AttributeMap map = living.getAttributes();
+        map.removeAttributeModifiers(this.createAttributeMap(living));
     }
 
     @Override
@@ -58,31 +58,30 @@ public class MarkPurified extends Item implements ICurioItem {
         ICurioItem.super.curioTick(identifier, index, livingEntity, stack);
 
         //reapply modifiers
-        if (livingEntity.world.getGameTime() % 10 == 0) {
-            if (livingEntity instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) livingEntity;
-                AttributeModifierManager map = player.getAttributeManager();
-                map.removeModifiers(this.createAttributeMap(player)); //required to ensure max heatlh is added properly
-                map.reapplyModifiers(this.createAttributeMap(player));
+        if (livingEntity.level.getGameTime() % 10 == 0) {
+            if (livingEntity instanceof Player player) {
+                AttributeMap map = player.getAttributes();
+                map.removeAttributeModifiers(this.createAttributeMap(player)); //required to ensure max heatlh is added properly
+                map.addTransientAttributeModifiers(this.createAttributeMap(player));
             }
         }
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_purified_description_flavor"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_purified_description_0"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_generic_description"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_purified_description_flavor"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_purified_description_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_generic_description"));
         } else {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
         }
     }
 

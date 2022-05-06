@@ -1,15 +1,15 @@
 package net.textstack.band_of_gigantism.item;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
@@ -64,11 +64,10 @@ public class MaskDiminishment extends Item implements ICurioItem {
         ICurioItem.super.curioTick(identifier, index, livingEntity, stack);
 
         //scale player based on inventory fill percentage
-        if (livingEntity.world.getGameTime() % 10 == 0 && ScaleHelper.isDoneScaling(livingEntity,scales[1])) {
-            if (livingEntity instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) livingEntity;
+        if (livingEntity.level.getGameTime() % 10 == 0 && ScaleHelper.isDoneScaling(livingEntity,scales[1])) {
+            if (livingEntity instanceof Player player) {
 
-                NonNullList<ItemStack> list = player.inventory.mainInventory;
+                NonNullList<ItemStack> list = player.getInventory().items;
                 Iterator<ItemStack> each = list.iterator();
                 float count = 0;
                 while (each.hasNext()) {
@@ -92,32 +91,32 @@ public class MaskDiminishment extends Item implements ICurioItem {
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mask_diminishment_description_flavor"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_flavor"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayScale(c.mask_diminishment_scale.get().floatValue()));
 
             if (c.mask_diminishment_special.get()) {
-                tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-                tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mask_diminishment_description_0"));
-                tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mask_diminishment_description_1"));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_0"));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_1"));
             }
 
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mask_diminishment_description_shift_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_shift_0"));
         } else {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
         }
     }
 
     @Override
-    public boolean hasEffect(@Nonnull ItemStack stack) {
+    public boolean isFoil(@Nonnull ItemStack stack) {
         return true;
     }
 }

@@ -3,12 +3,12 @@ package net.textstack.band_of_gigantism.event;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -19,7 +19,7 @@ import java.util.List;
 public class GenericLootModifierMultiple extends LootModifier {
     private final JsonArray additionArray;
 
-    protected GenericLootModifierMultiple(ILootCondition[] conditionsIn, JsonArray additionArray) {
+    protected GenericLootModifierMultiple(LootItemCondition[] conditionsIn, JsonArray additionArray) {
         super(conditionsIn);
         this.additionArray = additionArray;
     }
@@ -41,8 +41,8 @@ public class GenericLootModifierMultiple extends LootModifier {
     public static class Serializer extends GlobalLootModifierSerializer<GenericLootModifierMultiple> {
 
         @Override
-        public GenericLootModifierMultiple read(ResourceLocation name, JsonObject object, ILootCondition[] conditionsIn) {
-            JsonArray additionArray = JSONUtils.getJsonArray(object,"addition");
+        public GenericLootModifierMultiple read(ResourceLocation name, JsonObject object, LootItemCondition[] conditionsIn) {
+            JsonArray additionArray = GsonHelper.getAsJsonArray(object,"addition");
             return new GenericLootModifierMultiple(conditionsIn, additionArray);
         }
 

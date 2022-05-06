@@ -2,9 +2,9 @@ package net.textstack.band_of_gigantism.registry;
 
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.event.GenericLootModifier;
 import net.textstack.band_of_gigantism.event.GenericLootModifierMultiple;
@@ -12,7 +12,7 @@ import net.textstack.band_of_gigantism.event.GenericLootModifierMultiple;
 @SuppressWarnings("unused")
 public class ModLootModifiers {
     public static final DeferredRegister<GlobalLootModifierSerializer<?>> LOOT_MODIFIERS =
-            DeferredRegister.create(ForgeRegistries.LOOT_MODIFIER_SERIALIZERS, BandOfGigantism.MODID);
+            DeferredRegister.create(ForgeRegistries.LOOT_MODIFIER_SERIALIZERS.get(), BandOfGigantism.MODID);
 
     public static final RegistryObject<GlobalLootModifierSerializer<?>> END_CITY_TREASURE = LOOT_MODIFIERS.register(
             "end_city_treasure", GenericLootModifierMultiple.Serializer::new);

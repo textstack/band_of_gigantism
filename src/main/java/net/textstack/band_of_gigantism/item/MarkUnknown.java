@@ -2,23 +2,23 @@ package net.textstack.band_of_gigantism.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifierManager;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.registry.ModEffects;
@@ -52,12 +52,12 @@ public class MarkUnknown extends Item implements ICurioItem {
         if (!CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
 
             //deal near-mortal damage, prevent healing for 10 seconds
-            living.attackEntityFrom(MarkDamageSource.BOG_UNKNOWN, living.getMaxHealth()-1);
-            living.addPotionEffect(new EffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
+            living.hurt(MarkDamageSource.BOG_UNKNOWN, living.getMaxHealth()-1);
+            living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
 
             //remove the variable modifiers
-            AttributeModifierManager map = living.getAttributeManager();
-            map.removeModifiers(this.createAttributeMap(stack));
+            AttributeMap map = living.getAttributes();
+            map.removeAttributeModifiers(this.createAttributeMap(stack));
         }
     }
 
@@ -65,48 +65,38 @@ public class MarkUnknown extends Item implements ICurioItem {
     public void curioTick(String identifier, int index, LivingEntity livingEntity, ItemStack stack) {
         ICurioItem.super.curioTick(identifier, index, livingEntity, stack);
 
-        if (livingEntity.world.getGameTime() % 20 == 0) {
-            if (livingEntity instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) livingEntity;
+        if (livingEntity.level.getGameTime() % 20 == 0) {
+            if (livingEntity instanceof Player player) {
 
                 //inflict effect
                 int[] random = effectValues(stack);
-                Effect effect = Effects.GLOWING;
-                switch (random[0]) {
-                    case 0: effect = Effects.POISON; //
-                            break;
-                    case 1: effect = Effects.SATURATION;
-                            break;
-                    case 2: effect = Effects.RESISTANCE; //
-                            break;
-                    case 3: effect = Effects.STRENGTH;
-                            break;
-                    case 4: effect = Effects.MINING_FATIGUE; //
-                            break;
-                    case 5: effect = Effects.HASTE;
-                            break;
-                    case 6: effect = Effects.HUNGER; //
-                            break;
-                    case 7: effect = Effects.SLOW_FALLING;
-                            break;
-                    case 8: effect = Effects.WEAKNESS; //
-                            break;
-                    case 9: effect = Effects.NIGHT_VISION;
-                }
-                livingEntity.addPotionEffect(new EffectInstance(effect,220,random[1],false,false));
+                MobEffect effect = switch (random[0]) {
+                    case 0 -> MobEffects.POISON; //
+                    case 1 -> MobEffects.SATURATION;
+                    case 2 -> MobEffects.DAMAGE_RESISTANCE; //
+                    case 3 -> MobEffects.DAMAGE_BOOST;
+                    case 4 -> MobEffects.DIG_SLOWDOWN; //
+                    case 5 -> MobEffects.DIG_SPEED;
+                    case 6 -> MobEffects.HUNGER; //
+                    case 7 -> MobEffects.SLOW_FALLING;
+                    case 8 -> MobEffects.WEAKNESS; //
+                    case 9 -> MobEffects.NIGHT_VISION;
+                    default -> MobEffects.GLOWING;
+                };
+                livingEntity.addEffect(new MobEffectInstance(effect,220,random[1],false,false));
 
                 //reapply modifiers
-                AttributeModifierManager map = player.getAttributeManager();
-                map.reapplyModifiers(this.createAttributeMap(stack));
+                AttributeMap map = player.getAttributes();
+                map.addTransientAttributeModifiers(this.createAttributeMap(stack));
             }
         }
     }
 
     @Override
-    public void inventoryTick(@NotNull ItemStack stack, @NotNull World worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
 
-        if (worldIn.isRemote) {
+        if (worldIn.isClientSide) {
             return;
         }
 
@@ -124,12 +114,12 @@ public class MarkUnknown extends Item implements ICurioItem {
 
     //i can't believe it's all tooltip!
     @Override
-    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
 
             int[] randomAttributes = attributeValues(stack);
@@ -137,96 +127,75 @@ public class MarkUnknown extends Item implements ICurioItem {
             int randomRegen = regenValue(stack);
             int storedTime = this.getInt(stack);
 
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_flavor"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_0"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_flavor"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
 
             //time
             if (storedTime>=60) {
                 int displayTime = 1+storedTime/60;
-                tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_minutes","\u00A76" + displayTime));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_minutes","\u00A76" + displayTime));
             } else {
                 if (storedTime == 0) {
-                    tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_second"));
+                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_second"));
                 } else {
                     int displayTime = 1+storedTime;
-                    tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_seconds","\u00A76" + displayTime));
+                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_seconds","\u00A76" + displayTime));
                 }
             }
 
             //health
             if (randomAttributes[0]>0) {
-                tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_1_positive","\u00A76" + randomAttributes[0]));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_1_positive","\u00A76" + randomAttributes[0]));
             } else if (randomAttributes[0]<0) {
-                tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_1_negative","\u00A76" + randomAttributes[0]));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_1_negative","\u00A76" + randomAttributes[0]));
             }
 
             //speed
             if (randomAttributes[1]>0) {
-                tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_2_positive","\u00A76" + randomAttributes[1] + "%"));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_2_positive","\u00A76" + randomAttributes[1] + "%"));
             } else if (randomAttributes[1]<0) {
-                tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_2_negative","\u00A76" + randomAttributes[1] + "%"));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_2_negative","\u00A76" + randomAttributes[1] + "%"));
             }
 
             //regen
             switch (randomRegen) {
-                case 5:
-                case 6:
-                case 1: tooltip.add(LoreStatHelper.displayStat(-c.mark_unknown_healing.get().floatValue(), LoreStatHelper.Stat.HEALING, true));
-                    break;
-                case 7:
-                case 8:
-                case 2: tooltip.add(LoreStatHelper.displayStat(c.mark_unknown_healing.get().floatValue(), LoreStatHelper.Stat.HEALING, true));
+                case 5, 6, 1 -> tooltip.add(LoreStatHelper.displayStat(-c.mark_unknown_healing.get().floatValue(), LoreStatHelper.Stat.HEALING, true));
+                case 7, 8, 2 -> tooltip.add(LoreStatHelper.displayStat(c.mark_unknown_healing.get().floatValue(), LoreStatHelper.Stat.HEALING, true));
             }
 
             //flat damage resist/vuln
             switch (randomRegen) {
-                case 5:
-                case 7:
-                case 3: tooltip.add(LoreStatHelper.displayStat(-c.mark_unknown_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
-                    break;
-                case 6:
-                case 8:
-                case 4: tooltip.add(LoreStatHelper.displayStat(c.mark_unknown_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
+                case 5, 7, 3 -> tooltip.add(LoreStatHelper.displayStat(-c.mark_unknown_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
+                case 6, 8, 4 -> tooltip.add(LoreStatHelper.displayStat(c.mark_unknown_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
             }
 
             //effect
             //don't know how this could be localized
-            String effect = "";
-            switch (randomEffects[0]) {
-                case 0: effect = "\u00A76Poison";
-                    break;
-                case 1: effect = "\u00A76Saturation";
-                    break;
-                case 2: effect = "\u00A76Resistance";
-                    break;
-                case 3: effect = "\u00A76Strength";
-                    break;
-                case 4: effect = "\u00A76Mining Fatigue";
-                    break;
-                case 5: effect = "\u00A76Haste";
-                    break;
-                case 6: effect = "\u00A76Hunger";
-                    break;
-                case 7: effect = "\u00A76Slow Falling";
-                    break;
-                case 8: effect = "\u00A76Weakness";
-                    break;
-                case 9: effect = "\u00A76Night Vision";
-            }
-            String amp = "";
-            switch(randomEffects[1]) {
-                case 1: amp = "\u00A76II ";
-                    break;
-                case 2: amp = "\u00A76III ";
-                    break;
-            }
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_4",effect,amp));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_generic_description"));
+            String effect = switch (randomEffects[0]) {
+                case 0 -> "\u00A76Poison";
+                case 1 -> "\u00A76Saturation";
+                case 2 -> "\u00A76Resistance";
+                case 3 -> "\u00A76Strength";
+                case 4 -> "\u00A76Mining Fatigue";
+                case 5 -> "\u00A76Haste";
+                case 6 -> "\u00A76Hunger";
+                case 7 -> "\u00A76Slow Falling";
+                case 8 -> "\u00A76Weakness";
+                case 9 -> "\u00A76Night Vision";
+                default -> "";
+            };
+            String amp = switch (randomEffects[1]) {
+                case 1 -> "\u00A76II ";
+                case 2 -> "\u00A76III ";
+                default -> "";
+            };
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_4",effect,amp));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_generic_description"));
         } else {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
         }
     }
 

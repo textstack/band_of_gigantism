@@ -2,19 +2,19 @@ package net.textstack.band_of_gigantism.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.registry.ModEffects;
@@ -47,8 +47,8 @@ public class MarkDescended extends Item implements ICurioItem {
         //deal near-mortal damage, prevent healing
         LivingEntity living = slotContext.getWearer();
         if (!CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) { //this method is called whenever nbt changes, make sure not to kill for that
-            living.attackEntityFrom(MarkDamageSource.BOG_DESCENDED, living.getMaxHealth()-1);
-            living.addPotionEffect(new EffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
+            living.hurt(MarkDamageSource.BOG_DESCENDED, living.getMaxHealth()-1);
+            living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
         }
     }
 
@@ -57,7 +57,7 @@ public class MarkDescended extends Item implements ICurioItem {
         ICurioItem.super.curioTick(identifier, index, livingEntity, stack);
 
         //either lower the stored position (if the player is lower) or inflict strains of ascent (if player is >5 blocks higher)
-        int posY = (int) Math.ceil(livingEntity.getPositionVec().y);
+        int posY = (int) Math.ceil(livingEntity.blockPosition().getY());
         if (stack.getTag() != null) {
             int prevPosY = this.getPosY(stack);
 
@@ -71,7 +71,7 @@ public class MarkDescended extends Item implements ICurioItem {
                 else if (prevPosY > 16) amp = 3;
                 else if (prevPosY > 0) amp = 4;
                 else amp = 5;
-                livingEntity.addPotionEffect(new EffectInstance(ModEffects.STRAINS_OF_ASCENT.get(), c.mark_descended_duration.get(), amp, false, false));
+                livingEntity.addEffect(new MobEffectInstance(ModEffects.STRAINS_OF_ASCENT.get(), c.mark_descended_duration.get(), amp, false, false));
                 this.setPosY(stack, posY);
             }
         } else {
@@ -80,10 +80,10 @@ public class MarkDescended extends Item implements ICurioItem {
     }
 
     @Override
-    public void inventoryTick(@NotNull ItemStack stack, @NotNull World worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
 
-        if (worldIn.isRemote) {
+        if (worldIn.isClientSide) {
             return;
         }
 
@@ -95,24 +95,24 @@ public class MarkDescended extends Item implements ICurioItem {
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_descended_description_flavor"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_descended_description_flavor"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_descended_armor.get(), LoreStatHelper.Stat.ARMOR));
             tooltip.add(LoreStatHelper.displayStat(c.mark_descended_regeneration.get().floatValue(), LoreStatHelper.Stat.REGENERATION,true));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_descended_description_shift_0"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_descended_description_shift_1"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_generic_description"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_descended_description_shift_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_descended_description_shift_1"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_generic_description"));
         } else {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
         }
     }
 

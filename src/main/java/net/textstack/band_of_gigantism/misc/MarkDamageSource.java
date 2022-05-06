@@ -1,6 +1,6 @@
 package net.textstack.band_of_gigantism.misc;
 
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 
 public class MarkDamageSource extends DamageSource {
     public MarkDamageSource(String damageTypeIn) {
@@ -8,17 +8,17 @@ public class MarkDamageSource extends DamageSource {
     }
 
     public static final DamageSource BOG_OBLITERATED = (new DamageSource("mark_obliterated")).
-            setDamageBypassesArmor().setDamageIsAbsolute().setDamageAllowedInCreativeMode();
+            bypassArmor().bypassMagic().bypassInvul();
     public static final DamageSource BOG_FADED = (new DamageSource("mark_faded")).
-            setDamageBypassesArmor().setDamageIsAbsolute();
+            bypassArmor().bypassMagic();
     public static final DamageSource BOG_FORGOTTEN = (new DamageSource("mark_forgotten")).
-            setDamageBypassesArmor().setDamageIsAbsolute();
+            bypassArmor().bypassMagic();
     public static final DamageSource BOG_PURIFIED = (new DamageSource("mark_purified")).
-            setDamageBypassesArmor().setDamageIsAbsolute();
+            bypassArmor().bypassMagic();
     public static final DamageSource BOG_UNKNOWN = (new DamageSource("mark_unknown")).
-            setDamageBypassesArmor().setDamageIsAbsolute();
+            bypassArmor().bypassMagic();
     public static final DamageSource BOG_DESCENDED = (new DamageSource("mark_descended")).
-            setDamageBypassesArmor().setDamageIsAbsolute();
+            bypassArmor().bypassMagic();
     public static final DamageSource BOG_JUDGED = (new DamageSource("mark_judged")).
-            setDamageBypassesArmor().setDamageIsAbsolute();
+            bypassArmor().bypassMagic();
 }

@@ -1,6 +1,6 @@
 package net.textstack.band_of_gigantism.util;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleType;

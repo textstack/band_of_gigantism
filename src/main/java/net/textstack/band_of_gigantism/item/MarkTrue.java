@@ -1,15 +1,15 @@
 package net.textstack.band_of_gigantism.item;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import org.jetbrains.annotations.NotNull;
@@ -26,57 +26,42 @@ public class MarkTrue extends Item {
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<ITextComponent> tooltip, @NotNull ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_true_description_flavor"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_true_description_0"));
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.mark_true_description_1"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_true_description_flavor"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_true_description_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_true_description_1"));
         } else {
-            tooltip.add(new TranslationTextComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
         }
     }
 
     @Override
-    public void inventoryTick(@NotNull ItemStack stack, @NotNull World worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
 
         //replaces the item with one of seven marks
-        if (entityIn instanceof PlayerEntity) {
+        if (entityIn instanceof Player player) {
 
-            PlayerEntity player = (PlayerEntity) entityIn;
             if (player.isCreative()||!player.isAlive()||player.isSpectator()) return;
-            NonNullList<ItemStack> list = player.inventory.mainInventory;
+            NonNullList<ItemStack> list = player.getInventory().items;
 
             ItemStack stackCheck = stack;
             int pick = (int) (Math.random() * 7);
             switch (pick) {
-                case 0:
-                    stackCheck = new ItemStack(ModItems.MARK_FADED.get());
-                    break;
-                case 1:
-                    stackCheck = new ItemStack(ModItems.MARK_FORGOTTEN.get());
-                    break;
-                case 2:
-                    stackCheck = new ItemStack(ModItems.MARK_PURIFIED.get());
-                    break;
-                case 3:
-                    stackCheck = new ItemStack(ModItems.MARK_DESCENDED.get());
-                    break;
-                case 4:
-                    stackCheck = new ItemStack(ModItems.MARK_UNKNOWN.get());
-                    break;
-                case 5:
-                    stackCheck = new ItemStack(ModItems.MARK_JUDGED.get());
-                    break;
-                case 6:
-                    stackCheck = new ItemStack(ModItems.MARK_OBLITERATED.get());
-                    break;
+                case 0 -> stackCheck = new ItemStack(ModItems.MARK_FADED.get());
+                case 1 -> stackCheck = new ItemStack(ModItems.MARK_FORGOTTEN.get());
+                case 2 -> stackCheck = new ItemStack(ModItems.MARK_PURIFIED.get());
+                case 3 -> stackCheck = new ItemStack(ModItems.MARK_DESCENDED.get());
+                case 4 -> stackCheck = new ItemStack(ModItems.MARK_UNKNOWN.get());
+                case 5 -> stackCheck = new ItemStack(ModItems.MARK_JUDGED.get());
+                case 6 -> stackCheck = new ItemStack(ModItems.MARK_OBLITERATED.get());
             }
             list.set(itemSlot, stackCheck);
         }
