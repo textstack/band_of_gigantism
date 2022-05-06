@@ -11,6 +11,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -146,22 +147,6 @@ public class EventHandlerMyBallsInYourMouth {
         }
     }
 
-    //i think these do stuff? possibly not necessary for now
-    /*@SubscribeEvent
-    public void onPlayerTick(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntityLiving() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-
-            if (Float.isNaN(player.getHealth())) {
-                player.setHealth(0F);
-            }
-
-            if (Float.isNaN(player.getAbsorptionAmount())) {
-                player.setAbsorptionAmount(0F);
-            }
-        }
-    }*/
-
     @SubscribeEvent
     public void onCriticalHit(CriticalHitEvent event) {
         if (event.getEntityLiving() instanceof Player player) {
@@ -175,17 +160,17 @@ public class EventHandlerMyBallsInYourMouth {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onOverlayRenderPre(RenderGameOverlayEvent.Pre event) {
+    public void onOverlayRenderPre(RenderGameOverlayEvent.PreLayer event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
 
-        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) { //FOOD
+        if (event.getOverlay() == ForgeIngameGui.FOOD_LEVEL_ELEMENT) {
 
             //disable rendering of food
             if (CurioHelper.hasCurio(player, ModItems.MARK_FORGOTTEN.get())) {
                 event.setCanceled(true);
             }
-        } else if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER) { //HEALTH
+        } else if (event.getOverlay() == ForgeIngameGui.PLAYER_HEALTH_ELEMENT) {
 
             //disable rendering of health
             if (Objects.requireNonNull(player).hasEffect(ModEffects.FORGETFULNESS.get())) {
