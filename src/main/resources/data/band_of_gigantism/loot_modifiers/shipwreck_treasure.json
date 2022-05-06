@@ -26,5 +26,6 @@
       "item": "band_of_gigantism:false_hand",
       "chance": 0.1
     }
-  ]
+  ],
+  "type": "band_of_gigantism:shipwreck_treasure"
 }

@@ -22,5 +22,6 @@
       "item": "band_of_gigantism:band_generic",
       "chance": 0.05
     }
-  ]
+  ],
+  "type": "band_of_gigantism:end_city_treasure"
 }

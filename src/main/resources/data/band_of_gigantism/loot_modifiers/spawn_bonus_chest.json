@@ -6,5 +6,6 @@
     }
   ],
   "addition": "band_of_gigantism:mark_true",
-  "chance": 1
+  "chance": 1,
+  "type": "band_of_gigantism:spawn_bonus_chest"
 }

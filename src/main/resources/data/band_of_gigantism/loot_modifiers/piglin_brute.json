@@ -14,5 +14,6 @@
     }
   ],
   "addition": "band_of_gigantism:golden_frying_pan",
-  "chance": 0.001
+  "chance": 0.001,
+  "type": "band_of_gigantism:piglin_brute"
 }

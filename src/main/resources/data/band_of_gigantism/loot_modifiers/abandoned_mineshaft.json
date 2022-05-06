@@ -22,5 +22,6 @@
       "item": "band_of_gigantism:band_generic",
       "chance": 0.01
     }
-  ]
+  ],
+  "type": "band_of_gigantism:abandoned_mineshaft"
 }

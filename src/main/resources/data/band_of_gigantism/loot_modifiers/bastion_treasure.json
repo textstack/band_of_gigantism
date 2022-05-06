@@ -18,5 +18,6 @@
       "item": "band_of_gigantism:false_hand",
       "chance": 0.15
     }
-  ]
+  ],
+  "type": "band_of_gigantism:bastion_treasure"
 }

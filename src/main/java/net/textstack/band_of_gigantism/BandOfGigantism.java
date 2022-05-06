@@ -15,7 +15,6 @@ import net.textstack.band_of_gigantism.item.FalseHand;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.event.EventHandlerMyBallsInYourMouth;
-import net.textstack.band_of_gigantism.registry.ModLootModifiers;
 import net.textstack.band_of_gigantism.registry.ModSoundEvents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,7 +45,6 @@ public class BandOfGigantism
 
         ModItems.register(eventBus);
         ModEffects.register(eventBus);
-        ModLootModifiers.register(eventBus);
         ModSoundEvents.register(eventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, BOGConfig.SPEC);
@@ -54,8 +52,6 @@ public class BandOfGigantism
         eventBus.addListener(this::clientSetup);
         // Register the enqueueIMC method for modloading
         eventBus.addListener(this::enqueueIMC);
-        // Register the processIMC method for modloading
-        eventBus.addListener(this::processIMC);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -75,13 +71,5 @@ public class BandOfGigantism
 
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE,
                 () -> SlotTypePreset.CURIO.getMessageBuilder().build());
-    }
-
-    private void processIMC(final InterModProcessEvent event)
-    {
-        // some example code to receive and process InterModComms from other mods
-        LOGGER.info("Got IMC {}", event.getIMCStream().
-                map(m->m.getMessageSupplier().get()).
-                collect(Collectors.toList()));
     }
 }
