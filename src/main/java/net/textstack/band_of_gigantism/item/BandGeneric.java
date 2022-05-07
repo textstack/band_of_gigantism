@@ -54,7 +54,7 @@ public class BandGeneric extends Item implements ICurioItem {
         };
 
         //set scale
-        LivingEntity player = slotContext.getWearer();
+        LivingEntity player = slotContext.entity();
         int scaleDelay = ScaleHelper.rescale(player,scales,setScale,0); //this weird thing with scaleDelay ensures these have the same delay
         ScaleHelper.rescale(player,scalesInverse,1/setScale,scaleDelay);
 
@@ -65,7 +65,7 @@ public class BandGeneric extends Item implements ICurioItem {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
 
         //reset scale
-        LivingEntity player = slotContext.getWearer();
+        LivingEntity player = slotContext.entity();
         int scaleDelay = ScaleHelper.rescale(player,scales,1,0);
         ScaleHelper.rescale(player,scalesInverse,1,scaleDelay);
 
@@ -73,15 +73,19 @@ public class BandGeneric extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean canEquip(String identifier, LivingEntity livingEntity, ItemStack stack) {
-        ScaleData scaleData = scales[1].getScaleData(livingEntity);
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        LivingEntity living = slotContext.entity();
+        ScaleData scaleData = scales[1].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
-        return ICurioItem.super.canEquip(identifier, livingEntity, stack) && ScaleHelper.isDoneScaling(livingEntity,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
+
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
     }
 
     @Override
-    public boolean canUnequip(String identifier, LivingEntity livingEntity, ItemStack stack) {
-        return ICurioItem.super.canUnequip(identifier, livingEntity, stack) && ScaleHelper.isDoneScaling(livingEntity,scales[1]);
+    public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
+        LivingEntity living = slotContext.entity();
+
+        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]);
     }
 
     @Override

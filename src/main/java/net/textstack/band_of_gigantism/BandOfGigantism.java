@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.item.FalseHand;
@@ -16,12 +15,8 @@ import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.event.EventHandlerMyBallsInYourMouth;
 import net.textstack.band_of_gigantism.registry.ModSoundEvents;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
-
-import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(BandOfGigantism.MODID)
@@ -31,7 +26,7 @@ public class BandOfGigantism
     public static EventHandlerMyBallsInYourMouth bogHandler;
     //public static BOGConfig bogConfig;
 
-    public static final Logger LOGGER = LogManager.getLogger();
+    //public static final Logger LOGGER = LogManager.getLogger();
 
     public static final String MODID = "band_of_gigantism";
 

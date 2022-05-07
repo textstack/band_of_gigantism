@@ -31,6 +31,7 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,7 +51,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
 
-        LivingEntity living = slotContext.getWearer();
+        LivingEntity living = slotContext.entity();
 
         if (living.getLevel().isClientSide) {
             return;
@@ -71,7 +72,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
 
-        LivingEntity living = slotContext.getWearer();
+        LivingEntity living = slotContext.entity();
 
         if (living.getLevel().isClientSide) {
             return;
@@ -85,15 +86,19 @@ public class BandGlobetrotters extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean canEquip(String identifier, LivingEntity livingEntity, ItemStack stack) {
-        ScaleData scaleData = scales[1].getScaleData(livingEntity);
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        LivingEntity living = slotContext.entity();
+        ScaleData scaleData = scales[1].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
-        return ICurioItem.super.canEquip(identifier, livingEntity, stack) && ScaleHelper.isDoneScaling(livingEntity,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
+
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
     }
 
     @Override
-    public boolean canUnequip(String identifier, LivingEntity livingEntity, ItemStack stack) {
-        return ICurioItem.super.canUnequip(identifier, livingEntity, stack) && ScaleHelper.isDoneScaling(livingEntity,scales[1]);
+    public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
+        LivingEntity living = slotContext.entity();
+
+        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]);
     }
 
     @Override
@@ -172,8 +177,8 @@ public class BandGlobetrotters extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean showAttributesTooltip(String identifier, ItemStack stack) {
-        return false;
+    public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
+        return new ArrayList<>();
     }
 
     //get amount of size gain

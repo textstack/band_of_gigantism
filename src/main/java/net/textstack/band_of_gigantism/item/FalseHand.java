@@ -80,22 +80,20 @@ public class FalseHand extends Item implements ICurioItem {
     }
 
     @Override
-    public void curioTick(String identifier, int index, LivingEntity livingEntity, ItemStack stack) {
-        ICurioItem.super.curioTick(identifier, index, livingEntity, stack);
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        ICurioItem.super.curioTick(slotContext, stack);
 
         int flipped = stack.getOrCreateTag().getInt("flipped");
+        LivingEntity living = slotContext.entity();
 
         if (flipped == 1) {
-            Level world = livingEntity.getLevel();
+            Level world = living.getLevel();
             if (world.getGameTime() % 20 == 0) {
                 int storedTime = stack.getOrCreateTag().getInt("timeLeft");
                 if (storedTime > 0) {
-//                    if (storedTime >= c.false_hand_time.get()-1) { //really bad way of playing this sound
-//                        livingEntity.playSound(ModSoundEvents.CARD_FLIP.get(),0.5f,1);
-//                    }
                     stack.getOrCreateTag().putInt("timeLeft",storedTime - 1);
                 } else {
-                    livingEntity.playSound(ModSoundEvents.CARD_FLIP.get(),0.5f,1);
+                    living.playSound(ModSoundEvents.CARD_FLIP.get(),0.5f,1);
                     stack.getOrCreateTag().putInt("timeLeft",c.false_hand_time.get()-1);
                     stack.getOrCreateTag().putInt("flipped",0);
                 }

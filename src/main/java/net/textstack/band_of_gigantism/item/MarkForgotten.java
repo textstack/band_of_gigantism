@@ -3,6 +3,7 @@ package net.textstack.band_of_gigantism.item;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -20,6 +21,7 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MarkForgotten extends Item implements ICurioItem {
@@ -35,7 +37,7 @@ public class MarkForgotten extends Item implements ICurioItem {
         ICurioItem.super.onUnequip(slotContext, newStack, stack);
 
         //deal near-mortal damage, prevent healing for 10 seconds
-        LivingEntity living = slotContext.getWearer();
+        LivingEntity living = slotContext.entity();
         living.hurt(MarkDamageSource.BOG_FORGOTTEN, living.getMaxHealth()-1);
         living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
     }
@@ -62,9 +64,9 @@ public class MarkForgotten extends Item implements ICurioItem {
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public ICurio.DropRule getDropRule(LivingEntity livingEntity, ItemStack stack) {
+    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return ICurio.DropRule.ALWAYS_KEEP;
     }
 
@@ -74,7 +76,7 @@ public class MarkForgotten extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean showAttributesTooltip(String identifier, ItemStack stack) {
-        return false;
+    public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
+        return new ArrayList<>();
     }
 }

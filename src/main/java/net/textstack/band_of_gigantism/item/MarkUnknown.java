@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -31,8 +32,8 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,7 +49,7 @@ public class MarkUnknown extends Item implements ICurioItem {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         ICurioItem.super.onUnequip(slotContext, newStack, stack);
 
-        LivingEntity living = slotContext.getWearer();
+        LivingEntity living = slotContext.entity();
         if (!CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
 
             //deal near-mortal damage, prevent healing for 10 seconds
@@ -62,11 +63,13 @@ public class MarkUnknown extends Item implements ICurioItem {
     }
 
     @Override
-    public void curioTick(String identifier, int index, LivingEntity livingEntity, ItemStack stack) {
-        ICurioItem.super.curioTick(identifier, index, livingEntity, stack);
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        ICurioItem.super.curioTick(slotContext, stack);
 
-        if (livingEntity.level.getGameTime() % 20 == 0) {
-            if (livingEntity instanceof Player player) {
+        LivingEntity living = slotContext.entity();
+
+        if (living.level.getGameTime() % 20 == 0) {
+            if (living instanceof Player player) {
 
                 //inflict effect
                 int[] random = effectValues(stack);
@@ -83,7 +86,7 @@ public class MarkUnknown extends Item implements ICurioItem {
                     case 9 -> MobEffects.NIGHT_VISION;
                     default -> MobEffects.GLOWING;
                 };
-                livingEntity.addEffect(new MobEffectInstance(effect,220,random[1],false,false));
+                living.addEffect(new MobEffectInstance(effect,220,random[1],false,false));
 
                 //reapply modifiers
                 AttributeMap map = player.getAttributes();
@@ -210,9 +213,9 @@ public class MarkUnknown extends Item implements ICurioItem {
         return attributesDefault;
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public ICurio.DropRule getDropRule(LivingEntity livingEntity, ItemStack stack) {
+    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return ICurio.DropRule.ALWAYS_KEEP;
     }
 
@@ -222,8 +225,8 @@ public class MarkUnknown extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean showAttributesTooltip(String identifier, ItemStack stack) {
-        return false;
+    public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
+        return new ArrayList<>();
     }
 
     //variable modifiers, able to change as the user wears the curio

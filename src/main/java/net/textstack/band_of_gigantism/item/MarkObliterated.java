@@ -5,7 +5,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -22,8 +22,8 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +39,7 @@ public class MarkObliterated extends Item implements ICurioItem {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
 
         //kill
-        slotContext.getWearer().hurt(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
+        slotContext.entity().hurt(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
 
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
     }
@@ -86,9 +86,9 @@ public class MarkObliterated extends Item implements ICurioItem {
         return attributesDefault;
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public ICurio.DropRule getDropRule(LivingEntity livingEntity, ItemStack stack) {
+    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return ICurio.DropRule.ALWAYS_DROP;
     }
 
@@ -98,7 +98,7 @@ public class MarkObliterated extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean showAttributesTooltip(String identifier, ItemStack stack) {
-        return false;
+    public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
+        return new ArrayList<>();
     }
 }

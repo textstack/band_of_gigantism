@@ -40,7 +40,7 @@ public class MaskDiminishment extends Item implements ICurioItem {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
 
         //reset scale
-        LivingEntity player = slotContext.getWearer();
+        LivingEntity player = slotContext.entity();
         int scaleDelay = ScaleHelper.rescale(player,scales,1,0);
         ScaleHelper.rescale(player,scalesInverse,1,scaleDelay);
 
@@ -48,24 +48,30 @@ public class MaskDiminishment extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean canEquip(String identifier, LivingEntity livingEntity, ItemStack stack) {
-        ScaleData scaleData = scales[1].getScaleData(livingEntity);
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        LivingEntity living = slotContext.entity();
+        ScaleData scaleData = scales[1].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
-        return ICurioItem.super.canEquip(identifier, livingEntity, stack) && ScaleHelper.isDoneScaling(livingEntity,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
+
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
     }
 
     @Override
-    public boolean canUnequip(String identifier, LivingEntity livingEntity, ItemStack stack) {
-        return ICurioItem.super.canUnequip(identifier, livingEntity, stack) && ScaleHelper.isDoneScaling(livingEntity,scales[1]);
+    public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
+        LivingEntity living = slotContext.entity();
+
+        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]);
     }
 
     @Override
-    public void curioTick(String identifier, int index, LivingEntity livingEntity, ItemStack stack) {
-        ICurioItem.super.curioTick(identifier, index, livingEntity, stack);
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        ICurioItem.super.curioTick(slotContext, stack);
+
+        LivingEntity living = slotContext.entity();
 
         //scale player based on inventory fill percentage
-        if (livingEntity.level.getGameTime() % 10 == 0 && ScaleHelper.isDoneScaling(livingEntity,scales[1])) {
-            if (livingEntity instanceof Player player) {
+        if (living.level.getGameTime() % 10 == 0 && ScaleHelper.isDoneScaling(living,scales[1])) {
+            if (living instanceof Player player) {
 
                 NonNullList<ItemStack> list = player.getInventory().items;
                 Iterator<ItemStack> each = list.iterator();

@@ -66,10 +66,4 @@ public class GoldenFryingPan extends SwordItem {
         int newCount = getStrangeKills(stack) + 1;
         stack.getOrCreateTag().putInt("strangeKills",newCount);
     }
-
-    /*//get announce
-    private String getFound(ItemStack stack) {return stack.getOrCreateTag().getString("found");}
-
-    //set announce
-    private void setFound(ItemStack stack, String string) {stack.getOrCreateTag().putString("found",string);}*/
 }

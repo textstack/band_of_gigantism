@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,8 +28,8 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,7 +46,7 @@ public class MarkDescended extends Item implements ICurioItem {
         ICurioItem.super.onUnequip(slotContext, newStack, stack);
 
         //deal near-mortal damage, prevent healing
-        LivingEntity living = slotContext.getWearer();
+        LivingEntity living = slotContext.entity();
         if (!CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) { //this method is called whenever nbt changes, make sure not to kill for that
             living.hurt(MarkDamageSource.BOG_DESCENDED, living.getMaxHealth()-1);
             living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
@@ -53,11 +54,13 @@ public class MarkDescended extends Item implements ICurioItem {
     }
 
     @Override
-    public void curioTick(String identifier, int index, LivingEntity livingEntity, ItemStack stack) {
-        ICurioItem.super.curioTick(identifier, index, livingEntity, stack);
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        ICurioItem.super.curioTick(slotContext, stack);
+
+        LivingEntity living = slotContext.entity();
 
         //either lower the stored position (if the player is lower) or inflict strains of ascent (if player is >5 blocks higher)
-        int posY = (int) Math.ceil(livingEntity.blockPosition().getY());
+        int posY = (int) Math.ceil(living.blockPosition().getY());
         if (stack.getTag() != null) {
             int prevPosY = this.getPosY(stack);
 
@@ -71,7 +74,7 @@ public class MarkDescended extends Item implements ICurioItem {
                 else if (prevPosY > 16) amp = 3;
                 else if (prevPosY > 0) amp = 4;
                 else amp = 5;
-                livingEntity.addEffect(new MobEffectInstance(ModEffects.STRAINS_OF_ASCENT.get(), c.mark_descended_duration.get(), amp, false, false));
+                living.addEffect(new MobEffectInstance(ModEffects.STRAINS_OF_ASCENT.get(), c.mark_descended_duration.get(), amp, false, false));
                 this.setPosY(stack, posY);
             }
         } else {
@@ -127,9 +130,9 @@ public class MarkDescended extends Item implements ICurioItem {
         return attributesDefault;
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public ICurio.DropRule getDropRule(LivingEntity livingEntity, ItemStack stack) {
+    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return ICurio.DropRule.ALWAYS_KEEP;
     }
 
@@ -139,8 +142,8 @@ public class MarkDescended extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean showAttributesTooltip(String identifier, ItemStack stack) {
-        return false;
+    public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
+        return new ArrayList<>();
     }
 
     //get posy tag

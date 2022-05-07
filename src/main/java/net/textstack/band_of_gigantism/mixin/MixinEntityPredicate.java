@@ -9,7 +9,6 @@ import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
