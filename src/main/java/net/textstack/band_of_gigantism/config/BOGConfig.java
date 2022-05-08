@@ -109,7 +109,7 @@ public class BOGConfig {
 
                 band_globetrotters_limit = BUILDER.comment("Maximum amount of time a globetrotter's band can accumulate; when this value is reached the player will be set to the limit scale. This value increases by 1 every 5 seconds. (default 72000)").defineInRange("band_globetrotters_limit",72000,1,Integer.MAX_VALUE);
                 band_globetrotters_damage = BUILDER.comment("Amount to increase all damage by when equipping. (default -0.9)").defineInRange("band_globetrotters_damage",-0.9,-Float.MAX_VALUE,Float.MAX_VALUE);
-            BUILDER.pop().comment("Band of Crustaceous Convergence settings").push("");
+            BUILDER.pop().comment("Band of Crustaceous Convergence settings").push("band_crustaceous");
 
                 band_crustaceous_duration = BUILDER.comment("Duration between getting hit and regenerating, in ticks. (default 200)").defineInRange("band_crustaceous_timer",200,1,Integer.MAX_VALUE);
             BUILDER.pop().comment("False Hand settings").push("false_hand");
