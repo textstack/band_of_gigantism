@@ -30,6 +30,11 @@ public class BOGConfig {
     //band of dwarfism
     public final ForgeConfigSpec.DoubleValue shrink_band_generic_scale;
 
+    //band of crustaceous convergence
+    public final ForgeConfigSpec.DoubleValue band_crustaceous_scale;
+    public final ForgeConfigSpec.DoubleValue band_crustaceous_limit_scale;
+    public final ForgeConfigSpec.IntValue band_crustaceous_timer;
+
     //false hand
     public final ForgeConfigSpec.DoubleValue false_hand_flat_resistance;
     public final ForgeConfigSpec.IntValue false_hand_time;
@@ -95,6 +100,8 @@ public class BOGConfig {
                 band_globetrotters_scale = BUILDER.comment("(default 2.0)").defineInRange("band_globetrotters_scale",2.0,0.01,32.0);
                 band_globetrotters_limit_scale = BUILDER.comment("(default 16.0)").defineInRange("band_globetrotters_limit_scale",16.0,0.01,32.0);
                 mask_diminishment_scale = BUILDER.comment("(default 0.1)").defineInRange("mask_diminishment_scale",0.1,0.01,32.0);
+                band_crustaceous_scale = BUILDER.comment("(default 1.25)").defineInRange("band_crustaceous_scale",1.25,0.01,32);
+                band_crustaceous_limit_scale = BUILDER.comment("(default 16.0)").defineInRange("band_crustaceous_limit_scale",16.0,0.01,32);
             BUILDER.pop().comment("Mask of Diminishment settings").push("mask_diminishment");
 
                 mask_diminishment_special = BUILDER.comment("Whether having items in the inventory reduces scaling. (default true)").define("mask_diminishment_special",true);
@@ -102,6 +109,9 @@ public class BOGConfig {
 
                 band_globetrotters_limit = BUILDER.comment("Maximum amount of time a globetrotter's band can accumulate; when this value is reached the player will be set to the limit scale. This value increases by 1 every 5 seconds. (default 72000)").defineInRange("band_globetrotters_limit",72000,1,Integer.MAX_VALUE);
                 band_globetrotters_damage = BUILDER.comment("Amount to increase all damage by when equipping. (default -0.9)").defineInRange("band_globetrotters_damage",-0.9,-Float.MAX_VALUE,Float.MAX_VALUE);
+            BUILDER.pop().comment("Band of Crustaceous Convergence settings").push("");
+
+                band_crustaceous_timer = BUILDER.comment("WIP - timer value").defineInRange("band_crustaceous_timer",20,1,Integer.MAX_VALUE);
             BUILDER.pop().comment("False Hand settings").push("false_hand");
 
                 false_hand_flat_resistance = BUILDER.comment("Amount of flat damage resistance added when equipping while flipped (default -2.0)").defineInRange("false_hand_flat_resistance",-2.0,-Float.MAX_VALUE,Float.MAX_VALUE);

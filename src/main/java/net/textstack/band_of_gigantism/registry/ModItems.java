@@ -28,7 +28,10 @@ public class ModItems {
                     2,false, SoundEvents.ARMOR_EQUIP_IRON));
 
     public static final RegistryObject<Item> GLOBETROTTERS_BAND = ITEMS.register("band_globetrotters",
-            () -> new BandGlobetrotters(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.EPIC).stacksTo(1).defaultDurability(0)));
+            () -> new BandGlobetrotters(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.RARE).stacksTo(1).defaultDurability(0)));
+
+    public static final RegistryObject<Item> BAND_CRUSTACEOUS = ITEMS.register("band_crustaceous",
+            () -> new BandCrustaceous(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.EPIC).stacksTo(1).defaultDurability(0)));
 
     public static final RegistryObject<Item> MARK_OBLITERATED = ITEMS.register("mark_obliterated",
             () -> new MarkObliterated(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.RARE).stacksTo(1).defaultDurability(0)));

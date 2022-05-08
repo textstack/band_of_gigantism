@@ -1,0 +1,127 @@
+package net.textstack.band_of_gigantism.item;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.util.CurioHelper;
+import net.textstack.band_of_gigantism.util.LoreStatHelper;
+import net.textstack.band_of_gigantism.util.ScaleHelper;
+import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurio;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
+import virtuoel.pehkui.api.ScaleData;
+import virtuoel.pehkui.api.ScaleType;
+import virtuoel.pehkui.api.ScaleTypes;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class BandCrustaceous extends Item implements ICurioItem {
+
+    BOGConfig c = BOGConfig.INSTANCE;
+
+    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.DEFENSE,
+            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.MOTION};
+    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
+
+    public BandCrustaceous(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+
+        LivingEntity living = slotContext.entity();
+
+        if (living.getLevel().isClientSide) {
+            return;
+        }
+
+        //set scale
+        int scaleDelay = ScaleHelper.rescale(living,scales,c.band_crustaceous_scale.get().floatValue(),0);
+        ScaleHelper.rescale(living,scalesInverse,1.0f/c.band_crustaceous_scale.get().floatValue(),scaleDelay);
+
+        ICurioItem.super.onEquip(slotContext, prevStack, stack);
+    }
+
+    @Override
+    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+
+        //reset scale
+        LivingEntity player = slotContext.entity();
+        int scaleDelay = ScaleHelper.rescale(player,scales,1,0);
+        ScaleHelper.rescale(player,scalesInverse,1,scaleDelay);
+
+        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+    }
+
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        LivingEntity living = slotContext.entity();
+        ScaleData scaleData = scales[1].getScaleData(living);
+        float scaleBase = scaleData.getBaseScale();
+
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
+    }
+
+    @Override
+    public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
+        LivingEntity living = slotContext.entity();
+
+        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]);
+    }
+
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+
+        if (!c.description_enable.get()) return;
+
+        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        if (Screen.hasShiftDown()) {
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_flavor"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(LoreStatHelper.displayScale(c.band_crustaceous_scale.get().floatValue()));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_1"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            if (Minecraft.getInstance().player != null) {
+                if (CurioHelper.hasCurio(Minecraft.getInstance().player, ModItems.MARK_FADED.get())) {
+                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_faded_0"));
+                } else {
+                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_0"));
+                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_1"));
+                }
+            }
+        } else {
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+        }
+    }
+
+    @Override
+    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
+        return true;
+    }
+
+    @Nonnull
+    @Override
+    public ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
+        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_TURTLE,1.0f,1.0f);
+    }
+
+    @Override
+    public boolean isFoil(@Nonnull ItemStack stack) {
+        return true;
+    }
+}

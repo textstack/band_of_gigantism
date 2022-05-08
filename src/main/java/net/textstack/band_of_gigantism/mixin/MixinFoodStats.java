@@ -20,7 +20,7 @@ public class MixinFoodStats {
     private boolean onTick(GameRules instance, GameRules.Key<GameRules.BooleanValue> key, Player player) {
 
         //prevents hunger-based regen from working, otherwise it would uselessly deplete itself
-        if (CurioHelper.hasCurio(player, ModItems.MARK_FADED.get())||Objects.requireNonNull(player).hasEffect(ModEffects.RECOVERING.get())) {
+        if (CurioHelper.hasCurio(player, ModItems.MARK_FADED.get())||Objects.requireNonNull(player).hasEffect(ModEffects.RECOVERING.get())||CurioHelper.hasCurio(player, ModItems.BAND_CRUSTACEOUS.get())) {
             return false;
         } else {return player.level.getGameRules().getBoolean(key);}
     }

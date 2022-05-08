@@ -15,6 +15,7 @@
   "item.band_of_gigantism.frying_pan": "Frying Pan",
   "item.band_of_gigantism.golden_frying_pan": "§6Strange Professional Killstreak Golden Frying Pan",
   "item.band_of_gigantism.false_hand": "False Hand",
+  "item.band_of_gigantism.band_crustaceous": "Band of Crustaceous Convergence",
 
   "effect.band_of_gigantism.forgetfulness": "§6Forgetfulness",
   "effect.band_of_gigantism.strains_of_ascent": "§9Strain of Ascent",
@@ -129,6 +130,11 @@
   "tooltip.band_of_gigantism.globetrotters_band_description_shift_1": "§5and inversely affects §6attack speed§5.",
   "tooltip.band_of_gigantism.globetrotters_band_description_shift_2": "§5The longer this wristband remains unequipped",
   "tooltip.band_of_gigantism.globetrotters_band_description_shift_3": "§5in your inventory, the §6more powerful§5 it becomes.",
+
+  "tooltip.band_of_gigantism.band_crustaceous_description_flavor": "§9§oIt scuttles to the touch...",
+  "tooltip.band_of_gigantism.band_crustaceous_description_0": "§6Regenerate instantly§5 after not taking damage.",
+  "tooltip.band_of_gigantism.band_crustaceous_description_1": "§5Temporarily §6become larger§5 upon regenerating.",
+  "tooltip.band_of_gigantism.band_crustaceous_description_faded_0": "§8Strange, this item doesn't seem to do anything else.",
 
   "tooltip.band_of_gigantism.mask_diminishment_description_flavor": "§9§oIt's thin, yet incredibly stiff...",
   "tooltip.band_of_gigantism.mask_diminishment_description_0": "§5Scaling is §6reduced §5for each item slot filled",
