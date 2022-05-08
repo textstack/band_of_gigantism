@@ -1,0 +1,67 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "1#4",
+    "2B5",
+    "3#6"
+  ],
+  "key": {
+    "1": [
+      {
+        "item": "band_of_gigantism:mark_obliterated"
+      },
+      {
+        "item": "band_of_gigantism:mark_unknown"
+      }
+    ],
+    "2": [
+      {
+        "item": "band_of_gigantism:mark_judged"
+      },
+      {
+        "item": "band_of_gigantism:mark_descended"
+      }
+    ],
+    "3": [
+      {
+        "item": "band_of_gigantism:mark_forgotten"
+      },
+      {
+        "item": "band_of_gigantism:mark_obliterated"
+      }
+    ],
+    "4": [
+      {
+        "item": "band_of_gigantism:mark_purified"
+      },
+      {
+        "item": "band_of_gigantism:mark_judged"
+      }
+    ],
+    "5": [
+      {
+        "item": "band_of_gigantism:mark_descended"
+      },
+      {
+        "item": "band_of_gigantism:mark_forgotten"
+      }
+    ],
+    "6": [
+      {
+        "item": "band_of_gigantism:mark_unknown"
+      },
+      {
+        "item": "band_of_gigantism:mark_purified"
+      }
+    ],
+    "#": {
+      "item": "minecraft:shulker_shell"
+    },
+    "B": {
+      "item": "band_of_gigantism:band_generic"
+    }
+  },
+  "result": {
+    "item": "band_of_gigantism:band_crustaceous"
+  }
+}
