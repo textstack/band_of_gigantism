@@ -5,12 +5,15 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
@@ -64,6 +67,30 @@ public class BandCrustaceous extends Item implements ICurioItem {
         ScaleHelper.rescale(player,scalesInverse,1,scaleDelay);
 
         ICurioItem.super.onUnequip(slotContext, newStack, stack);
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        ICurioItem.super.curioTick(slotContext, stack);
+
+        LivingEntity living = slotContext.entity();
+
+        if (living instanceof Player player) {
+            if (player.hasEffect(ModEffects.CRABBY.get())) {
+                if (player.getFoodData().getFoodLevel()<18) {
+                    player.removeEffect(ModEffects.CRABBY.get());
+                }
+            } else {
+                if (!CurioHelper.hasCurio(player,ModItems.MARK_FADED.get())&&player.getFoodData().getFoodLevel()>=18&&(player.getMaxHealth()-player.getHealth())>0) {
+                    player.addEffect(new MobEffectInstance(ModEffects.CRABBY.get(),c.band_crustaceous_duration.get(),0,false,false));
+                } else if (player.level.getGameTime()%40==0) {
+                    ScaleData scaleData = ScaleTypes.WIDTH.getScaleData(player);
+                    float newScale = Math.max(scaleData.getTargetScale()-0.05f,c.band_crustaceous_scale.get().floatValue());
+                    int scaleDelay = ScaleHelper.rescale(player,scales,newScale,0);
+                    ScaleHelper.rescale(player,scalesInverse,1.0f/newScale,scaleDelay);
+                }
+            }
+        }
     }
 
     @Override

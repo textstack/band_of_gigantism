@@ -89,7 +89,7 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEntityHurt(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof Player) {
+        if (event.getEntityLiving() instanceof Player player) {
             LivingEntity living = event.getEntityLiving();
 
             //for the strains of ascent effect to deal damage as fast as it wants
@@ -143,6 +143,10 @@ public class EventHandlerMyBallsInYourMouth {
             if (CurioHelper.hasCurio(living, ModItems.MARK_FORGOTTEN.get())) {
                 event.setAmount(event.getAmount() * (1+c.mark_forgotten_resistance.get().floatValue()));
                 living.addEffect(new MobEffectInstance(ModEffects.FORGETFULNESS.get(),c.mark_forgotten_duration.get(),0,false,false));
+            }
+
+            if (CurioHelper.hasCurio(living,ModItems.BAND_CRUSTACEOUS.get())&&!CurioHelper.hasCurio(living,ModItems.MARK_FADED.get())&&player.getFoodData().getFoodLevel()>=18&&event.getAmount()>0) {
+                living.addEffect(new MobEffectInstance(ModEffects.CRABBY.get(),c.band_crustaceous_duration.get(),0,false,false));
             }
         }
     }

@@ -33,7 +33,7 @@ public class BOGConfig {
     //band of crustaceous convergence
     public final ForgeConfigSpec.DoubleValue band_crustaceous_scale;
     public final ForgeConfigSpec.DoubleValue band_crustaceous_limit_scale;
-    public final ForgeConfigSpec.IntValue band_crustaceous_timer;
+    public final ForgeConfigSpec.IntValue band_crustaceous_duration;
 
     //false hand
     public final ForgeConfigSpec.DoubleValue false_hand_flat_resistance;
@@ -111,7 +111,7 @@ public class BOGConfig {
                 band_globetrotters_damage = BUILDER.comment("Amount to increase all damage by when equipping. (default -0.9)").defineInRange("band_globetrotters_damage",-0.9,-Float.MAX_VALUE,Float.MAX_VALUE);
             BUILDER.pop().comment("Band of Crustaceous Convergence settings").push("");
 
-                band_crustaceous_timer = BUILDER.comment("WIP - timer value").defineInRange("band_crustaceous_timer",20,1,Integer.MAX_VALUE);
+                band_crustaceous_duration = BUILDER.comment("Duration between getting hit and regenerating, in ticks. (default 200)").defineInRange("band_crustaceous_timer",200,1,Integer.MAX_VALUE);
             BUILDER.pop().comment("False Hand settings").push("false_hand");
 
                 false_hand_flat_resistance = BUILDER.comment("Amount of flat damage resistance added when equipping while flipped (default -2.0)").defineInRange("false_hand_flat_resistance",-2.0,-Float.MAX_VALUE,Float.MAX_VALUE);
