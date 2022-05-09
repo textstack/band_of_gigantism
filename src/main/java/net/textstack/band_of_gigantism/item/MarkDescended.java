@@ -92,7 +92,7 @@ public class MarkDescended extends Item implements ICurioItem {
 
         //update mark's pos when not equipped
         LivingEntity living = (LivingEntity) entityIn;
-        if (!CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
+        if (worldIn.getGameTime()%10==0&&!CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
             int posY = (int) Math.ceil(living.blockPosition().getY());
             this.setPosY(stack, posY);
         }
