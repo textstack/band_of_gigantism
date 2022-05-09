@@ -45,6 +45,7 @@ public class BandGeneric extends Item implements ICurioItem {
 
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        ICurioItem.super.onEquip(slotContext, prevStack, stack);
 
         float setScale = switch (itemVal) {
             case 0 -> c.band_generic_scale.get().floatValue();
@@ -57,19 +58,21 @@ public class BandGeneric extends Item implements ICurioItem {
         LivingEntity player = slotContext.entity();
         int scaleDelay = ScaleHelper.rescale(player,scales,setScale,0); //this weird thing with scaleDelay ensures these have the same delay
         ScaleHelper.rescale(player,scalesInverse,1/setScale,scaleDelay);
-
-        ICurioItem.super.onEquip(slotContext, prevStack, stack);
     }
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+
+        LivingEntity living = slotContext.entity();
+
+        if (living.getLevel().isClientSide) {
+            return;
+        }
 
         //reset scale
-        LivingEntity player = slotContext.entity();
-        int scaleDelay = ScaleHelper.rescale(player,scales,1,0);
-        ScaleHelper.rescale(player,scalesInverse,1,scaleDelay);
-
-        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+        int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
+        ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
     }
 
     @Override

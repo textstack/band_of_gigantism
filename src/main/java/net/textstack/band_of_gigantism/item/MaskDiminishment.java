@@ -38,13 +38,17 @@ public class MaskDiminishment extends Item implements ICurioItem {
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+
+        LivingEntity living = slotContext.entity();
+
+        if (living.getLevel().isClientSide) {
+            return;
+        }
 
         //reset scale
-        LivingEntity player = slotContext.entity();
-        int scaleDelay = ScaleHelper.rescale(player,scales,1,0);
-        ScaleHelper.rescale(player,scalesInverse,1,scaleDelay);
-
-        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+        int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
+        ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
     }
 
     @Override

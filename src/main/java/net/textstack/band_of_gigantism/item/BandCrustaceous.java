@@ -44,6 +44,7 @@ public class BandCrustaceous extends Item implements ICurioItem {
 
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        ICurioItem.super.onEquip(slotContext, prevStack, stack);
 
         LivingEntity living = slotContext.entity();
 
@@ -54,19 +55,21 @@ public class BandCrustaceous extends Item implements ICurioItem {
         //set scale
         int scaleDelay = ScaleHelper.rescale(living,scales,c.band_crustaceous_scale.get().floatValue(),0);
         ScaleHelper.rescale(living,scalesInverse,1.0f/c.band_crustaceous_scale.get().floatValue(),scaleDelay);
-
-        ICurioItem.super.onEquip(slotContext, prevStack, stack);
     }
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+
+        LivingEntity living = slotContext.entity();
+
+        if (living.getLevel().isClientSide) {
+            return;
+        }
 
         //reset scale
-        LivingEntity player = slotContext.entity();
-        int scaleDelay = ScaleHelper.rescale(player,scales,1,0);
-        ScaleHelper.rescale(player,scalesInverse,1,scaleDelay);
-
-        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+        int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
+        ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
     }
 
     @Override
@@ -74,6 +77,10 @@ public class BandCrustaceous extends Item implements ICurioItem {
         ICurioItem.super.curioTick(slotContext, stack);
 
         LivingEntity living = slotContext.entity();
+
+        if (living.getLevel().isClientSide) {
+            return;
+        }
 
         if (living instanceof Player player) {
             if (player.hasEffect(ModEffects.CRABBY.get())) {

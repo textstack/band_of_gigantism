@@ -50,6 +50,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
 
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        ICurioItem.super.onEquip(slotContext, prevStack, stack);
 
         LivingEntity living = slotContext.entity();
 
@@ -65,12 +66,11 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         //set scale
         int scaleDelay = ScaleHelper.rescale(living,scales,newScale,0);
         ScaleHelper.rescale(living,scalesInverse,1.0f/newScale,scaleDelay);
-
-        ICurioItem.super.onEquip(slotContext, prevStack, stack);
     }
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+        ICurioItem.super.onUnequip(slotContext, newStack, stack);
 
         LivingEntity living = slotContext.entity();
 
@@ -81,8 +81,6 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         //reset scale
         int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
         ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
-
-        ICurioItem.super.onUnequip(slotContext, newStack, stack);
     }
 
     @Override
