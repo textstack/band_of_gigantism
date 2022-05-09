@@ -16,7 +16,7 @@
   "item.band_of_gigantism.golden_frying_pan": "§6Strange Professional Killstreak Golden Frying Pan",
   "item.band_of_gigantism.false_hand": "False Hand",
   "item.band_of_gigantism.band_crustaceous": "Band of Crustaceous Convergence",
-  "item.band_of_gigantism.band_basic": "§dGlobetrotter's Band",
+  "item.band_of_gigantism.band_basic": "§bGreater Band of Dwarfism",
 
   "effect.band_of_gigantism.forgetfulness": "§6Forgetfulness",
   "effect.band_of_gigantism.strains_of_ascent": "§9Strain of Ascent",
@@ -140,6 +140,9 @@
   "tooltip.band_of_gigantism.band_crustaceous_description_faded_0": "§8Strange, this item doesn't seem to do anything else.",
   "tooltip.band_of_gigantism.band_crustaceous_description_faded_1": "§6§kRegenerate instantly§5§k after not taking damage.",
   "tooltip.band_of_gigantism.band_crustaceous_description_faded_2": "§5§kTemporarily §6§kbecome larger§5§k upon regenerating.",
+
+  "tooltip.band_of_gigantism.band_basic_reveal": "§eMisshapen Band of Dwarfism",
+  "tooltip.band_of_gigantism.band_basic_description_flavor": "§9§oTerrible craftsmanship.",
 
   "tooltip.band_of_gigantism.mask_diminishment_description_flavor": "§9§oIt's thin, yet incredibly stiff...",
   "tooltip.band_of_gigantism.mask_diminishment_description_0": "§5Scaling is §6reduced §5for each item slot filled",

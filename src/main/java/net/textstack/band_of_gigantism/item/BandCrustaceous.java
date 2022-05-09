@@ -128,7 +128,7 @@ public class BandCrustaceous extends Item implements ICurioItem {
             tooltip.add(LoreStatHelper.displayScale(c.band_crustaceous_scale.get().floatValue()));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_shift_0"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_1"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_shift_1"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             if (Minecraft.getInstance().player != null) {
                 if (CurioHelper.hasCurio(Minecraft.getInstance().player, ModItems.MARK_FADED.get())) {

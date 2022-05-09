@@ -10,6 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.item.BandBasic;
 import net.textstack.band_of_gigantism.item.FalseHand;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
@@ -57,6 +58,7 @@ public class BandOfGigantism
     private void clientSetup(final FMLClientSetupEvent event)
     {
         FalseHand.registerVariants();
+        BandBasic.registerVariants();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

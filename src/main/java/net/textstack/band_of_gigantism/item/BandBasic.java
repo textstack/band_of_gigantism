@@ -1,11 +1,27 @@
 package net.textstack.band_of_gigantism.item;
 
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.util.CurioHelper;
+import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
+import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
@@ -14,6 +30,8 @@ import virtuoel.pehkui.api.ScaleType;
 import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class BandBasic extends Item implements ICurioItem {
 
@@ -37,9 +55,17 @@ public class BandBasic extends Item implements ICurioItem {
             return;
         }
 
+        int setScale;
+
+        if (stack.getOrCreateTag().getInt("crafted")==1) {
+            setScale = stack.getOrCreateTag().getInt("scale");
+        } else {
+            setScale = 3500;
+        }
+
         //set scale
-        int scaleDelay = ScaleHelper.rescale(living,scales,c.band_crustaceous_scale.get().floatValue(),0);
-        ScaleHelper.rescale(living,scalesInverse,1.0f/c.band_crustaceous_scale.get().floatValue(),scaleDelay);
+        int scaleDelay = ScaleHelper.rescale(living,scales,setScale/10000.0f,0);
+        ScaleHelper.rescale(living,scalesInverse,10000.0f/setScale,scaleDelay);
     }
 
     @Override
@@ -58,6 +84,77 @@ public class BandBasic extends Item implements ICurioItem {
     }
 
     @Override
+    public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
+        super.onCraftedBy(stack, level, player);
+
+        stack.getOrCreateTag().putInt("crafted",1);
+        stack.setHoverName(new TranslatableComponent("tooltip.band_of_gigantism.band_basic_reveal"));
+
+        double scaleRange = Math.abs(c.band_basic_max_scale.get() - c.band_basic_min_scale.get());
+        double scaleLower = Math.min(c.band_basic_max_scale.get(), c.band_basic_min_scale.get());
+
+        int setScale = (int) (((1.0 - Math.abs(Math.random() + Math.random() - 1.0)) * scaleRange + scaleLower) * 10000.0);
+        stack.getOrCreateTag().putInt("scale", setScale);
+        stack.getOrCreateTag().putInt("timeLeft", (int) (Math.random() * 120 + 30));
+    }
+
+    @Override
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
+        super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+
+        if (worldIn.isClientSide) {
+            return;
+        }
+
+        if (worldIn.getGameTime()%20 == 0 && stack.getOrCreateTag().getInt("crafted")==1) {
+
+            LivingEntity living = (LivingEntity) entityIn;
+
+            int timeLeft = stack.getOrCreateTag().getInt("timeLeft");
+            if (timeLeft <= 0) {
+                double scaleRange = Math.abs(c.band_basic_max_scale.get() - c.band_basic_min_scale.get());
+                double scaleLower = Math.min(c.band_basic_max_scale.get(), c.band_basic_min_scale.get());
+
+                int setScale = (int) (((1.0 - Math.abs(Math.random() + Math.random() - 1.0)) * scaleRange + scaleLower) * 10000.0);
+                stack.getOrCreateTag().putInt("scale", setScale);
+
+                //set scale
+                if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get())) {
+                    int scaleDelay = ScaleHelper.rescale(living, scales, setScale / 10000.0f, 0);
+                    ScaleHelper.rescale(living, scalesInverse, 10000.0f / setScale, scaleDelay);
+                }
+
+                stack.getOrCreateTag().putInt("timeLeft", (int) (Math.random() * 120 + 30));
+            } else {
+                stack.getOrCreateTag().putInt("timeLeft", timeLeft-1);
+            }
+        }
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+
+        if (!c.description_enable.get()) return;
+
+        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        if (Screen.hasShiftDown()) {
+            if (stack.getOrCreateTag().getInt("crafted")==1) {
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_basic_description_flavor"));
+            } else {
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shrink_band_generic_description_flavor"));
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+                tooltip.add(LoreStatHelper.displayScale(0.35f));
+            }
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_1"));
+        } else {
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+        }
+    }
+
+    @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
         ScaleData scaleData = scales[1].getScaleData(living);
@@ -73,6 +170,11 @@ public class BandBasic extends Item implements ICurioItem {
         return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]);
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public static void registerVariants() { //property function has a new mystery integer I just named "thing" for now
+        ItemProperties.register(ModItems.BAND_BASIC.get(),new ResourceLocation(BandOfGigantism.MODID,"crafted"), (stack, world, entity, thing) -> stack.getOrCreateTag().getInt("crafted"));
+    }
+
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
         return true;
@@ -82,5 +184,10 @@ public class BandBasic extends Item implements ICurioItem {
     @Override
     public ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
         return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_IRON,1.0f,1.0f);
+    }
+
+    @Override
+    public boolean isFoil(@Nonnull ItemStack stack) {
+        return stack.getOrCreateTag().getInt("crafted") != 1 || super.isFoil(stack);
     }
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SBS",
+    " S "
+  ],
+  "key": {
+    "B": {
+      "item": "band_of_gigantism:shrink_band_generic"
+    },
+    "S": {
+      "item": "minecraft:netherite_scrap"
+    }
+  },
+  "result": {
+    "item": "band_of_gigantism:band_basic"
+  }
+}
