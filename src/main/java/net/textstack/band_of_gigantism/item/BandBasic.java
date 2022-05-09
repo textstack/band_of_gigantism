@@ -60,7 +60,7 @@ public class BandBasic extends Item implements ICurioItem {
         if (stack.getOrCreateTag().getInt("crafted")==1) {
             setScale = stack.getOrCreateTag().getInt("scale");
         } else {
-            setScale = 3500;
+            setScale = (int)(c.band_basic_scale.get()*10000.0);
         }
 
         //set scale
@@ -144,7 +144,8 @@ public class BandBasic extends Item implements ICurioItem {
             } else {
                 tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shrink_band_generic_description_flavor"));
                 tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-                tooltip.add(LoreStatHelper.displayScale(0.35f));
+
+                tooltip.add(LoreStatHelper.displayScale(c.band_basic_scale.get().floatValue()));
             }
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_0"));
