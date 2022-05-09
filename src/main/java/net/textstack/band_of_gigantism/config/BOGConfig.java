@@ -107,7 +107,7 @@ public class BOGConfig {
                 mask_diminishment_scale = BUILDER.comment("(default 0.1)").defineInRange("mask_diminishment_scale",0.1,0.01,32.0);
                 band_crustaceous_scale = BUILDER.comment("(default 1.25)").defineInRange("band_crustaceous_scale",1.25,0.01,32);
                 band_crustaceous_limit_scale = BUILDER.comment("(default 4.0)").defineInRange("band_crustaceous_limit_scale",4.0,0.01,32);
-                band_basic_scale = BUILDER.comment("(default 0.35)").defineInRange("band_basic_scale",0.35,0.01,32);
+                band_basic_scale = BUILDER.comment("(default 0.5)").defineInRange("band_basic_scale",0.5,0.01,32);
                 band_basic_min_scale = BUILDER.comment("(default 0.3)").defineInRange("band_basic_min_scale",0.3,0.01,32);
                 band_basic_max_scale = BUILDER.comment("(default 0.9)").defineInRange("band_basic_max_scale",0.9,0.01,32);
             BUILDER.pop().comment("Mask of Diminishment settings").push("mask_diminishment");

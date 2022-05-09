@@ -27,11 +27,11 @@ public class ModItems {
             () -> new BandGeneric(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.UNCOMMON).stacksTo(1).defaultDurability(0).setNoRepair(),
                     2,false, SoundEvents.ARMOR_EQUIP_IRON));
 
-    public static final RegistryObject<Item> GLOBETROTTERS_BAND = ITEMS.register("band_globetrotters",
-            () -> new BandGlobetrotters(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.EPIC).stacksTo(1).defaultDurability(0)));
-
     public static final RegistryObject<Item> BAND_BASIC = ITEMS.register("band_basic",
             () -> new BandBasic(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.UNCOMMON).stacksTo(1).defaultDurability(0)));
+
+    public static final RegistryObject<Item> GLOBETROTTERS_BAND = ITEMS.register("band_globetrotters",
+            () -> new BandGlobetrotters(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.EPIC).stacksTo(1).defaultDurability(0)));
 
     public static final RegistryObject<Item> BAND_CRUSTACEOUS = ITEMS.register("band_crustaceous",
             () -> new BandCrustaceous(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.EPIC).stacksTo(1).defaultDurability(0)));

@@ -95,7 +95,7 @@ public class BandBasic extends Item implements ICurioItem {
 
         int setScale = (int) (((1.0 - Math.abs(Math.random() + Math.random() - 1.0)) * scaleRange + scaleLower) * 10000.0);
         stack.getOrCreateTag().putInt("scale", setScale);
-        stack.getOrCreateTag().putInt("timeLeft", (int) (Math.random() * 120 + 30));
+        stack.getOrCreateTag().putInt("timeLeft", (int) (Math.random() * 22 + 2));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class BandBasic extends Item implements ICurioItem {
             return;
         }
 
-        if (worldIn.getGameTime()%20 == 0 && stack.getOrCreateTag().getInt("crafted")==1) {
+        if (worldIn.getGameTime()%100 == 0 && stack.getOrCreateTag().getInt("crafted")==1) {
 
             LivingEntity living = (LivingEntity) entityIn;
 
@@ -124,7 +124,7 @@ public class BandBasic extends Item implements ICurioItem {
                     ScaleHelper.rescale(living, scalesInverse, 10000.0f / setScale, scaleDelay);
                 }
 
-                stack.getOrCreateTag().putInt("timeLeft", (int) (Math.random() * 120 + 30));
+                stack.getOrCreateTag().putInt("timeLeft", (int) (Math.random() * 22 + 2));
             } else {
                 stack.getOrCreateTag().putInt("timeLeft", timeLeft-1);
             }
@@ -185,10 +185,5 @@ public class BandBasic extends Item implements ICurioItem {
     @Override
     public ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
         return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_IRON,1.0f,1.0f);
-    }
-
-    @Override
-    public boolean isFoil(@Nonnull ItemStack stack) {
-        return stack.getOrCreateTag().getInt("crafted") != 1 || super.isFoil(stack);
     }
 }
