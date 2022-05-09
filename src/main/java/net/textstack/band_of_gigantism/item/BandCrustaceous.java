@@ -34,8 +34,8 @@ public class BandCrustaceous extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.DEFENSE,
-            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.MOTION};
+    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.KNOCKBACK,
+            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.ATTACK,ScaleTypes.MOTION};
     private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
 
     public BandCrustaceous(Properties properties) {
@@ -127,12 +127,14 @@ public class BandCrustaceous extends Item implements ICurioItem {
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayScale(c.band_crustaceous_scale.get().floatValue()));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_0"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_1"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_shift_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_1"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             if (Minecraft.getInstance().player != null) {
                 if (CurioHelper.hasCurio(Minecraft.getInstance().player, ModItems.MARK_FADED.get())) {
                     tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_faded_0"));
+                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_faded_1"));
+                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_faded_2"));
                 } else {
                     tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_0"));
                     tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_1"));

@@ -18,8 +18,8 @@ public class CrabbyEffect extends MobEffect {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.DEFENSE,
-            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.MOTION};
+    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.KNOCKBACK,
+            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.ATTACK,ScaleTypes.MOTION};
     private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
 
     public CrabbyEffect(int color) {

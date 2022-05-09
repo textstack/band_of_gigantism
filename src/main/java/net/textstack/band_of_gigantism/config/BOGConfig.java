@@ -30,6 +30,10 @@ public class BOGConfig {
     //band of dwarfism
     public final ForgeConfigSpec.DoubleValue shrink_band_generic_scale;
 
+    //misshapen band
+    public final ForgeConfigSpec.DoubleValue band_basic_min_scale;
+    public final ForgeConfigSpec.DoubleValue band_basic_max_scale;
+
     //band of crustaceous convergence
     public final ForgeConfigSpec.DoubleValue band_crustaceous_scale;
     public final ForgeConfigSpec.DoubleValue band_crustaceous_limit_scale;
@@ -102,6 +106,8 @@ public class BOGConfig {
                 mask_diminishment_scale = BUILDER.comment("(default 0.1)").defineInRange("mask_diminishment_scale",0.1,0.01,32.0);
                 band_crustaceous_scale = BUILDER.comment("(default 1.25)").defineInRange("band_crustaceous_scale",1.25,0.01,32);
                 band_crustaceous_limit_scale = BUILDER.comment("(default 16.0)").defineInRange("band_crustaceous_limit_scale",16.0,0.01,32);
+                band_basic_min_scale = BUILDER.comment("(default 0.5)").defineInRange("band_basic_min_scale",0.5,0.01,32);
+                band_basic_max_scale = BUILDER.comment("(default 0.9)").defineInRange("band_basic_max_scale",0.9,0.01,32);
             BUILDER.pop().comment("Mask of Diminishment settings").push("mask_diminishment");
 
                 mask_diminishment_special = BUILDER.comment("Whether having items in the inventory reduces scaling. (default true)").define("mask_diminishment_special",true);

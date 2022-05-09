@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "band_of_gigantism:item/band_globetrotters_fake"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "band_of_gigantism:band_reveal": 1
+      },
+      "model": "band_of_gigantism:item/band_basic_1"
+    }
+  ]
+}
