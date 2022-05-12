@@ -14,6 +14,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
@@ -22,6 +23,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.registry.ModBlocks;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.item.MarkUnknown;
 import net.textstack.band_of_gigantism.registry.ModItems;
@@ -85,6 +87,27 @@ public class EventHandlerMyBallsInYourMouth {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onLivingExperienceDrop(LivingExperienceDropEvent event) {
+        int value = event.getDroppedExperience();
+
+        if (event.getEntityLiving().hasEffect(ModEffects.MIRA.get())&&Math.random()<c.mirapoppy_chance.get()) {
+            value = value * 2;
+            if (Math.random()<c.mirapoppy_chance.get()) {
+                value = value * 2;
+            }
+        }
+
+        if (CurioHelper.hasCurio(event.getAttackingPlayer(), ModBlocks.MIRAPOPPY.get().asItem())&&Math.random()<c.mirapoppy_chance.get()) {
+            value = value * 2;
+            if (Math.random()<c.mirapoppy_chance.get()) {
+                value = value * 2;
+            }
+        }
+
+        event.setDroppedExperience(value);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)

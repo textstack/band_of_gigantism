@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SBS",
+    " S "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:poppy"
+    },
+    "S": {
+      "item": "minecraft:experience_bottle"
+    }
+  },
+  "result": {
+    "item": "band_of_gigantism:mirapoppy"
+  }
+}

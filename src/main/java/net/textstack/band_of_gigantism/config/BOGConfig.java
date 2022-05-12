@@ -93,6 +93,10 @@ public class BOGConfig {
     public final ForgeConfigSpec.IntValue mark_obliterated_armor_toughness;
     public final ForgeConfigSpec.IntValue mark_obliterated_health;
 
+    //mirapoppy
+    public final ForgeConfigSpec.DoubleValue mirapoppy_chance;
+    public final ForgeConfigSpec.IntValue mirapoppy_radius;
+
     public BOGConfig(ForgeConfigSpec.Builder BUILDER) {
         BUILDER.push("general");
             scale_speed = BUILDER.comment("Scaling speed in ticks per unit of scale change. (default 20)").defineInRange("scale_speed",20,1,Integer.MAX_VALUE);
@@ -124,6 +128,10 @@ public class BOGConfig {
 
                 false_hand_flat_resistance = BUILDER.comment("Amount of flat damage resistance added when equipping while flipped (default -2.0)").defineInRange("false_hand_flat_resistance",-2.0,-Float.MAX_VALUE,Float.MAX_VALUE);
                 false_hand_time = BUILDER.comment("Amount of time for a flipped false hand to flip back, in seconds. (default 180)").defineInRange("false_hand_time",180,1,Integer.MAX_VALUE);
+            BUILDER.pop().comment("Mirapoppy settings").push("mirapoppy");
+
+                mirapoppy_chance = BUILDER.comment("Chance for experience dropped to double (default 0.25)").defineInRange("mirapoppy_chance",0.25,0,1);
+                mirapoppy_radius = BUILDER.comment("Radius of the placed mirapoppy (default 5)").defineInRange("mirapoppy_radius",5,1,Integer.MAX_VALUE);
             BUILDER.pop().push("marks");
 
                 marks_duration = BUILDER.comment("Duration of the regen-blocking debuff applied when removing marks, in ticks. (default 200)").defineInRange("marks_duration",200,1,Integer.MAX_VALUE);

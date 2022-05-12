@@ -12,6 +12,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.item.BandBasic;
 import net.textstack.band_of_gigantism.item.FalseHand;
+import net.textstack.band_of_gigantism.registry.ModBlocks;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.event.EventHandlerMyBallsInYourMouth;
@@ -42,6 +43,8 @@ public class BandOfGigantism
         ModItems.register(eventBus);
         ModEffects.register(eventBus);
         ModSoundEvents.register(eventBus);
+        ModBlocks.BLOCK_ENTITIES.register(eventBus);
+        ModBlocks.BLOCKS.register(eventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, BOGConfig.SPEC);
 

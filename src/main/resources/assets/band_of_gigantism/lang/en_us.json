@@ -18,10 +18,13 @@
   "item.band_of_gigantism.band_crustaceous": "Band of Crustaceous Convergence",
   "item.band_of_gigantism.band_basic": "Improved Band of Dwarfism",
 
+  "block.band_of_gigantism.mirapoppy": "Mirapoppy",
+
   "effect.band_of_gigantism.forgetfulness": "§6Forgetfulness",
   "effect.band_of_gigantism.strains_of_ascent": "§9Strain of Ascent",
   "effect.band_of_gigantism.recovering": "Recovering",
   "effect.band_of_gigantism.crabby": "Crabby",
+  "effect.band_of_gigantism.mira": "Mira",
 
   "death.attack.mark_obliterated": "%1$s §4was obliterated",
   "death.attack.mark_faded": "%1$s §8faded into obscurity",
@@ -217,5 +220,9 @@
   "tooltip.band_of_gigantism.mark_judged_description_0": "§6+4 §9Attack Damage",
   "tooltip.band_of_gigantism.mark_judged_description_1": "§6+10% §9Movement Speed",
   "tooltip.band_of_gigantism.mark_judged_description_shift_0": "§5Significantly higher mob detection distance.",
-  "tooltip.band_of_gigantism.mark_judged_description_shift_1": "§5Nearby enemies gain §6Strength V§5."
+  "tooltip.band_of_gigantism.mark_judged_description_shift_1": "§5Nearby enemies gain §6Strength V§5.",
+
+  "tooltip.band_of_gigantism.mirapoppy_description_flavor": "§9§oIt hurts to hold...",
+  "tooltip.band_of_gigantism.mirapoppy_description_0": "§5Mobs occasionally drop extra experience.",
+  "tooltip.band_of_gigantism.mirapoppy_description_1": "§6When placed§5, this effect applies to nearby mobs."
 }
