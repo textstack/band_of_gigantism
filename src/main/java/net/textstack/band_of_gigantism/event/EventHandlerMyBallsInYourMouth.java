@@ -93,16 +93,9 @@ public class EventHandlerMyBallsInYourMouth {
     public void onLivingExperienceDrop(LivingExperienceDropEvent event) {
         int value = event.getDroppedExperience();
 
-        if (event.getEntityLiving().hasEffect(ModEffects.MIRA.get())&&Math.random()<c.mirapoppy_chance.get()) {
+        if ((event.getEntityLiving().hasEffect(ModEffects.MIRA.get())||CurioHelper.hasCurio(event.getAttackingPlayer(), ModBlocks.MIRAPOPPY.get().asItem()))&&Math.random()<c.mirapoppy_chance.get()) {
             value = value * 2;
-            if (Math.random()<c.mirapoppy_chance.get()) {
-                value = value * 2;
-            }
-        }
-
-        if (CurioHelper.hasCurio(event.getAttackingPlayer(), ModBlocks.MIRAPOPPY.get().asItem())&&Math.random()<c.mirapoppy_chance.get()) {
-            value = value * 2;
-            if (Math.random()<c.mirapoppy_chance.get()) {
+            if (Math.random()<c.mirapoppy_chance_double.get()) {
                 value = value * 2;
             }
         }

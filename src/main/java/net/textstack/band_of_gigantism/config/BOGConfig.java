@@ -95,6 +95,7 @@ public class BOGConfig {
 
     //mirapoppy
     public final ForgeConfigSpec.DoubleValue mirapoppy_chance;
+    public final ForgeConfigSpec.DoubleValue mirapoppy_chance_double;
     public final ForgeConfigSpec.IntValue mirapoppy_radius;
 
     public BOGConfig(ForgeConfigSpec.Builder BUILDER) {
@@ -131,7 +132,8 @@ public class BOGConfig {
             BUILDER.pop().comment("Mirapoppy settings").push("mirapoppy");
 
                 mirapoppy_chance = BUILDER.comment("Chance for experience dropped to double (default 0.25)").defineInRange("mirapoppy_chance",0.25,0,1);
-                mirapoppy_radius = BUILDER.comment("Radius of the placed mirapoppy (default 5)").defineInRange("mirapoppy_radius",5,1,Integer.MAX_VALUE);
+                mirapoppy_chance_double = BUILDER.comment("Chance for experience dropped to double AGAIN after it has already doubled (default 0.25)").defineInRange("mirapoppy_chance_double",0.25,0,1);
+                mirapoppy_radius = BUILDER.comment("Radius of the placed mirapoppy (default 3)").defineInRange("mirapoppy_radius",3,1,Integer.MAX_VALUE);
             BUILDER.pop().push("marks");
 
                 marks_duration = BUILDER.comment("Duration of the regen-blocking debuff applied when removing marks, in ticks. (default 200)").defineInRange("marks_duration",200,1,Integer.MAX_VALUE);
