@@ -36,6 +36,12 @@ public class ModItems {
     public static final RegistryObject<Item> BAND_CRUSTACEOUS = ITEMS.register("band_crustaceous",
             () -> new BandCrustaceous(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.EPIC).stacksTo(1).defaultDurability(0)));
 
+    public static final RegistryObject<Item> BAND_PASSION = ITEMS.register("band_passion",
+            () -> new BandPassion(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.RARE).stacksTo(1).defaultDurability(0)));
+
+    public static final RegistryObject<Item> BAND_APATHY = ITEMS.register("band_apathy",
+            () -> new BandApathy(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.RARE).stacksTo(1).defaultDurability(0)));
+
     public static final RegistryObject<Item> MARK_OBLITERATED = ITEMS.register("mark_obliterated",
             () -> new MarkObliterated(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.RARE).stacksTo(1).defaultDurability(0)));
 

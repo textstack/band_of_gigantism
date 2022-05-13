@@ -37,7 +37,7 @@ public class BandBasic extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.DEFENSE,
+    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,
             ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.KNOCKBACK};
     private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
 
@@ -148,7 +148,7 @@ public class BandBasic extends Item implements ICurioItem {
                 tooltip.add(LoreStatHelper.displayScale(c.band_basic_scale.get().floatValue()));
             }
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_apathy_description_shift_0"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_1"));
         } else {
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));

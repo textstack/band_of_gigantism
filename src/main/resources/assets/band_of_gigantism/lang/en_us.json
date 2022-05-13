@@ -17,6 +17,8 @@
   "item.band_of_gigantism.false_hand": "False Hand",
   "item.band_of_gigantism.band_crustaceous": "Band of Crustaceous Convergence",
   "item.band_of_gigantism.band_basic": "Improved Band of Dwarfism",
+  "item.band_of_gigantism.band_passion": "Band of Passion",
+  "item.band_of_gigantism.band_apathy": "Band of Apathy",
 
   "block.band_of_gigantism.mirapoppy": "Mirapoppy",
 
@@ -147,6 +149,13 @@
   "tooltip.band_of_gigantism.band_basic_reveal": "§eMisshapen Band of Dwarfism",
   "tooltip.band_of_gigantism.band_basic_description_flavor": "§9§oTerrible craftsmanship.",
 
+  "tooltip.band_of_gigantism.band_passion_description_flavor": "§9§oIt shakes slightly when held...",
+  "tooltip.band_of_gigantism.band_passion_description_0": "§6Become larger§5 based on experience level.",
+
+  "tooltip.band_of_gigantism.band_apathy_description_flavor": "§9§oIt can't quite be held right...",
+  "tooltip.band_of_gigantism.band_apathy_description_0": "§6Become smaller§5 based on experience level.",
+  "tooltip.band_of_gigantism.band_apathy_description_shift_0": "§5Scaling affects §6knockback dealt",
+
   "tooltip.band_of_gigantism.mask_diminishment_description_flavor": "§9§oIt's thin, yet incredibly stiff...",
   "tooltip.band_of_gigantism.mask_diminishment_description_0": "§5Scaling is §6reduced §5for each item slot filled",
   "tooltip.band_of_gigantism.mask_diminishment_description_1": "§5in the inventory.",
@@ -224,5 +233,5 @@
 
   "tooltip.band_of_gigantism.mirapoppy_description_flavor": "§9§oIt hurts to hold...",
   "tooltip.band_of_gigantism.mirapoppy_description_0": "§5Mobs occasionally drop extra experience.",
-  "tooltip.band_of_gigantism.mirapoppy_description_1": "§6When placed§5, this effect applies to nearby mobs."
+  "tooltip.band_of_gigantism.mirapoppy_description_1": "§5When placed, this effect applies to nearby mobs."
 }

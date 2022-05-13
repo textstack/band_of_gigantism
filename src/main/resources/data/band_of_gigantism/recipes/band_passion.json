@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SBS"
+  ],
+  "key": {
+    "B": {
+      "item": "band_of_gigantism:band_generic"
+    },
+    "S": {
+      "item": "band_of_gigantism:mirapoppy"
+    }
+  },
+  "result": {
+    "item": "band_of_gigantism:band_passion"
+  }
+}

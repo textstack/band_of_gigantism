@@ -1,7 +1,6 @@
 package net.textstack.band_of_gigantism.item;
 
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
@@ -12,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
@@ -24,17 +22,17 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Iterator;
 import java.util.List;
 
-public class MaskDiminishment extends Item implements ICurioItem {
+public class BandApathy extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.REACH,ScaleTypes.VISIBILITY};
-    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM};
+    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,
+            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.KNOCKBACK};
+    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
 
-    public MaskDiminishment(Properties properties) {
+    public BandApathy(Properties properties) {
         super(properties);
     }
 
@@ -75,26 +73,12 @@ public class MaskDiminishment extends Item implements ICurioItem {
 
         LivingEntity living = slotContext.entity();
 
-        //scale player based on inventory fill percentage
+        //scale player based on xp
         if (living.level.getGameTime() % 10 == 0 && ScaleHelper.isDoneScaling(living,scales[1])) {
             if (living instanceof Player player) {
-
-                NonNullList<ItemStack> list = player.getInventory().items;
-                Iterator<ItemStack> each = list.iterator();
-                float count = 0;
-                while (each.hasNext()) {
-                    if (!each.next().isEmpty()) {
-                        count++;
-                    }
-                }
-
-                float setScale;
-
-                if (c.mask_diminishment_special.get()) {
-                    setScale = c.mask_diminishment_scale.get().floatValue() + (1 - c.mask_diminishment_scale.get().floatValue()) * (count / list.size());
-                } else {
-                    setScale = c.mask_diminishment_scale.get().floatValue();
-                }
+                float xpProgress = player.experienceProgress + player.experienceLevel;
+                float setScale = Math.max((1-(c.band_apathy_scale_level.get().floatValue()*xpProgress)/(c.band_apathy_scale_level.get().floatValue()*xpProgress+1))*c.band_apathy_scale.get().floatValue(),
+                        c.band_apathy_limit_scale.get().floatValue());
 
                 int scaleDelay = ScaleHelper.rescale(player,scales,setScale,0);
                 ScaleHelper.rescale(player,scalesInverse,1/setScale,scaleDelay);
@@ -110,26 +94,15 @@ public class MaskDiminishment extends Item implements ICurioItem {
 
         tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_flavor"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_apathy_description_flavor"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(LoreStatHelper.displayScale(c.mask_diminishment_scale.get().floatValue()));
-
-            if (c.mask_diminishment_special.get()) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_0"));
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_1"));
-            }
-
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_apathy_description_0"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_shift_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_apathy_description_shift_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_1"));
         } else {
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
         }
-    }
-
-    @Override
-    public boolean isFoil(@Nonnull ItemStack stack) {
-        return true;
     }
 
     @Override
@@ -140,6 +113,6 @@ public class MaskDiminishment extends Item implements ICurioItem {
     @Nonnull
     @Override
     public ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
-        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC,1.0f,1.0f);
+        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_GOLD,1.0f,1.0f);
     }
 }

@@ -50,6 +50,16 @@ public class BOGConfig {
     public final ForgeConfigSpec.DoubleValue band_globetrotters_limit_scale;
     public final ForgeConfigSpec.DoubleValue band_globetrotters_damage;
 
+    //band of passion
+    public final ForgeConfigSpec.DoubleValue band_passion_scale;
+    public final ForgeConfigSpec.DoubleValue band_passion_scale_level;
+    public final ForgeConfigSpec.DoubleValue band_passion_limit_scale;
+
+    //band of apathy
+    public final ForgeConfigSpec.DoubleValue band_apathy_scale;
+    public final ForgeConfigSpec.DoubleValue band_apathy_scale_level;
+    public final ForgeConfigSpec.DoubleValue band_apathy_limit_scale;
+
     //mask of diminishment
     public final ForgeConfigSpec.DoubleValue mask_diminishment_scale;
     public final ForgeConfigSpec.BooleanValue mask_diminishment_special;
@@ -108,13 +118,19 @@ public class BOGConfig {
                 lesser_band_generic_scale = BUILDER.comment("(default 1.5)").defineInRange("lesser_band_generic_scale",1.5,0.01,32.0);
                 shrink_band_generic_scale = BUILDER.comment("(default 0.65)").defineInRange("shrink_band_generic_scale",0.65,0.01,32.0);
                 band_globetrotters_scale = BUILDER.comment("(default 2.0)").defineInRange("band_globetrotters_scale",2.0,0.01,32.0);
-                band_globetrotters_limit_scale = BUILDER.comment("(default 16.0)").defineInRange("band_globetrotters_limit_scale",16.0,0.01,32.0);
+                band_globetrotters_limit_scale = BUILDER.comment("maximum possible scale (default 16.0)").defineInRange("band_globetrotters_limit_scale",16.0,0.01,32.0);
                 mask_diminishment_scale = BUILDER.comment("(default 0.1)").defineInRange("mask_diminishment_scale",0.1,0.01,32.0);
                 band_crustaceous_scale = BUILDER.comment("(default 1.25)").defineInRange("band_crustaceous_scale",1.25,0.01,32);
-                band_crustaceous_limit_scale = BUILDER.comment("(default 4.0)").defineInRange("band_crustaceous_limit_scale",4.0,0.01,32);
+                band_crustaceous_limit_scale = BUILDER.comment("maximum possible scale (default 4.0)").defineInRange("band_crustaceous_limit_scale",4.0,0.01,32);
                 band_basic_scale = BUILDER.comment("(default 0.5)").defineInRange("band_basic_scale",0.5,0.01,32);
-                band_basic_min_scale = BUILDER.comment("(default 0.3)").defineInRange("band_basic_min_scale",0.3,0.01,32);
-                band_basic_max_scale = BUILDER.comment("(default 0.9)").defineInRange("band_basic_max_scale",0.9,0.01,32);
+                band_basic_min_scale = BUILDER.comment("minimum possible scale (default 0.3)").defineInRange("band_basic_min_scale",0.3,0.01,32);
+                band_basic_max_scale = BUILDER.comment("maximum possible scale (default 0.9)").defineInRange("band_basic_max_scale",0.9,0.01,32);
+                band_passion_scale = BUILDER.comment("(default 1.1)").defineInRange("band_passion_scale",1.1,0.01,32);
+                band_passion_scale_level = BUILDER.comment("scale change per level (default 0.1)").defineInRange("band_passion_scale_level",0.1,0.0,8.0);
+                band_passion_limit_scale = BUILDER.comment("maximum possible scale (default 4.0)").defineInRange("band_passion_limit_scale",4.0,0.01,32);
+                band_apathy_scale = BUILDER.comment("(default 0.9)").defineInRange("band_apathy_scale",0.9,0.01,32);
+                band_apathy_scale_level = BUILDER.comment("scale change per level (default 0.1)").defineInRange("band_apathy_scale_level",0.1,0.0,8.0);
+                band_apathy_limit_scale = BUILDER.comment("minimum possible scale (default 0.25)").defineInRange("band_apathy_limit_scale",0.25,0.01,32);
             BUILDER.pop().comment("Mask of Diminishment settings").push("mask_diminishment");
 
                 mask_diminishment_special = BUILDER.comment("Whether having items in the inventory reduces scaling. (default true)").define("mask_diminishment_special",true);
