@@ -28,7 +28,7 @@ public class BandPassion extends Item implements ICurioItem {
 
     BOGConfig c = BOGConfig.INSTANCE;
 
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.DEFENSE,
+    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.KNOCKBACK,
             ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.MOTION};
     private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
 
@@ -98,7 +98,7 @@ public class BandPassion extends Item implements ICurioItem {
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_passion_description_0"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_0"));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_passion_description_shift_0"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_1"));
         } else {
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));

@@ -151,6 +151,7 @@
 
   "tooltip.band_of_gigantism.band_passion_description_flavor": "§9§oIt shakes slightly when held...",
   "tooltip.band_of_gigantism.band_passion_description_0": "§6Become larger§5 based on experience level.",
+  "tooltip.band_of_gigantism.band_passion_description_shift_0": "§5Scaling affects §6knockback dealt§5, §6speed§5,",
 
   "tooltip.band_of_gigantism.band_apathy_description_flavor": "§9§oIt can't quite be held right...",
   "tooltip.band_of_gigantism.band_apathy_description_0": "§6Become smaller§5 based on experience level.",
