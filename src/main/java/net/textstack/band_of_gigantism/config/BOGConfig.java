@@ -93,7 +93,7 @@ public class BOGConfig {
                 lesser_band_generic_scale = BUILDER.comment("(default 1.5)").defineInRange("lesser_band_generic_scale",1.5,0.01,32.0);
                 shrink_band_generic_scale = BUILDER.comment("(default 0.65)").defineInRange("shrink_band_generic_scale",0.65,0.01,32.0);
                 band_globetrotters_scale = BUILDER.comment("(default 2.0)").defineInRange("band_globetrotters_scale",2.0,0.01,32.0);
-                band_globetrotters_limit_scale = BUILDER.comment("(default 16.0)").defineInRange("band_globetrotters_limit_scale",16.0,0.01,32.0);
+                band_globetrotters_limit_scale = BUILDER.comment("maximum possible scale (default 16.0)").defineInRange("band_globetrotters_limit_scale",16.0,0.01,32.0);
                 mask_diminishment_scale = BUILDER.comment("(default 0.1)").defineInRange("mask_diminishment_scale",0.1,0.01,32.0);
             BUILDER.pop().comment("Mask of Diminishment settings").push("mask_diminishment");
 

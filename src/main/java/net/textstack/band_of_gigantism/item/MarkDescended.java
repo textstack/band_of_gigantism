@@ -87,10 +87,11 @@ public class MarkDescended extends Item implements ICurioItem {
             return;
         }
 
-        //try to remove the posY tag for the next equip (this can't be done in onUnequip for some reason)
-        LivingEntity theDude = (LivingEntity) entityIn; //responsible variable names for a responsible developer
-        if (!CurioHelper.hasCurio(theDude, ModItems.MARK_DESCENDED.get())) {
-            stack.getOrCreateTag().remove("posY");
+        //update mark's pos when not equipped
+        LivingEntity living = (LivingEntity) entityIn;
+        if (worldIn.getGameTime()%10==0&&!CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
+            int posY = (int) Math.ceil(living.getPositionVec().y);
+            stack.getOrCreateTag().putInt("posY", posY);
         }
     }
 
