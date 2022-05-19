@@ -91,16 +91,19 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent
     public void onLivingExperienceDrop(LivingExperienceDropEvent event) {
-        int value = event.getDroppedExperience();
 
-        if ((event.getEntityLiving().hasEffect(ModEffects.MIRA.get())||CurioHelper.hasCurio(event.getAttackingPlayer(), ModBlocks.MIRAPOPPY.get().asItem()))&&Math.random()<c.mirapoppy_chance.get()) {
-            value = value * 2;
-            if (Math.random()<c.mirapoppy_chance_double.get()) {
+        if (event.getAttackingPlayer() != null) {
+            int value = event.getDroppedExperience();
+
+            if ((event.getEntityLiving().hasEffect(ModEffects.MIRA.get()) || CurioHelper.hasCurio(event.getAttackingPlayer(), ModBlocks.MIRAPOPPY.get().asItem())) && Math.random() < c.mirapoppy_chance.get()) {
                 value = value * 2;
+                if (Math.random() < c.mirapoppy_chance_double.get()) {
+                    value = value * 2;
+                }
             }
-        }
 
-        event.setDroppedExperience(value);
+            event.setDroppedExperience(value);
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
