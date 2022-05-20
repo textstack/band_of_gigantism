@@ -47,6 +47,12 @@ public class BandGeneric extends Item implements ICurioItem {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
 
+        LivingEntity living = slotContext.entity();
+
+        if (living.getLevel().isClientSide) {
+            return;
+        }
+
         float setScale = switch (itemVal) {
             case 0 -> c.band_generic_scale.get().floatValue();
             case 1 -> c.lesser_band_generic_scale.get().floatValue();
@@ -55,9 +61,13 @@ public class BandGeneric extends Item implements ICurioItem {
         };
 
         //set scale
-        LivingEntity player = slotContext.entity();
-        int scaleDelay = ScaleHelper.rescale(player,scales,setScale,0); //this weird thing with scaleDelay ensures these have the same delay
-        ScaleHelper.rescale(player,scalesInverse,1/setScale,scaleDelay);
+        if (c.multiply_enable.get()) {
+            int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, setScale, 1, 0); //this weird thing with scaleDelay ensures these have the same delay
+            ScaleHelper.rescaleMultiply(living, scalesInverse, 1.0f/setScale, 1, scaleDelay);
+        } else {
+            int scaleDelay = ScaleHelper.rescale(living, scales, setScale, 0); //this weird thing with scaleDelay ensures these have the same delay
+            ScaleHelper.rescale(living, scalesInverse, 1 / setScale, scaleDelay);
+        }
     }
 
     @Override
@@ -70,9 +80,21 @@ public class BandGeneric extends Item implements ICurioItem {
             return;
         }
 
+        float setScale = switch (itemVal) {
+            case 0 -> c.band_generic_scale.get().floatValue();
+            case 1 -> c.lesser_band_generic_scale.get().floatValue();
+            case 2 -> c.shrink_band_generic_scale.get().floatValue();
+            default -> 1;
+        };
+
         //reset scale
-        int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
-        ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
+        if (c.multiply_enable.get()) {
+            int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, 1, setScale, 0); //this weird thing with scaleDelay ensures these have the same delay
+            ScaleHelper.rescaleMultiply(living, scalesInverse, 1, 1.0f/setScale, scaleDelay);
+        } else {
+            int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
+            ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
+        }
     }
 
     @Override
@@ -81,7 +103,7 @@ public class BandGeneric extends Item implements ICurioItem {
         ScaleData scaleData = scales[1].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && (Math.abs(scaleBase-1) <= 0.001f || c.multiply_enable.get());
     }
 
     @Override

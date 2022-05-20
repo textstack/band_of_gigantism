@@ -64,8 +64,13 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         float newScale = c.band_globetrotters_scale.get().floatValue()+storedTime/storedTimeMaxToScale;
 
         //set scale
-        int scaleDelay = ScaleHelper.rescale(living,scales,newScale,0);
-        ScaleHelper.rescale(living,scalesInverse,1.0f/newScale,scaleDelay);
+        if (c.multiply_enable.get()) {
+            int scaleDelay = ScaleHelper.rescaleMultiply(living,scales,newScale, 1,0);
+            ScaleHelper.rescaleMultiply(living,scalesInverse,1.0f/newScale, 1, scaleDelay);
+        } else {
+            int scaleDelay = ScaleHelper.rescale(living,scales,newScale,0);
+            ScaleHelper.rescale(living,scalesInverse,1.0f/newScale,scaleDelay);
+        }
     }
 
     @Override
@@ -79,8 +84,17 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         }
 
         //reset scale
-        int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
-        ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
+        if (c.multiply_enable.get()) {
+            int storedTime = this.getStoredEnergy(stack);
+            float storedTimeMaxToScale = c.band_globetrotters_limit.get() / Math.abs(c.band_globetrotters_limit_scale.get().floatValue()-c.band_globetrotters_scale.get().floatValue());
+            float newScale = c.band_globetrotters_scale.get().floatValue()+storedTime/storedTimeMaxToScale;
+
+            int scaleDelay = ScaleHelper.rescaleMultiply(living,scales, 1, newScale,0);
+            ScaleHelper.rescaleMultiply(living,scalesInverse,1, 1.0f/newScale, scaleDelay);
+        } else {
+            int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
+            ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
+        }
     }
 
     @Override
@@ -89,7 +103,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         ScaleData scaleData = scales[1].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && (Math.abs(scaleBase-1) <= 0.001f || c.multiply_enable.get());
     }
 
     @Override

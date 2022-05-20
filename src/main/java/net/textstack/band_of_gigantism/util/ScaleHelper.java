@@ -17,6 +17,8 @@ public class ScaleHelper {
      * @return the delay used for the first ScaleType in the scales array, or the set delay if set
      */
     public static int rescale(Entity entity, ScaleType[] scales, float value, int setDelay) {
+        BOGConfig c = BOGConfig.INSTANCE;
+
         int tickDelay = Math.max(setDelay, 0);
         for (ScaleType scale : scales) {
 
@@ -26,7 +28,47 @@ public class ScaleHelper {
             float scaleDifference = Math.abs(scaleTarget - value) / Math.max(scaleTarget, value);
             if (scaleDifference > 0.001f) {
 
-                float newScale = Math.max(Math.min(value, 36), 0.001f);
+                float newScale = Math.max(Math.min(value, c.general_scale_limit.get().floatValue()), 0.001f);
+
+                int localTickDelay;
+                if (setDelay <=0) {
+                    localTickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - value) * BOGConfig.INSTANCE.scale_speed.get()),5);
+                    if (scale == scales[1]) {
+                        tickDelay = localTickDelay;
+                    }
+                } else {localTickDelay = tickDelay;}
+
+                scaleData.setTargetScale(newScale);
+                scaleData.setScaleTickDelay(localTickDelay);
+            }
+        }
+        return tickDelay;
+    }
+
+    /**
+     * Scales specified ScaleTypes of the entity by the specified multiplier
+     *
+     * @param entity       the entity to modify
+     * @param scales       the list of ScaleTypes to affect
+     * @param value        scale to set the player to, assuming initial scale is 1
+     * @param currentShift the amount the player has already been scaled by; set to 1 for first time
+     * @param setDelay     set the amount of time to change scale, set to 0 for auto delay
+     * @return the delay used for the first ScaleType in the scales array, or the set delay if set
+     */
+    public static int rescaleMultiply(Entity entity, ScaleType[] scales, float value, float currentShift, int setDelay) {
+        BOGConfig c = BOGConfig.INSTANCE;
+
+        int tickDelay = Math.max(setDelay, 0);
+        for (ScaleType scale : scales) {
+
+            ScaleData scaleData = scale.getScaleData(entity);
+            float scaleTarget = scaleData.getTargetScale();
+            float valueAdjust = value*(1.0f/currentShift)*scaleTarget;
+
+            float scaleDifference = Math.abs(scaleTarget - valueAdjust) / Math.max(scaleTarget, valueAdjust);
+            if (scaleDifference > 0.001f) {
+
+                float newScale = Math.max(Math.min(valueAdjust, c.general_scale_limit.get().floatValue()), 0.001f);
 
                 int localTickDelay;
                 if (setDelay <=0) {

@@ -64,8 +64,13 @@ public class BandBasic extends Item implements ICurioItem {
         }
 
         //set scale
-        int scaleDelay = ScaleHelper.rescale(living,scales,setScale/10000.0f,0);
-        ScaleHelper.rescale(living,scalesInverse,10000.0f/setScale,scaleDelay);
+        if (c.multiply_enable.get()) {
+            int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, setScale / 10000.0f, 1, 0);
+            ScaleHelper.rescaleMultiply(living, scalesInverse, 10000.0f / setScale, 1, scaleDelay);
+        } else {
+            int scaleDelay = ScaleHelper.rescale(living, scales, setScale / 10000.0f, 0);
+            ScaleHelper.rescale(living, scalesInverse, 10000.0f / setScale, scaleDelay);
+        }
     }
 
     @Override
@@ -79,8 +84,22 @@ public class BandBasic extends Item implements ICurioItem {
         }
 
         //reset scale
-        int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
-        ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
+        if (c.multiply_enable.get()) {
+
+            int setScale;
+
+            if (stack.getOrCreateTag().getInt("crafted")==1) {
+                setScale = stack.getOrCreateTag().getInt("scale");
+            } else {
+                setScale = (int)(c.band_basic_scale.get()*10000.0);
+            }
+
+            int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, 1, setScale / 10000.0f, 0);
+            ScaleHelper.rescaleMultiply(living, scalesInverse, 1, 10000.0f / setScale, scaleDelay);
+        } else {
+            int scaleDelay = ScaleHelper.rescale(living, scales, 1, 0);
+            ScaleHelper.rescale(living, scalesInverse, 1, scaleDelay);
+        }
     }
 
     @Override
@@ -106,9 +125,9 @@ public class BandBasic extends Item implements ICurioItem {
             return;
         }
 
-        if (worldIn.getGameTime()%100 == 0 && stack.getOrCreateTag().getInt("crafted")==1) {
+        LivingEntity living = (LivingEntity) entityIn;
 
-            LivingEntity living = (LivingEntity) entityIn;
+        if (worldIn.getGameTime()%100 == 0 && stack.getOrCreateTag().getInt("crafted")==1 && ScaleHelper.isDoneScaling(living,scales[1])) {
 
             int timeLeft = stack.getOrCreateTag().getInt("timeLeft");
             if (timeLeft <= 0) {
@@ -116,14 +135,20 @@ public class BandBasic extends Item implements ICurioItem {
                 double scaleLower = Math.min(c.band_basic_max_scale.get(), c.band_basic_min_scale.get());
 
                 int setScale = (int) (((1.0 - Math.abs(Math.random() + Math.random() - 1.0)) * scaleRange + scaleLower) * 10000.0);
-                stack.getOrCreateTag().putInt("scale", setScale);
 
                 //set scale
                 if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get())) {
-                    int scaleDelay = ScaleHelper.rescale(living, scales, setScale / 10000.0f, 0);
-                    ScaleHelper.rescale(living, scalesInverse, 10000.0f / setScale, scaleDelay);
+                    if (c.multiply_enable.get()) {
+                        int prevSetScale = stack.getOrCreateTag().getInt("scale");
+                        int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, setScale / 10000.0f, prevSetScale / 10000.0f, 0);
+                        ScaleHelper.rescaleMultiply(living, scalesInverse, 10000.0f / setScale, 10000.0f / prevSetScale, scaleDelay);
+                    } else {
+                        int scaleDelay = ScaleHelper.rescale(living, scales, setScale / 10000.0f, 0);
+                        ScaleHelper.rescale(living, scalesInverse, 10000.0f / setScale, scaleDelay);
+                    }
                 }
 
+                stack.getOrCreateTag().putInt("scale", setScale);
                 stack.getOrCreateTag().putInt("timeLeft", (int) (Math.random() * 22 + 2));
             } else {
                 stack.getOrCreateTag().putInt("timeLeft", timeLeft-1);
@@ -161,7 +186,7 @@ public class BandBasic extends Item implements ICurioItem {
         ScaleData scaleData = scales[1].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && (Math.abs(scaleBase-1) <= 0.001f || c.multiply_enable.get());
     }
 
     @Override

@@ -59,7 +59,7 @@ public class MaskDiminishment extends Item implements ICurioItem {
         ScaleData scaleData = scales[1].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && (Math.abs(scaleBase-1) <= 0.001f || c.multiply_enable.get());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class MaskDiminishment extends Item implements ICurioItem {
                 float setScale;
 
                 if (c.mask_diminishment_special.get()) {
-                    setScale = c.mask_diminishment_scale.get().floatValue() + (1 - c.mask_diminishment_scale.get().floatValue()) * (count / list.size());
+                    setScale = c.mask_diminishment_scale.get().floatValue() + (0.95f - c.mask_diminishment_scale.get().floatValue()) * (count / list.size());
                 } else {
                     setScale = c.mask_diminishment_scale.get().floatValue();
                 }

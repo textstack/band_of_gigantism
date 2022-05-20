@@ -4,6 +4,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -11,6 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
@@ -47,8 +50,15 @@ public class BandPassion extends Item implements ICurioItem {
         }
 
         //reset scale
-        int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
-        ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
+        if (c.multiply_enable.get()) {
+            float prevScale = stack.getOrCreateTag().getFloat("setScale");
+            int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, 1, prevScale, 0);
+            ScaleHelper.rescaleMultiply(living, scalesInverse, 1, 1.0f/prevScale, scaleDelay);
+            stack.getOrCreateTag().putFloat("setScale",1);
+        } else {
+            int scaleDelay = ScaleHelper.rescale(living, scales, 1, 0);
+            ScaleHelper.rescale(living, scalesInverse, 1, scaleDelay);
+        }
     }
 
     @Override
@@ -57,7 +67,7 @@ public class BandPassion extends Item implements ICurioItem {
         ScaleData scaleData = scales[1].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && Math.abs(scaleBase-1) <= 0.001f;
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && (Math.abs(scaleBase-1) <= 0.001f || c.multiply_enable.get());
     }
 
     @Override
@@ -80,9 +90,31 @@ public class BandPassion extends Item implements ICurioItem {
                 float setScale = Math.min(c.band_passion_scale.get().floatValue()+xpProgress*c.band_passion_scale_level.get().floatValue(),
                         c.band_passion_limit_scale.get().floatValue());
 
-                int scaleDelay = ScaleHelper.rescale(player,scales,setScale,0);
-                ScaleHelper.rescale(player,scalesInverse,1/setScale,scaleDelay);
+                if (c.multiply_enable.get()) {
+                    float prevScale = stack.getOrCreateTag().getFloat("setScale");
+                    int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale, prevScale, 0);
+                    ScaleHelper.rescaleMultiply(player, scalesInverse, 1.0f/setScale, 1.0f/prevScale, scaleDelay);
+                    stack.getOrCreateTag().putFloat("setScale",setScale);
+                } else {
+                    int scaleDelay = ScaleHelper.rescale(player, scales, setScale, 0);
+                    ScaleHelper.rescale(player, scalesInverse, 1 / setScale, scaleDelay);
+                }
             }
+        }
+    }
+
+    @Override
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
+        super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+
+        if (worldIn.isClientSide) {
+            return;
+        }
+
+        //update mark's pos when not equipped
+        LivingEntity living = (LivingEntity) entityIn;
+        if (worldIn.getGameTime()%10==0&&c.multiply_enable.get()&&!CurioHelper.hasCurio(living, ModItems.BAND_PASSION.get())) {
+            stack.getOrCreateTag().putFloat("setScale",1);
         }
     }
 

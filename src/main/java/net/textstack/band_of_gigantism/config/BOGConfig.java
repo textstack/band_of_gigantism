@@ -16,6 +16,8 @@ public class BOGConfig {
     //general
     public final ForgeConfigSpec.IntValue scale_speed;
     public final ForgeConfigSpec.BooleanValue description_enable;
+    public final ForgeConfigSpec.BooleanValue multiply_enable;
+    public final ForgeConfigSpec.DoubleValue general_scale_limit;
 
     //marks general
     public final ForgeConfigSpec.IntValue marks_duration;
@@ -112,6 +114,8 @@ public class BOGConfig {
         BUILDER.push("general");
             scale_speed = BUILDER.comment("Scaling speed in ticks per unit of scale change. (default 20)").defineInRange("scale_speed",20,1,Integer.MAX_VALUE);
             description_enable = BUILDER.comment("Whether items have detailed descriptions. Disable if you hate information.").define("description_enable", true);
+            multiply_enable = BUILDER.comment("Whether scaling items take into account the player's current scale, allowing multiple to be worn. Might be unstable!").define("multiply_enable",false);
+            general_scale_limit = BUILDER.comment("The absolute max scale that any item in Band of Gigantism can scale the player to (default 32.0)").defineInRange("general_scale_limit",32.0,1.0,64.0);
         BUILDER.pop().push("items").comment("Change item scaling").push("scaling");
 
                 band_generic_scale = BUILDER.comment("(default 2.0)").defineInRange("band_generic_scale",2.0,0.01,32.0);
