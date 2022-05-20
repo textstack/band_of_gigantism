@@ -25,7 +25,7 @@ public class DescentEffect extends Effect {
 
     @Override
     public boolean isReady(int duration, int amplifier) {
-        int i = 40 / amplifier;
+        int i = 80 >> amplifier;
         if (i > 0) {
             return duration % i == 0;
         } else {
