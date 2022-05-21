@@ -123,7 +123,7 @@ public class MaskDiminishment extends Item implements ICurioItem {
                 }
 
                 if (c.multiply_enable.get()) {
-                    int setScale = (int)Math.ceil(newScale*1000000);
+                    int setScale = (int)(newScale*1000000);
                     int prevScale = player.getPersistentData().getInt("diminishmentScale");
                     int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale/1000000.0f, prevScale/1000000.0f, 0);
                     ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f/setScale, 1000000.0f/prevScale, scaleDelay);

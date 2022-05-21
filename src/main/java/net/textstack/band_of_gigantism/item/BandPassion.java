@@ -112,7 +112,7 @@ public class BandPassion extends Item implements ICurioItem {
                         c.band_passion_limit_scale.get().floatValue());
 
                 if (c.multiply_enable.get()) {
-                    int curScale = (int)Math.ceil(setScale*1000000);
+                    int curScale = (int)(setScale*1000000);
                     int prevScale = player.getPersistentData().getInt("passionScale");
                     int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, curScale/1000000.0f, prevScale/1000000.0f, 0);
                     ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f/curScale, 1000000.0f/prevScale, scaleDelay);

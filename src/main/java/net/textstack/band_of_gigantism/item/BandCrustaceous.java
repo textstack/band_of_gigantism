@@ -57,7 +57,7 @@ public class BandCrustaceous extends Item implements ICurioItem {
         //set scale
         if (c.multiply_enable.get()) {
             if (living instanceof Player player) {
-                int setScale = (int)Math.ceil(1000000*c.band_crustaceous_scale.get().floatValue());
+                int setScale = (int)(1000000*c.band_crustaceous_scale.get().floatValue());
                 int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, setScale/1000000.0f, 1, 0);
                 ScaleHelper.rescaleMultiply(living, scalesInverse, 1000000.0f/setScale, 1, scaleDelay);
                 player.getPersistentData().putInt("crustaceousScale", setScale);
@@ -112,7 +112,7 @@ public class BandCrustaceous extends Item implements ICurioItem {
                 } else if (player.level.getGameTime()%40==0&& ScaleHelper.isDoneScaling(living,scales[1])) {
                     if (c.multiply_enable.get()) {
                         int prevScale = player.getPersistentData().getInt("crustaceousScale");
-                        int setScale = Math.max(prevScale-50000,(int)Math.ceil(c.band_crustaceous_scale.get().floatValue()*1000000.0f));
+                        int setScale = Math.max(prevScale-50000,(int)(c.band_crustaceous_scale.get().floatValue()*1000000.0f));
                         int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale/1000000.0f, prevScale/1000000.0f, 0);
                         ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f/setScale, 1000000.0f/prevScale, scaleDelay);
                         player.getPersistentData().putInt("crustaceousScale",setScale);

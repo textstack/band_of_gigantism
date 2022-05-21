@@ -50,7 +50,7 @@ public class CrabbyEffect extends MobEffect {
             if (CurioHelper.hasCurio(entityLivingBaseIn, ModItems.BAND_CRUSTACEOUS.get())&&healthLost>=6.0f) {
                 if (c.multiply_enable.get()) {
                     int prevScale = player.getPersistentData().getInt("crustaceousScale");
-                    int setScale = (int)Math.ceil(Math.min(prevScale*(1+healthLostDiv),c.band_crustaceous_limit_scale.get().floatValue()*1000000.0f));
+                    int setScale = (int)(Math.min(prevScale*(1+healthLostDiv),c.band_crustaceous_limit_scale.get().floatValue()*1000000.0f));
                     int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale/1000000.0f, prevScale/1000000.0f, 0);
                     ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f/setScale, 1000000.0f/prevScale, scaleDelay);
                     player.getPersistentData().putInt("crustaceousScale",setScale);
