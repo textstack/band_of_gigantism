@@ -39,6 +39,24 @@ public class MaskDiminishment extends Item implements ICurioItem {
     }
 
     @Override
+    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        ICurioItem.super.onEquip(slotContext, prevStack, stack);
+
+        LivingEntity living = slotContext.entity();
+
+        if (living.getLevel().isClientSide) {
+            return;
+        }
+
+        //reset scale
+        if (c.multiply_enable.get()) {
+            if (living instanceof Player player) {
+                player.getPersistentData().putInt("diminishmentScale", 1000000);
+            }
+        }
+    }
+
+    @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         ICurioItem.super.onUnequip(slotContext, newStack, stack);
 
@@ -49,8 +67,16 @@ public class MaskDiminishment extends Item implements ICurioItem {
         }
 
         //reset scale
-        int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
-        ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
+        if (c.multiply_enable.get()) {
+            if (living instanceof Player player) {
+                int prevScale = player.getPersistentData().getInt("diminishmentScale");
+                int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, 1, prevScale / 1000000.0f, 0);
+                ScaleHelper.rescaleMultiply(living, scalesInverse, 1, 1000000.0f / prevScale, scaleDelay);
+            }
+        } else {
+            int scaleDelay = ScaleHelper.rescale(living, scales, 1, 0);
+            ScaleHelper.rescale(living, scalesInverse, 1, scaleDelay);
+        }
     }
 
     @Override
@@ -88,16 +114,24 @@ public class MaskDiminishment extends Item implements ICurioItem {
                     }
                 }
 
-                float setScale;
+                float newScale;
 
                 if (c.mask_diminishment_special.get()) {
-                    setScale = c.mask_diminishment_scale.get().floatValue() + (0.95f - c.mask_diminishment_scale.get().floatValue()) * (count / list.size());
+                    newScale = c.mask_diminishment_scale.get().floatValue() + (0.95f - c.mask_diminishment_scale.get().floatValue()) * (count / list.size());
                 } else {
-                    setScale = c.mask_diminishment_scale.get().floatValue();
+                    newScale = c.mask_diminishment_scale.get().floatValue();
                 }
 
-                int scaleDelay = ScaleHelper.rescale(player,scales,setScale,0);
-                ScaleHelper.rescale(player,scalesInverse,1/setScale,scaleDelay);
+                if (c.multiply_enable.get()) {
+                    int setScale = (int)Math.ceil(newScale*1000000);
+                    int prevScale = player.getPersistentData().getInt("diminishmentScale");
+                    int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale/1000000.0f, prevScale/1000000.0f, 0);
+                    ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f/setScale, 1000000.0f/prevScale, scaleDelay);
+                    player.getPersistentData().putInt("diminishmentScale",setScale);
+                } else {
+                    int scaleDelay = ScaleHelper.rescale(player,scales,newScale,0);
+                    ScaleHelper.rescale(player,scalesInverse,1/newScale,scaleDelay);
+                }
             }
         }
     }

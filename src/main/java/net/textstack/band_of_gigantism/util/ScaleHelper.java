@@ -30,16 +30,20 @@ public class ScaleHelper {
 
                 float newScale = Math.max(Math.min(value, c.general_scale_limit.get().floatValue()), 0.001f);
 
-                int localTickDelay;
+                if (setDelay <=0&&scale == scales[0]) {
+                    tickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - value) * BOGConfig.INSTANCE.scale_speed.get()),5);
+                }
+
+                /*int localTickDelay;
                 if (setDelay <=0) {
                     localTickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - value) * BOGConfig.INSTANCE.scale_speed.get()),5);
                     if (scale == scales[1]) {
                         tickDelay = localTickDelay;
                     }
-                } else {localTickDelay = tickDelay;}
+                } else {localTickDelay = tickDelay;}*/
 
                 scaleData.setTargetScale(newScale);
-                scaleData.setScaleTickDelay(localTickDelay);
+                scaleData.setScaleTickDelay(tickDelay);
             }
         }
         return tickDelay;
@@ -70,16 +74,20 @@ public class ScaleHelper {
 
                 float newScale = Math.max(Math.min(valueAdjust, c.general_scale_limit.get().floatValue()), 0.001f);
 
-                int localTickDelay;
+                if (setDelay <=0&&scale == scales[0]) {
+                    tickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - valueAdjust) * BOGConfig.INSTANCE.scale_speed.get()),5);
+                }
+
+                /*int localTickDelay;
                 if (setDelay <=0) {
                     localTickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - value) * BOGConfig.INSTANCE.scale_speed.get()),5);
                     if (scale == scales[1]) {
                         tickDelay = localTickDelay;
                     }
-                } else {localTickDelay = tickDelay;}
+                } else {localTickDelay = tickDelay;}*/
 
                 scaleData.setTargetScale(newScale);
-                scaleData.setScaleTickDelay(localTickDelay);
+                scaleData.setScaleTickDelay(tickDelay);
             }
         }
         return tickDelay;
