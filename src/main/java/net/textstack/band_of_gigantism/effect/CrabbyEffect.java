@@ -48,15 +48,15 @@ public class CrabbyEffect extends MobEffect {
             }
 
             if (CurioHelper.hasCurio(entityLivingBaseIn, ModItems.BAND_CRUSTACEOUS.get())&&healthLost>=6.0f) {
-                ScaleData scaleData = ScaleTypes.WIDTH.getScaleData(entityLivingBaseIn);
-                float newScale = Math.min(scaleData.getTargetScale()*(1+healthLostDiv),c.band_crustaceous_limit_scale.get().floatValue());
                 if (c.multiply_enable.get()) {
-                    int setScale = (int)Math.ceil(newScale*1000000);
                     int prevScale = player.getPersistentData().getInt("crustaceousScale");
+                    int setScale = (int)Math.ceil(Math.min(prevScale*(1+healthLostDiv),c.band_crustaceous_limit_scale.get().floatValue()*1000000.0f));
                     int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale/1000000.0f, prevScale/1000000.0f, 0);
                     ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f/setScale, 1000000.0f/prevScale, scaleDelay);
                     player.getPersistentData().putInt("crustaceousScale",setScale);
                 } else {
+                    ScaleData scaleData = ScaleTypes.WIDTH.getScaleData(entityLivingBaseIn);
+                    float newScale = Math.min(scaleData.getTargetScale()*(1+healthLostDiv),c.band_crustaceous_limit_scale.get().floatValue());
                     int scaleDelay = ScaleHelper.rescale(entityLivingBaseIn,scales,newScale,0);
                     ScaleHelper.rescale(entityLivingBaseIn,scalesInverse,1.0f/newScale,scaleDelay);
                 }
