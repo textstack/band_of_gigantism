@@ -31,7 +31,6 @@ public class CrabbyEffect extends MobEffect {
         super.applyEffectTick(entityLivingBaseIn, amplifier);
 
         float healthLost = entityLivingBaseIn.getMaxHealth() - entityLivingBaseIn.getHealth();
-        //float healthLostDiv = 0.0f;
 
         if (entityLivingBaseIn instanceof Player player) {
             FoodData foodData = player.getFoodData();
@@ -90,8 +89,6 @@ public class CrabbyEffect extends MobEffect {
                 }
             }
         } else {
-            //healthLostDiv = 1.0f-entityLivingBaseIn.getHealth()/entityLivingBaseIn.getMaxHealth();
-
             if (c.band_crustaceous_heal.get()) {
                 float heal = healthLost;
                 heal = net.minecraftforge.event.ForgeEventFactory.onLivingHeal(entityLivingBaseIn, heal);
