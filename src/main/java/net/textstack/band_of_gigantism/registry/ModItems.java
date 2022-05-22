@@ -1,7 +1,10 @@
 package net.textstack.band_of_gigantism.registry;
 
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -17,15 +20,15 @@ public class ModItems {
 
     public static final RegistryObject<Item> BAND_GENERIC = ITEMS.register("band_generic",
             () -> new BandGeneric(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.RARE).stacksTo(1).defaultDurability(0),
-                    0,true, SoundEvents.ARMOR_EQUIP_GOLD));
+                    0, true, SoundEvents.ARMOR_EQUIP_GOLD));
 
     public static final RegistryObject<Item> LESSER_BAND_GENERIC = ITEMS.register("lesser_band_generic",
             () -> new BandGeneric(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.UNCOMMON).stacksTo(1).defaultDurability(0),
-                    1,false, SoundEvents.ARMOR_EQUIP_IRON));
+                    1, false, SoundEvents.ARMOR_EQUIP_IRON));
 
     public static final RegistryObject<Item> SHRINK_BAND_GENERIC = ITEMS.register("shrink_band_generic",
             () -> new BandGeneric(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.UNCOMMON).stacksTo(1).defaultDurability(0).setNoRepair(),
-                    2,false, SoundEvents.ARMOR_EQUIP_IRON));
+                    2, false, SoundEvents.ARMOR_EQUIP_IRON));
 
     public static final RegistryObject<Item> BAND_BASIC = ITEMS.register("band_basic",
             () -> new BandBasic(new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.UNCOMMON).stacksTo(1).defaultDurability(0)));

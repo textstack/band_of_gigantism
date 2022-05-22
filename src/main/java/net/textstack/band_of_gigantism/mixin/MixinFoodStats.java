@@ -7,7 +7,8 @@ import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.Objects;
 
@@ -20,8 +21,10 @@ public class MixinFoodStats {
     private boolean onTick(GameRules instance, GameRules.Key<GameRules.BooleanValue> key, Player player) {
 
         //prevents hunger-based regen from working, otherwise it would uselessly deplete itself
-        if (CurioHelper.hasCurio(player, ModItems.MARK_FADED.get())||Objects.requireNonNull(player).hasEffect(ModEffects.RECOVERING.get())||CurioHelper.hasCurio(player, ModItems.BAND_CRUSTACEOUS.get())) {
+        if (CurioHelper.hasCurio(player, ModItems.MARK_FADED.get()) || Objects.requireNonNull(player).hasEffect(ModEffects.RECOVERING.get()) || CurioHelper.hasCurio(player, ModItems.BAND_CRUSTACEOUS.get())) {
             return false;
-        } else {return player.level.getGameRules().getBoolean(key);}
+        } else {
+            return player.level.getGameRules().getBoolean(key);
+        }
     }
 }

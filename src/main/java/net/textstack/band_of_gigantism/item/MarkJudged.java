@@ -32,7 +32,7 @@ import java.util.UUID;
 
 public class MarkJudged extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkJudged(Properties properties) {
         super(properties);
@@ -45,8 +45,8 @@ public class MarkJudged extends Item implements ICurioItem {
         LivingEntity living = slotContext.entity();
 
         //deal near-mortal damage, prevent healing for 10 seconds
-        living.hurt(MarkDamageSource.BOG_JUDGED, living.getMaxHealth()-1);
-        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
+        living.hurt(MarkDamageSource.BOG_JUDGED, living.getMaxHealth() - 1);
+        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
     }
 
     @Override
@@ -76,9 +76,9 @@ public class MarkJudged extends Item implements ICurioItem {
         Multimap<Attribute, AttributeModifier> attributesDefault = HashMultimap.create();
 
         attributesDefault.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("a95728cb-942d-475a-b664-f96b4ba4b0e4"),
-                BandOfGigantism.MODID+":attack_damage_modifier_obl", c.mark_judged_damage.get(), AttributeModifier.Operation.ADDITION));
+                BandOfGigantism.MODID + ":attack_damage_modifier_obl", c.mark_judged_damage.get(), AttributeModifier.Operation.ADDITION));
         attributesDefault.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(UUID.fromString("6cc188ba-2451-497b-8031-53d60682d55e"),
-                BandOfGigantism.MODID+":attack_attack_knockback_modifier_obl", c.mark_judged_speed.get(), AttributeModifier.Operation.MULTIPLY_BASE));
+                BandOfGigantism.MODID + ":attack_attack_knockback_modifier_obl", c.mark_judged_speed.get(), AttributeModifier.Operation.MULTIPLY_BASE));
 
         return attributesDefault;
     }

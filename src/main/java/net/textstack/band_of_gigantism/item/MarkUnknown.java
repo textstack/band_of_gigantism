@@ -22,10 +22,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
-import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
@@ -39,7 +39,7 @@ import java.util.UUID;
 
 public class MarkUnknown extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkUnknown(Properties properties) {
         super(properties);
@@ -53,7 +53,7 @@ public class MarkUnknown extends Item implements ICurioItem {
         if (!CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
 
             //deal near-mortal damage, prevent healing for 10 seconds
-            living.hurt(MarkDamageSource.BOG_UNKNOWN, living.getMaxHealth()-1);
+            living.hurt(MarkDamageSource.BOG_UNKNOWN, living.getMaxHealth() - 1);
             living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
 
             //remove the variable modifiers
@@ -86,7 +86,7 @@ public class MarkUnknown extends Item implements ICurioItem {
                     case 9 -> MobEffects.NIGHT_VISION;
                     default -> MobEffects.GLOWING;
                 };
-                living.addEffect(new MobEffectInstance(effect,220,random[1],false,false));
+                living.addEffect(new MobEffectInstance(effect, 220, random[1], false, false));
 
                 //reapply modifiers
                 AttributeMap map = player.getAttributes();
@@ -107,10 +107,10 @@ public class MarkUnknown extends Item implements ICurioItem {
         if (worldIn.getGameTime() % 20 == 0) {
             int storedTime = this.getInt(stack);
             if (storedTime > 0) {
-                this.setInt(stack,"timeLeft",storedTime - 1);
+                this.setInt(stack, "timeLeft", storedTime - 1);
             } else {
-                this.setInt(stack,"timeLeft",c.mark_unknown_time.get()-1);
-                this.setInt(stack,"random",(int) (Math.random()*12800)); //"random" IS the seed, fyi
+                this.setInt(stack, "timeLeft", c.mark_unknown_time.get() - 1);
+                this.setInt(stack, "random", (int) (Math.random() * 12800)); //"random" IS the seed, fyi
             }
         }
     }
@@ -136,30 +136,30 @@ public class MarkUnknown extends Item implements ICurioItem {
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
 
             //time
-            if (storedTime>=60) {
-                int displayTime = 1+storedTime/60;
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_minutes","\u00A76" + displayTime));
+            if (storedTime >= 60) {
+                int displayTime = 1 + storedTime / 60;
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_minutes", "\u00A76" + displayTime));
             } else {
                 if (storedTime == 0) {
                     tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_second"));
                 } else {
-                    int displayTime = 1+storedTime;
-                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_seconds","\u00A76" + displayTime));
+                    int displayTime = 1 + storedTime;
+                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_seconds", "\u00A76" + displayTime));
                 }
             }
 
             //health
-            if (randomAttributes[0]>0) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_1_positive","\u00A76" + randomAttributes[0]));
-            } else if (randomAttributes[0]<0) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_1_negative","\u00A76" + randomAttributes[0]));
+            if (randomAttributes[0] > 0) {
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_1_positive", "\u00A76" + randomAttributes[0]));
+            } else if (randomAttributes[0] < 0) {
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_1_negative", "\u00A76" + randomAttributes[0]));
             }
 
             //speed
-            if (randomAttributes[1]>0) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_2_positive","\u00A76" + randomAttributes[1] + "%"));
-            } else if (randomAttributes[1]<0) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_2_negative","\u00A76" + randomAttributes[1] + "%"));
+            if (randomAttributes[1] > 0) {
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_2_positive", "\u00A76" + randomAttributes[1] + "%"));
+            } else if (randomAttributes[1] < 0) {
+                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_2_negative", "\u00A76" + randomAttributes[1] + "%"));
             }
 
             //regen
@@ -194,7 +194,7 @@ public class MarkUnknown extends Item implements ICurioItem {
                 case 2 -> "\u00A76III ";
                 default -> "";
             };
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_4",effect,amp));
+            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_4", effect, amp));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_generic_description"));
         } else {
@@ -236,9 +236,9 @@ public class MarkUnknown extends Item implements ICurioItem {
         int[] random = attributeValues(stack);
 
         attributesDefault.put(Attributes.MAX_HEALTH, new AttributeModifier(UUID.fromString("b2ae2c86-fcdb-478a-b8f8-24d452ea716f"),
-                BandOfGigantism.MODID+":attack_max_health_modifier_unknown", random[0], AttributeModifier.Operation.ADDITION));
+                BandOfGigantism.MODID + ":attack_max_health_modifier_unknown", random[0], AttributeModifier.Operation.ADDITION));
         attributesDefault.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(UUID.fromString("b2ae2c86-fcdb-478a-b8f8-24d452ea716f"),
-                BandOfGigantism.MODID+":attack_movement_speed_modifier_unknown", random[1]/100.0f, AttributeModifier.Operation.MULTIPLY_BASE));
+                BandOfGigantism.MODID + ":attack_movement_speed_modifier_unknown", random[1] / 100.0f, AttributeModifier.Operation.MULTIPLY_BASE));
 
         return attributesDefault;
     }
@@ -247,16 +247,16 @@ public class MarkUnknown extends Item implements ICurioItem {
     private int[] attributeValues(ItemStack stack) {
 
         int[] random = getRandom(stack);
-        int[] output = {0,0};
+        int[] output = {0, 0};
 
-        output[0] = (int) ((random[0]/6400.0f)*c.mark_unknown_health.get() - c.mark_unknown_health.get());
+        output[0] = (int) ((random[0] / 6400.0f) * c.mark_unknown_health.get() - c.mark_unknown_health.get());
         if (output[0] > 0) {
             output[0] = output[0] * 2;
         } else {
             output[0] = output[0] + output[0] % 2;
         }
 
-        output[1] = (int) (((random[1]/6400.0f)*c.mark_unknown_speed.get().floatValue() - c.mark_unknown_speed.get().floatValue())*100);
+        output[1] = (int) (((random[1] / 6400.0f) * c.mark_unknown_speed.get().floatValue() - c.mark_unknown_speed.get().floatValue()) * 100);
 
         return output;
     }
@@ -265,10 +265,10 @@ public class MarkUnknown extends Item implements ICurioItem {
     private int[] effectValues(ItemStack stack) {
 
         int[] random = getRandom(stack);
-        int[] output = {0,0};
+        int[] output = {0, 0};
 
         output[0] = random[5] + 2 * (int) Math.floor(Math.log10((random[3] / 1828.57142858f) + 1) / 0.181843587945f); //effect
-        output[1] = 2 - (int) Math.floor(Math.log10((random[4]/1828.57142858f) + 1) / 0.301029995664f); //effect amp
+        output[1] = 2 - (int) Math.floor(Math.log10((random[4] / 1828.57142858f) + 1) / 0.301029995664f); //effect amp
 
         return output;
     }
@@ -278,19 +278,19 @@ public class MarkUnknown extends Item implements ICurioItem {
 
         int[] random = getRandom(stack);
 
-        return random[2]/1280;
+        return random[2] / 1280;
     }
 
     //generates 6 pseudorandom values from the seed
     private static int[] getRandom(ItemStack stack) {
         int randomSeed = stack.getOrCreateTag().getInt("random");
-        int[] random = {0,0,0,0,0,0};
-        random[0] = ((randomSeed*8121)+28411)%12800;
-        random[1] = ((random[0]*8121)+28411)%12800;
-        random[2] = ((random[1]*8121)+28411)%12800;
-        random[3] = ((random[2]*8121)+28411)%12800;
-        random[4] = ((random[3]*8121)+28411)%12800;
-        random[5] = ((random[4]*8121)+28411)%2;
+        int[] random = {0, 0, 0, 0, 0, 0};
+        random[0] = ((randomSeed * 8121) + 28411) % 12800;
+        random[1] = ((random[0] * 8121) + 28411) % 12800;
+        random[2] = ((random[1] * 8121) + 28411) % 12800;
+        random[3] = ((random[2] * 8121) + 28411) % 12800;
+        random[4] = ((random[3] * 8121) + 28411) % 12800;
+        random[5] = ((random[4] * 8121) + 28411) % 2;
         return random;
     }
 

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GoldenFryingPan extends SwordItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public GoldenFryingPan(Tier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
         super(tier, attackDamageIn, attackSpeedIn, builderIn);
@@ -33,7 +33,7 @@ public class GoldenFryingPan extends SwordItem {
         int strangeKills = getStrangeKills(stack);
 
         tooltip.add(LoreStatHelper.displayStrangeName(strangeKills, LoreStatHelper.StrangeType.TOOLTIP)
-                .append(new TranslatableComponent("tooltip.band_of_gigantism.golden_frying_pan_description_flavor","\u00A78" + strangeKills)));
+                .append(new TranslatableComponent("tooltip.band_of_gigantism.golden_frying_pan_description_flavor", "\u00A78" + strangeKills)));
         tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.golden_frying_pan_description_0"));
         tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.golden_frying_pan_description_1"));
         tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.golden_frying_pan_description_2"));
@@ -44,26 +44,30 @@ public class GoldenFryingPan extends SwordItem {
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
 
         Level worldIn = attacker.getLevel();
-        if (worldIn.isClientSide()) {return super.hurtEnemy(stack, target, attacker);}
+        if (worldIn.isClientSide()) {
+            return super.hurtEnemy(stack, target, attacker);
+        }
 
         if (target.isDeadOrDying()) {
-            target.playSound(ModSoundEvents.GOLD_KILL.get(),1,1);
+            target.playSound(ModSoundEvents.GOLD_KILL.get(), 1, 1);
             addStrangeKills(stack);
             stack.setHoverName(LoreStatHelper.displayStrangeName(getStrangeKills(stack), LoreStatHelper.StrangeType.TITLE)
                     .append(new TranslatableComponent("item.band_of_gigantism.golden_frying_pan_name_cut")));
         } else {
-            target.playSound(ModSoundEvents.PAN_HIT.get(),0.5f,1);
+            target.playSound(ModSoundEvents.PAN_HIT.get(), 0.5f, 1);
         }
 
         return super.hurtEnemy(stack, target, attacker);
     }
 
     //get current kill count
-    private int getStrangeKills(ItemStack stack) { return stack.getOrCreateTag().getInt("strangeKills"); }
+    private int getStrangeKills(ItemStack stack) {
+        return stack.getOrCreateTag().getInt("strangeKills");
+    }
 
     //add to kill count
     private void addStrangeKills(ItemStack stack) {
         int newCount = getStrangeKills(stack) + 1;
-        stack.getOrCreateTag().putInt("strangeKills",newCount);
+        stack.getOrCreateTag().putInt("strangeKills", newCount);
     }
 }

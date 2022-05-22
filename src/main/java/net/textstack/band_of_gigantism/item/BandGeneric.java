@@ -11,11 +11,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
+import net.textstack.band_of_gigantism.util.ScaleHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
-import net.textstack.band_of_gigantism.util.ScaleHelper;
 import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleType;
 import virtuoel.pehkui.api.ScaleTypes;
@@ -27,14 +27,14 @@ import java.util.List;
 
 public class BandGeneric extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     private final int itemVal;
     private final boolean setShiny;
     private final SoundEvent setEquipSound;
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.DEFENSE,
-            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.KNOCKBACK};
-    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
+    private final ScaleType[] scales = {ScaleTypes.WIDTH, ScaleTypes.HEIGHT, ScaleTypes.STEP_HEIGHT, ScaleTypes.DEFENSE,
+            ScaleTypes.REACH, ScaleTypes.VISIBILITY, ScaleTypes.KNOCKBACK};
+    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM, ScaleTypes.ATTACK_SPEED};
 
     public BandGeneric(Properties properties, int itemVal, boolean isShiny, SoundEvent equipSound) {
         super(properties);
@@ -63,7 +63,7 @@ public class BandGeneric extends Item implements ICurioItem {
         //set scale
         if (c.multiply_enable.get()) {
             int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, setScale, 1, 0); //this weird thing with scaleDelay ensures these have the same delay
-            ScaleHelper.rescaleMultiply(living, scalesInverse, 1.0f/setScale, 1, scaleDelay);
+            ScaleHelper.rescaleMultiply(living, scalesInverse, 1.0f / setScale, 1, scaleDelay);
         } else {
             int scaleDelay = ScaleHelper.rescale(living, scales, setScale, 0); //this weird thing with scaleDelay ensures these have the same delay
             ScaleHelper.rescale(living, scalesInverse, 1 / setScale, scaleDelay);
@@ -90,27 +90,27 @@ public class BandGeneric extends Item implements ICurioItem {
         //reset scale
         if (c.multiply_enable.get()) {
             int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, 1, setScale, 0); //this weird thing with scaleDelay ensures these have the same delay
-            ScaleHelper.rescaleMultiply(living, scalesInverse, 1, 1.0f/setScale, scaleDelay);
+            ScaleHelper.rescaleMultiply(living, scalesInverse, 1, 1.0f / setScale, scaleDelay);
         } else {
-            int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
-            ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
+            int scaleDelay = ScaleHelper.rescale(living, scales, 1, 0);
+            ScaleHelper.rescale(living, scalesInverse, 1, scaleDelay);
         }
     }
 
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
-        ScaleData scaleData = scales[1].getScaleData(living);
+        ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && (Math.abs(scaleBase-1) <= 0.001f || c.multiply_enable.get());
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]) && (Math.abs(scaleBase - 1) <= 0.001f || c.multiply_enable.get());
     }
 
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
 
-        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]);
+        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]);
     }
 
     @Override
@@ -152,7 +152,7 @@ public class BandGeneric extends Item implements ICurioItem {
     @Nonnull
     @Override
     public ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
-        return new ICurio.SoundInfo(setEquipSound,1.0f,1.0f);
+        return new ICurio.SoundInfo(setEquipSound, 1.0f, 1.0f);
     }
 
     @Override

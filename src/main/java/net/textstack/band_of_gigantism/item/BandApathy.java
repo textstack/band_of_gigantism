@@ -26,11 +26,11 @@ import java.util.List;
 
 public class BandApathy extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,
-            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.KNOCKBACK};
-    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
+    private final ScaleType[] scales = {ScaleTypes.WIDTH, ScaleTypes.HEIGHT, ScaleTypes.STEP_HEIGHT,
+            ScaleTypes.REACH, ScaleTypes.VISIBILITY, ScaleTypes.KNOCKBACK};
+    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM, ScaleTypes.ATTACK_SPEED};
 
     public BandApathy(Properties properties) {
         super(properties);
@@ -81,17 +81,17 @@ public class BandApathy extends Item implements ICurioItem {
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
-        ScaleData scaleData = scales[1].getScaleData(living);
+        ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && (Math.abs(scaleBase-1) <= 0.001f || c.multiply_enable.get());
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]) && (Math.abs(scaleBase - 1) <= 0.001f || c.multiply_enable.get());
     }
 
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
 
-        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]);
+        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]);
     }
 
     @Override
@@ -105,18 +105,18 @@ public class BandApathy extends Item implements ICurioItem {
         }
 
         //scale player based on xp
-        if (living.level.getGameTime() % 10 == 0 && ScaleHelper.isDoneScaling(living,scales[1])) {
+        if (living.level.getGameTime() % 10 == 0 && ScaleHelper.isDoneScaling(living, scales[0])) {
             if (living instanceof Player player) {
                 float xpProgress = player.experienceProgress + player.experienceLevel;
-                float setScale = Math.max((1-(c.band_apathy_scale_level.get().floatValue()*xpProgress)/(c.band_apathy_scale_level.get().floatValue()*xpProgress+1))*c.band_apathy_scale.get().floatValue(),
+                float setScale = Math.max((1 - (c.band_apathy_scale_level.get().floatValue() * xpProgress) / (c.band_apathy_scale_level.get().floatValue() * xpProgress + 1)) * c.band_apathy_scale.get().floatValue(),
                         c.band_apathy_limit_scale.get().floatValue());
 
                 if (c.multiply_enable.get()) {
-                    int curScale = (int)(setScale*1000000);
+                    int curScale = (int) (setScale * 1000000);
                     int prevScale = player.getPersistentData().getInt("apathyScale");
-                    int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, curScale/1000000.0f, prevScale/1000000.0f, 0);
-                    ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f/curScale, 1000000.0f/prevScale, scaleDelay);
-                    player.getPersistentData().putInt("apathyScale",curScale);
+                    int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, curScale / 1000000.0f, prevScale / 1000000.0f, 0);
+                    ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f / curScale, 1000000.0f / prevScale, scaleDelay);
+                    player.getPersistentData().putInt("apathyScale", curScale);
                 } else {
                     int scaleDelay = ScaleHelper.rescale(player, scales, setScale, 0);
                     ScaleHelper.rescale(player, scalesInverse, 1.0f / setScale, scaleDelay);
@@ -152,6 +152,6 @@ public class BandApathy extends Item implements ICurioItem {
     @Nonnull
     @Override
     public ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
-        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_GOLD,1.0f,1.0f);
+        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_GOLD, 1.0f, 1.0f);
     }
 }

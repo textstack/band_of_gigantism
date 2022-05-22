@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MirapoppyEntity extends BlockEntity {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public MirapoppyEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.MIRAPOPPY_ENTITY.get(), pos, state);

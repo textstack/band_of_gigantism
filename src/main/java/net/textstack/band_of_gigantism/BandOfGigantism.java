@@ -10,12 +10,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.event.EventHandlerMyBallsInYourMouth;
 import net.textstack.band_of_gigantism.item.BandBasic;
 import net.textstack.band_of_gigantism.item.FalseHand;
 import net.textstack.band_of_gigantism.registry.ModBlocks;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
-import net.textstack.band_of_gigantism.event.EventHandlerMyBallsInYourMouth;
 import net.textstack.band_of_gigantism.registry.ModSoundEvents;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
@@ -26,9 +26,6 @@ public class BandOfGigantism
 {
 
     public static EventHandlerMyBallsInYourMouth bogHandler;
-    //public static BOGConfig bogConfig;
-
-    //public static final Logger LOGGER = LogManager.getLogger();
 
     public static final String MODID = "band_of_gigantism";
 

@@ -17,8 +17,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
+import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
@@ -32,7 +32,7 @@ import java.util.UUID;
 
 public class MarkFaded extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkFaded(Properties properties) {
         super(properties);
@@ -44,8 +44,8 @@ public class MarkFaded extends Item implements ICurioItem {
 
         //deal near-mortal damage, prevent healing
         LivingEntity living = slotContext.entity();
-        living.hurt(MarkDamageSource.BOG_FADED, living.getMaxHealth()-1);
-        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
+        living.hurt(MarkDamageSource.BOG_FADED, living.getMaxHealth() - 1);
+        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class MarkFaded extends Item implements ICurioItem {
         Multimap<Attribute, AttributeModifier> attributesDefault = HashMultimap.create();
 
         attributesDefault.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("2c52f25b-62b1-439c-a167-dc15ada9a0d4"),
-                BandOfGigantism.MODID+":attack_damage_modifier_faded", c.mark_faded_damage.get(), AttributeModifier.Operation.MULTIPLY_BASE));
+                BandOfGigantism.MODID + ":attack_damage_modifier_faded", c.mark_faded_damage.get(), AttributeModifier.Operation.MULTIPLY_BASE));
 
         return attributesDefault;
     }

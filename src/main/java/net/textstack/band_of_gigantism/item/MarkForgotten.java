@@ -11,22 +11,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
+import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MarkForgotten extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkForgotten(Properties properties) {
         super(properties);
@@ -38,8 +37,8 @@ public class MarkForgotten extends Item implements ICurioItem {
 
         //deal near-mortal damage, prevent healing for 10 seconds
         LivingEntity living = slotContext.entity();
-        living.hurt(MarkDamageSource.BOG_FORGOTTEN, living.getMaxHealth()-1);
-        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
+        living.hurt(MarkDamageSource.BOG_FORGOTTEN, living.getMaxHealth() - 1);
+        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
     }
 
     @Override

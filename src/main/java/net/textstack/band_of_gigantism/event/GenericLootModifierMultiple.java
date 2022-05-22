@@ -31,7 +31,7 @@ public class GenericLootModifierMultiple extends LootModifier {
             JsonObject additionObject = additionElement.getAsJsonObject();
             Item addition = ForgeRegistries.ITEMS.getValue(new ResourceLocation(additionObject.get("item").getAsString()));
             float chance = additionObject.get("chance").getAsFloat();
-            if(context.getRandom().nextFloat() < chance) {
+            if (context.getRandom().nextFloat() < chance) {
                 generatedLoot.add(new ItemStack(addition, 1));
             }
         }
@@ -42,7 +42,7 @@ public class GenericLootModifierMultiple extends LootModifier {
 
         @Override
         public GenericLootModifierMultiple read(ResourceLocation name, JsonObject object, LootItemCondition[] conditionsIn) {
-            JsonArray additionArray = GsonHelper.getAsJsonArray(object,"addition");
+            JsonArray additionArray = GsonHelper.getAsJsonArray(object, "addition");
             return new GenericLootModifierMultiple(conditionsIn, additionArray);
         }
 

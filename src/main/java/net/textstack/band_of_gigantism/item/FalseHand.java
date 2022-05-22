@@ -26,7 +26,7 @@ import java.util.List;
 
 public class FalseHand extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public FalseHand(Properties properties) {
         super(properties);
@@ -36,9 +36,9 @@ public class FalseHand extends Item implements ICurioItem {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
 
-        if (stack.getOrCreateTag().getInt("flipped")==0) {
-            stack.getOrCreateTag().putInt("timeLeft",c.false_hand_time.get()-1);
-            stack.getOrCreateTag().putInt("flipped",0);
+        if (stack.getOrCreateTag().getInt("flipped") == 0) {
+            stack.getOrCreateTag().putInt("timeLeft", c.false_hand_time.get() - 1);
+            stack.getOrCreateTag().putInt("flipped", 0);
         }
     }
 
@@ -62,15 +62,15 @@ public class FalseHand extends Item implements ICurioItem {
                 tooltip.add(LoreStatHelper.displayStat(c.false_hand_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
 
                 int storedTime = stack.getOrCreateTag().getInt("timeLeft");
-                if (storedTime>=60) {
-                    int displayTime = 1+storedTime/60;
-                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_minutes","\u00A76" + displayTime));
+                if (storedTime >= 60) {
+                    int displayTime = 1 + storedTime / 60;
+                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_minutes", "\u00A76" + displayTime));
                 } else {
                     if (storedTime == 0) {
                         tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_second"));
                     } else {
-                        int displayTime = 1+storedTime;
-                        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_seconds","\u00A76" + displayTime));
+                        int displayTime = 1 + storedTime;
+                        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_seconds", "\u00A76" + displayTime));
                     }
                 }
             }
@@ -91,11 +91,11 @@ public class FalseHand extends Item implements ICurioItem {
             if (world.getGameTime() % 20 == 0) {
                 int storedTime = stack.getOrCreateTag().getInt("timeLeft");
                 if (storedTime > 0) {
-                    stack.getOrCreateTag().putInt("timeLeft",storedTime - 1);
+                    stack.getOrCreateTag().putInt("timeLeft", storedTime - 1);
                 } else {
-                    living.playSound(ModSoundEvents.CARD_FLIP.get(),0.5f,1);
-                    stack.getOrCreateTag().putInt("timeLeft",c.false_hand_time.get()-1);
-                    stack.getOrCreateTag().putInt("flipped",0);
+                    living.playSound(ModSoundEvents.CARD_FLIP.get(), 0.5f, 1);
+                    stack.getOrCreateTag().putInt("timeLeft", c.false_hand_time.get() - 1);
+                    stack.getOrCreateTag().putInt("flipped", 0);
                 }
             }
         }
@@ -103,7 +103,7 @@ public class FalseHand extends Item implements ICurioItem {
 
     @OnlyIn(Dist.CLIENT)
     public static void registerVariants() { //property function has a new mystery integer I just named "thing" for now
-        ItemProperties.register(ModItems.FALSE_HAND.get(),new ResourceLocation(BandOfGigantism.MODID,"false_hand_flipped"), (stack, world, entity, thing) -> stack.getOrCreateTag().getInt("flipped"));
+        ItemProperties.register(ModItems.FALSE_HAND.get(), new ResourceLocation(BandOfGigantism.MODID, "false_hand_flipped"), (stack, world, entity, thing) -> stack.getOrCreateTag().getInt("flipped"));
     }
 
     @Override

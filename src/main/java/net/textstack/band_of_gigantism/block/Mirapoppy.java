@@ -31,10 +31,10 @@ public class Mirapoppy extends FlowerBlock implements EntityBlock {
 
         VoxelShape voxelshape = this.getShape(state, level, pos, CollisionContext.empty());
         Vec3 vec3 = voxelshape.bounds().getCenter();
-        double d0 = (double)pos.getX() + vec3.x;
-        double d1 = (double)pos.getZ() + vec3.z;
+        double d0 = (double) pos.getX() + vec3.x;
+        double d1 = (double) pos.getZ() + vec3.z;
 
-        for(int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 3; ++i) {
             if (random.nextBoolean()) {
                 level.addParticle(ParticleTypes.ENCHANT, d0 + (random.nextDouble() - 0.5D) / 3.0D,
                         (double) pos.getY() + random.nextDouble() * 0.5D + 0.25, d1 + (random.nextDouble() - 0.5D) / 3.0D,
@@ -52,6 +52,6 @@ public class Mirapoppy extends FlowerBlock implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
-        return level.isClientSide ? null : (level1, pos1, state1, blockEntity) -> ((MirapoppyEntity)blockEntity).tick(level1, pos1);
+        return level.isClientSide ? null : (level1, pos1, state1, blockEntity) -> ((MirapoppyEntity) blockEntity).tick(level1, pos1);
     }
 }

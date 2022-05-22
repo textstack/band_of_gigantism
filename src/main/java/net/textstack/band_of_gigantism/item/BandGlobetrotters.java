@@ -38,11 +38,11 @@ import java.util.UUID;
 //formerly "ancient_band_generic"; there may still be some files or references set to this old name
 public class BandGlobetrotters extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.DEFENSE,
-            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.MOTION};
-    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
+    private final ScaleType[] scales = {ScaleTypes.WIDTH, ScaleTypes.HEIGHT, ScaleTypes.STEP_HEIGHT, ScaleTypes.DEFENSE,
+            ScaleTypes.REACH, ScaleTypes.VISIBILITY, ScaleTypes.MOTION};
+    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM, ScaleTypes.ATTACK_SPEED};
 
     public BandGlobetrotters(Properties properties) {
         super(properties);
@@ -60,16 +60,16 @@ public class BandGlobetrotters extends Item implements ICurioItem {
 
         //calculate scale
         int storedTime = this.getStoredEnergy(stack);
-        float storedTimeMaxToScale = c.band_globetrotters_limit.get() / Math.abs(c.band_globetrotters_limit_scale.get().floatValue()-c.band_globetrotters_scale.get().floatValue());
-        float newScale = c.band_globetrotters_scale.get().floatValue()+storedTime/storedTimeMaxToScale;
+        float storedTimeMaxToScale = c.band_globetrotters_limit.get() / Math.abs(c.band_globetrotters_limit_scale.get().floatValue() - c.band_globetrotters_scale.get().floatValue());
+        float newScale = c.band_globetrotters_scale.get().floatValue() + storedTime / storedTimeMaxToScale;
 
         //set scale
         if (c.multiply_enable.get()) {
-            int scaleDelay = ScaleHelper.rescaleMultiply(living,scales,newScale, 1,0);
-            ScaleHelper.rescaleMultiply(living,scalesInverse,1.0f/newScale, 1, scaleDelay);
+            int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, newScale, 1, 0);
+            ScaleHelper.rescaleMultiply(living, scalesInverse, 1.0f / newScale, 1, scaleDelay);
         } else {
-            int scaleDelay = ScaleHelper.rescale(living,scales,newScale,0);
-            ScaleHelper.rescale(living,scalesInverse,1.0f/newScale,scaleDelay);
+            int scaleDelay = ScaleHelper.rescale(living, scales, newScale, 0);
+            ScaleHelper.rescale(living, scalesInverse, 1.0f / newScale, scaleDelay);
         }
     }
 
@@ -86,31 +86,31 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         //reset scale
         if (c.multiply_enable.get()) {
             int storedTime = this.getStoredEnergy(stack);
-            float storedTimeMaxToScale = c.band_globetrotters_limit.get() / Math.abs(c.band_globetrotters_limit_scale.get().floatValue()-c.band_globetrotters_scale.get().floatValue());
-            float newScale = c.band_globetrotters_scale.get().floatValue()+storedTime/storedTimeMaxToScale;
+            float storedTimeMaxToScale = c.band_globetrotters_limit.get() / Math.abs(c.band_globetrotters_limit_scale.get().floatValue() - c.band_globetrotters_scale.get().floatValue());
+            float newScale = c.band_globetrotters_scale.get().floatValue() + storedTime / storedTimeMaxToScale;
 
-            int scaleDelay = ScaleHelper.rescaleMultiply(living,scales, 1, newScale,0);
-            ScaleHelper.rescaleMultiply(living,scalesInverse,1, 1.0f/newScale, scaleDelay);
+            int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, 1, newScale, 0);
+            ScaleHelper.rescaleMultiply(living, scalesInverse, 1, 1.0f / newScale, scaleDelay);
         } else {
-            int scaleDelay = ScaleHelper.rescale(living,scales,1,0);
-            ScaleHelper.rescale(living,scalesInverse,1,scaleDelay);
+            int scaleDelay = ScaleHelper.rescale(living, scales, 1, 0);
+            ScaleHelper.rescale(living, scalesInverse, 1, scaleDelay);
         }
     }
 
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
-        ScaleData scaleData = scales[1].getScaleData(living);
+        ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && (Math.abs(scaleBase-1) <= 0.001f || c.multiply_enable.get());
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]) && (Math.abs(scaleBase - 1) <= 0.001f || c.multiply_enable.get());
     }
 
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
 
-        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]);
+        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
 
         //tick up the thingie
         LivingEntity theDude = (LivingEntity) entityIn;
-        if (worldIn.getGameTime() % 100 == 0 &&!CurioHelper.hasCurio(theDude, ModItems.GLOBETROTTERS_BAND.get())) {
+        if (worldIn.getGameTime() % 100 == 0 && !CurioHelper.hasCurio(theDude, ModItems.GLOBETROTTERS_BAND.get())) {
             int storedTime = this.getStoredEnergy(stack);
             if (storedTime < 72000) {
                 this.setStoredEnergy(stack, storedTime + 1);
@@ -144,12 +144,12 @@ public class BandGlobetrotters extends Item implements ICurioItem {
             float scale = c.band_globetrotters_scale.get().floatValue();
             float limitScale = c.band_globetrotters_limit_scale.get().floatValue();
 
-            float storedTimeMaxToScale = limit / Math.abs(limitScale-scale);
-            float newScale = scale+storedTime/storedTimeMaxToScale;
+            float storedTimeMaxToScale = limit / Math.abs(limitScale - scale);
+            float newScale = scale + storedTime / storedTimeMaxToScale;
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_flavor"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayScale(newScale));
-            tooltip.add(LoreStatHelper.displayStat(c.band_globetrotters_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE,true));
+            tooltip.add(LoreStatHelper.displayStat(c.band_globetrotters_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE, true));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_0"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_1"));
@@ -167,7 +167,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         Multimap<Attribute, AttributeModifier> attributesDefault = HashMultimap.create();
 
         attributesDefault.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("cf6f717f-99fc-4057-8eac-ffcbd1f465a1"),
-                BandOfGigantism.MODID+":attack_damage_modifier", c.band_globetrotters_damage.get(), AttributeModifier.Operation.MULTIPLY_BASE));
+                BandOfGigantism.MODID + ":attack_damage_modifier", c.band_globetrotters_damage.get(), AttributeModifier.Operation.MULTIPLY_BASE));
 
         return attributesDefault;
     }
@@ -180,7 +180,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
     @Nonnull
     @Override
     public ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
-        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_NETHERITE,1.0f,1.0f);
+        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_NETHERITE, 1.0f, 1.0f);
     }
 
     @Override

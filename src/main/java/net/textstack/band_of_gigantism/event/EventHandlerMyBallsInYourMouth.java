@@ -3,11 +3,11 @@ package net.textstack.band_of_gigantism.event;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -23,11 +23,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.item.MarkUnknown;
+import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.registry.ModBlocks;
 import net.textstack.band_of_gigantism.registry.ModEffects;
-import net.textstack.band_of_gigantism.item.MarkUnknown;
 import net.textstack.band_of_gigantism.registry.ModItems;
-import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 
 import java.util.Objects;
@@ -36,7 +36,7 @@ import java.util.Objects;
 @Mod.EventBusSubscriber(modid = BandOfGigantism.MODID)
 public class EventHandlerMyBallsInYourMouth {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onLivingHeal(LivingHealEvent event) {
@@ -45,19 +45,19 @@ public class EventHandlerMyBallsInYourMouth {
             LivingEntity living = event.getEntityLiving();
 
             //disables regen and reduces healing
-            if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get())||Objects.requireNonNull(living).hasEffect(ModEffects.RECOVERING.get())) {
+            if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get()) || Objects.requireNonNull(living).hasEffect(ModEffects.RECOVERING.get())) {
                 if (event.getAmount() <= 1.0f) {
                     event.setCanceled(true);
                     return;
                 } else {
-                    event.setAmount(event.getAmount() * (1+c.mark_faded_healing.get().floatValue()));
+                    event.setAmount(event.getAmount() * (1 + c.mark_faded_healing.get().floatValue()));
                 }
             }
 
             //increases regen
             if (CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
                 if (event.getAmount() <= 1.0f) {
-                    event.setAmount(event.getAmount() * (1+c.mark_descended_regeneration.get().floatValue()));
+                    event.setAmount(event.getAmount() * (1 + c.mark_descended_regeneration.get().floatValue()));
                 }
             }
 
@@ -81,9 +81,9 @@ public class EventHandlerMyBallsInYourMouth {
                 int flipped = stack.getOrCreateTag().getInt("flipped");
                 if (flipped == 0) {
                     event.setCanceled(true);
-                    living.setHealth(living.getMaxHealth()/2.0f);
-                    stack.getOrCreateTag().putInt("flipped",1);
-                    living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,100,1,false,false));
+                    living.setHealth(living.getMaxHealth() / 2.0f);
+                    stack.getOrCreateTag().putInt("flipped", 1);
+                    living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 1, false, false));
                 }
             }
         }
@@ -117,11 +117,11 @@ public class EventHandlerMyBallsInYourMouth {
             }
 
             //flat damage vuln for false hand
-            if (CurioHelper.hasCurio(living,ModItems.FALSE_HAND.get())) {
-                int flipped = CurioHelper.hasCurioGet(living,ModItems.FALSE_HAND.get()).getOrCreateTag().getInt("flipped");
-                if (flipped==1) {
-                    float damageReduce = Math.max(event.getAmount() - c.false_hand_flat_resistance.get().floatValue(),0.0f);
-                    if (damageReduce<=0) {
+            if (CurioHelper.hasCurio(living, ModItems.FALSE_HAND.get())) {
+                int flipped = CurioHelper.hasCurioGet(living, ModItems.FALSE_HAND.get()).getOrCreateTag().getInt("flipped");
+                if (flipped == 1) {
+                    float damageReduce = Math.max(event.getAmount() - c.false_hand_flat_resistance.get().floatValue(), 0.0f);
+                    if (damageReduce <= 0) {
                         event.setCanceled(true);
                         return;
                     } else {
@@ -149,8 +149,8 @@ public class EventHandlerMyBallsInYourMouth {
 
             //flat damage resistance
             if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get())) {
-                float damageReduce = Math.max(event.getAmount() - c.mark_faded_flat_resistance.get().floatValue(),0.0f);
-                if (damageReduce<=0) {
+                float damageReduce = Math.max(event.getAmount() - c.mark_faded_flat_resistance.get().floatValue(), 0.0f);
+                if (damageReduce <= 0) {
                     event.setCanceled(true);
                     return;
                 } else {
@@ -160,12 +160,12 @@ public class EventHandlerMyBallsInYourMouth {
 
             //normal (ew) resistance
             if (CurioHelper.hasCurio(living, ModItems.MARK_FORGOTTEN.get())) {
-                event.setAmount(event.getAmount() * (1+c.mark_forgotten_resistance.get().floatValue()));
-                living.addEffect(new MobEffectInstance(ModEffects.FORGETFULNESS.get(),c.mark_forgotten_duration.get(),0,false,false));
+                event.setAmount(event.getAmount() * (1 + c.mark_forgotten_resistance.get().floatValue()));
+                living.addEffect(new MobEffectInstance(ModEffects.FORGETFULNESS.get(), c.mark_forgotten_duration.get(), 0, false, false));
             }
 
-            if (CurioHelper.hasCurio(living,ModItems.BAND_CRUSTACEOUS.get())&&!CurioHelper.hasCurio(living,ModItems.MARK_FADED.get())&&player.getFoodData().getFoodLevel()>=18&&event.getAmount()>0) {
-                living.addEffect(new MobEffectInstance(ModEffects.CRABBY.get(),c.band_crustaceous_duration.get(),0,false,false));
+            if (CurioHelper.hasCurio(living, ModItems.BAND_CRUSTACEOUS.get()) && !CurioHelper.hasCurio(living, ModItems.MARK_FADED.get()) && player.getFoodData().getFoodLevel() >= 18 && event.getAmount() > 0) {
+                living.addEffect(new MobEffectInstance(ModEffects.CRABBY.get(), c.band_crustaceous_duration.get(), 0, false, false));
             }
         }
     }
@@ -175,8 +175,8 @@ public class EventHandlerMyBallsInYourMouth {
         if (event.getEntityLiving() instanceof Player player) {
 
             //crit increase
-            if (CurioHelper.hasCurio(player, ModItems.MARK_FORGOTTEN.get())&&event.isVanillaCritical()) {
-                event.setDamageModifier(event.getDamageModifier()+c.mark_forgotten_critical_damage.get().floatValue());
+            if (CurioHelper.hasCurio(player, ModItems.MARK_FORGOTTEN.get()) && event.isVanillaCritical()) {
+                event.setDamageModifier(event.getDamageModifier() + c.mark_forgotten_critical_damage.get().floatValue());
             }
         }
     }
@@ -228,19 +228,19 @@ public class EventHandlerMyBallsInYourMouth {
     private String colorMark(LivingEntity living, String message) {
         String newMessage = null;
         if (CurioHelper.hasCurio(living, ModItems.MARK_OBLITERATED.get())) { //sorted in order of (in my opinion) difficulty
-            newMessage = "\u00A74"+message+"\u00A7r";
+            newMessage = "\u00A74" + message + "\u00A7r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get())) {
-            newMessage = "\u00A78"+message+"\u00A7r";
+            newMessage = "\u00A78" + message + "\u00A7r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_JUDGED.get())) {
-            newMessage = "\u00A7c"+message+"\u00A7r";
+            newMessage = "\u00A7c" + message + "\u00A7r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
-            newMessage = "\u00A79"+message+"\u00A7r";
+            newMessage = "\u00A79" + message + "\u00A7r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
-            newMessage = "\u00A7a"+message+"\u00A7r";
+            newMessage = "\u00A7a" + message + "\u00A7r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_FORGOTTEN.get())) {
-            newMessage = "\u00A76"+message+"\u00A7r";
+            newMessage = "\u00A76" + message + "\u00A7r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_PURIFIED.get())) {
-            newMessage = "\u00A77"+message+"\u00A7r";
+            newMessage = "\u00A77" + message + "\u00A7r";
         }
         return newMessage;
     }

@@ -16,11 +16,11 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 public class CrabbyEffect extends MobEffect {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.KNOCKBACK,
-            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.ATTACK,ScaleTypes.MOTION};
-    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
+    private final ScaleType[] scales = {ScaleTypes.WIDTH, ScaleTypes.HEIGHT, ScaleTypes.STEP_HEIGHT, ScaleTypes.KNOCKBACK,
+            ScaleTypes.REACH, ScaleTypes.VISIBILITY, ScaleTypes.ATTACK, ScaleTypes.MOTION};
+    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM, ScaleTypes.ATTACK_SPEED};
 
     public CrabbyEffect(int color) {
         super(MobEffectCategory.BENEFICIAL, color);
@@ -30,13 +30,13 @@ public class CrabbyEffect extends MobEffect {
     public void applyEffectTick(@NotNull LivingEntity entityLivingBaseIn, int amplifier) {
         super.applyEffectTick(entityLivingBaseIn, amplifier);
 
-        float healthLost = entityLivingBaseIn.getMaxHealth()-entityLivingBaseIn.getHealth();
+        float healthLost = entityLivingBaseIn.getMaxHealth() - entityLivingBaseIn.getHealth();
         float healthLostDiv = 0.0f;
 
         if (entityLivingBaseIn instanceof Player player) {
             FoodData foodData = player.getFoodData();
             int foodLevel = foodData.getFoodLevel();
-            if (foodLevel>=18) {
+            if (foodLevel >= 18) {
                 float saturation = foodData.getSaturationLevel();
                 float foodLevelSubtract = foodLevel + saturation - healthLost;
                 float healReduce = Math.min(foodLevelSubtract - 17.0f, 0.0f);
@@ -47,18 +47,18 @@ public class CrabbyEffect extends MobEffect {
                 entityLivingBaseIn.setHealth(entityLivingBaseIn.getMaxHealth() + healReduce);
             }
 
-            if (CurioHelper.hasCurio(entityLivingBaseIn, ModItems.BAND_CRUSTACEOUS.get())&&healthLost>=6.0f) {
+            if (CurioHelper.hasCurio(entityLivingBaseIn, ModItems.BAND_CRUSTACEOUS.get()) && healthLost >= 6.0f) {
                 if (c.multiply_enable.get()) {
                     int prevScale = player.getPersistentData().getInt("crustaceousScale");
-                    int setScale = (int)(Math.min(prevScale*(1+healthLostDiv),c.band_crustaceous_limit_scale.get().floatValue()*1000000.0f));
-                    int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale/1000000.0f, prevScale/1000000.0f, 0);
-                    ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f/setScale, 1000000.0f/prevScale, scaleDelay);
-                    player.getPersistentData().putInt("crustaceousScale",setScale);
+                    int setScale = (int) (Math.min(prevScale * (1 + healthLostDiv), c.band_crustaceous_limit_scale.get().floatValue() * 1000000.0f));
+                    int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale / 1000000.0f, prevScale / 1000000.0f, 0);
+                    ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f / setScale, 1000000.0f / prevScale, scaleDelay);
+                    player.getPersistentData().putInt("crustaceousScale", setScale);
                 } else {
                     ScaleData scaleData = ScaleTypes.WIDTH.getScaleData(entityLivingBaseIn);
-                    float newScale = Math.min(scaleData.getTargetScale()*(1+healthLostDiv),c.band_crustaceous_limit_scale.get().floatValue());
-                    int scaleDelay = ScaleHelper.rescale(entityLivingBaseIn,scales,newScale,0);
-                    ScaleHelper.rescale(entityLivingBaseIn,scalesInverse,1.0f/newScale,scaleDelay);
+                    float newScale = Math.min(scaleData.getTargetScale() * (1 + healthLostDiv), c.band_crustaceous_limit_scale.get().floatValue());
+                    int scaleDelay = ScaleHelper.rescale(entityLivingBaseIn, scales, newScale, 0);
+                    ScaleHelper.rescale(entityLivingBaseIn, scalesInverse, 1.0f / newScale, scaleDelay);
                 }
             }
         } else {

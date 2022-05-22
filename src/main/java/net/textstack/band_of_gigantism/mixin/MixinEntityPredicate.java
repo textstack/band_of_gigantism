@@ -29,23 +29,24 @@ public class MixinEntityPredicate {
     protected
     Mob mob;
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
-    public MixinEntityPredicate() {}
+    public MixinEntityPredicate() {
+    }
 
     @Inject(
             method = {"canContinueToUse"},
             at = {@At(value = "TAIL")}
             //cancellable = true
     )
-    private void onCanContinueToUse (CallbackInfoReturnable<Double> info) {
+    private void onCanContinueToUse(CallbackInfoReturnable<Double> info) {
 
         LivingEntity target = this.mob.getTarget();
 
         //give entities strength when targetting a judged player
         if (target != null || (target = this.targetMob) != null)
-        if (CurioHelper.hasCurio(target, ModItems.MARK_JUDGED.get()) && mob.getClassification(false) == MobCategory.MONSTER) {
-            mob.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST,c.mark_judged_duration.get(),4,false,true));
-        }
+            if (CurioHelper.hasCurio(target, ModItems.MARK_JUDGED.get()) && mob.getClassification(false) == MobCategory.MONSTER) {
+                mob.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, c.mark_judged_duration.get(), 4, false, true));
+            }
     }
 }

@@ -17,9 +17,11 @@ public class FryingPan extends SwordItem {
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
 
         Level worldIn = attacker.getLevel();
-        if (worldIn.isClientSide()) {return super.hurtEnemy(stack, target, attacker);}
+        if (worldIn.isClientSide()) {
+            return super.hurtEnemy(stack, target, attacker);
+        }
 
-        target.playSound(ModSoundEvents.PAN_HIT.get(),0.3f,1);
+        target.playSound(ModSoundEvents.PAN_HIT.get(), 0.3f, 1);
 
         return super.hurtEnemy(stack, target, attacker);
     }

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MarkTrue extends Item {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkTrue(Properties properties) {
         super(properties);
@@ -49,7 +49,7 @@ public class MarkTrue extends Item {
         //replaces the item with one of seven marks
         if (entityIn instanceof Player player) {
 
-            if (player.isCreative()||!player.isAlive()||player.isSpectator()) return;
+            if (player.isCreative() || !player.isAlive() || player.isSpectator()) return;
             NonNullList<ItemStack> list = player.getInventory().items;
 
             ItemStack stackCheck = stack;

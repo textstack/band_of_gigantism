@@ -35,11 +35,11 @@ import java.util.List;
 
 public class BandBasic extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,
-            ScaleTypes.REACH,ScaleTypes.VISIBILITY,ScaleTypes.KNOCKBACK};
-    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM,ScaleTypes.ATTACK_SPEED};
+    private final ScaleType[] scales = {ScaleTypes.WIDTH, ScaleTypes.HEIGHT, ScaleTypes.STEP_HEIGHT,
+            ScaleTypes.REACH, ScaleTypes.VISIBILITY, ScaleTypes.KNOCKBACK};
+    private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM, ScaleTypes.ATTACK_SPEED};
 
     public BandBasic(Properties properties) {
         super(properties);
@@ -57,10 +57,10 @@ public class BandBasic extends Item implements ICurioItem {
 
         int setScale;
 
-        if (stack.getOrCreateTag().getInt("crafted")==1) {
+        if (stack.getOrCreateTag().getInt("crafted") == 1) {
             setScale = stack.getOrCreateTag().getInt("scale");
         } else {
-            setScale = (int)(c.band_basic_scale.get()*10000.0);
+            setScale = (int) (c.band_basic_scale.get() * 10000.0);
         }
 
         //set scale
@@ -88,10 +88,10 @@ public class BandBasic extends Item implements ICurioItem {
 
             int setScale;
 
-            if (stack.getOrCreateTag().getInt("crafted")==1) {
+            if (stack.getOrCreateTag().getInt("crafted") == 1) {
                 setScale = stack.getOrCreateTag().getInt("scale");
             } else {
-                setScale = (int)(c.band_basic_scale.get()*10000.0);
+                setScale = (int) (c.band_basic_scale.get() * 10000.0);
             }
 
             int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, 1, setScale / 10000.0f, 0);
@@ -106,7 +106,7 @@ public class BandBasic extends Item implements ICurioItem {
     public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
         super.onCraftedBy(stack, level, player);
 
-        stack.getOrCreateTag().putInt("crafted",1);
+        stack.getOrCreateTag().putInt("crafted", 1);
         stack.setHoverName(new TranslatableComponent("tooltip.band_of_gigantism.band_basic_reveal"));
 
         double scaleRange = Math.abs(c.band_basic_max_scale.get() - c.band_basic_min_scale.get());
@@ -127,7 +127,7 @@ public class BandBasic extends Item implements ICurioItem {
 
         LivingEntity living = (LivingEntity) entityIn;
 
-        if (worldIn.getGameTime()%100 == 0 && stack.getOrCreateTag().getInt("crafted")==1 && ScaleHelper.isDoneScaling(living,scales[1])) {
+        if (worldIn.getGameTime() % 100 == 0 && stack.getOrCreateTag().getInt("crafted") == 1 && ScaleHelper.isDoneScaling(living, scales[1])) {
 
             int timeLeft = stack.getOrCreateTag().getInt("timeLeft");
             if (timeLeft <= 0) {
@@ -151,7 +151,7 @@ public class BandBasic extends Item implements ICurioItem {
                 stack.getOrCreateTag().putInt("scale", setScale);
                 stack.getOrCreateTag().putInt("timeLeft", (int) (Math.random() * 22 + 2));
             } else {
-                stack.getOrCreateTag().putInt("timeLeft", timeLeft-1);
+                stack.getOrCreateTag().putInt("timeLeft", timeLeft - 1);
             }
         }
     }
@@ -164,7 +164,7 @@ public class BandBasic extends Item implements ICurioItem {
 
         tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            if (stack.getOrCreateTag().getInt("crafted")==1) {
+            if (stack.getOrCreateTag().getInt("crafted") == 1) {
                 tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_basic_description_flavor"));
             } else {
                 tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shrink_band_generic_description_flavor"));
@@ -183,22 +183,22 @@ public class BandBasic extends Item implements ICurioItem {
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
-        ScaleData scaleData = scales[1].getScaleData(living);
+        ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && (Math.abs(scaleBase-1) <= 0.001f || c.multiply_enable.get());
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]) && (Math.abs(scaleBase - 1) <= 0.001f || c.multiply_enable.get());
     }
 
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
 
-        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]);
+        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]);
     }
 
     @OnlyIn(Dist.CLIENT)
     public static void registerVariants() { //property function has a new mystery integer I just named "thing" for now
-        ItemProperties.register(ModItems.BAND_BASIC.get(),new ResourceLocation(BandOfGigantism.MODID,"crafted"), (stack, world, entity, thing) -> stack.getOrCreateTag().getInt("crafted"));
+        ItemProperties.register(ModItems.BAND_BASIC.get(), new ResourceLocation(BandOfGigantism.MODID, "crafted"), (stack, world, entity, thing) -> stack.getOrCreateTag().getInt("crafted"));
     }
 
     @Override
@@ -209,6 +209,6 @@ public class BandBasic extends Item implements ICurioItem {
     @Nonnull
     @Override
     public ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
-        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_IRON,1.0f,1.0f);
+        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_IRON, 1.0f, 1.0f);
     }
 }

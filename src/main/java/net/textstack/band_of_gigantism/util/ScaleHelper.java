@@ -30,17 +30,9 @@ public class ScaleHelper {
 
                 float newScale = Math.max(Math.min(value, c.general_scale_limit.get().floatValue()), 0.001f);
 
-                if (setDelay <=0&&scale == scales[0]) {
-                    tickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - value) * BOGConfig.INSTANCE.scale_speed.get()),5);
+                if (setDelay <= 0 && scale == scales[0]) {
+                    tickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - value) * BOGConfig.INSTANCE.scale_speed.get()), 5);
                 }
-
-                /*int localTickDelay;
-                if (setDelay <=0) {
-                    localTickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - value) * BOGConfig.INSTANCE.scale_speed.get()),5);
-                    if (scale == scales[1]) {
-                        tickDelay = localTickDelay;
-                    }
-                } else {localTickDelay = tickDelay;}*/
 
                 scaleData.setTargetScale(newScale);
                 scaleData.setScaleTickDelay(tickDelay);
@@ -67,24 +59,16 @@ public class ScaleHelper {
 
             ScaleData scaleData = scale.getScaleData(entity);
             float scaleTarget = scaleData.getTargetScale();
-            float valueAdjust = value*(1.0f/currentShift)*scaleTarget;
+            float valueAdjust = value * (1.0f / currentShift) * scaleTarget;
 
             float scaleDifference = Math.abs(scaleTarget - valueAdjust) / Math.max(scaleTarget, valueAdjust);
             if (scaleDifference > 0.001f) {
 
                 float newScale = Math.max(Math.min(valueAdjust, c.general_scale_limit.get().floatValue()), 0.001f);
 
-                if (setDelay <=0&&scale == scales[0]) {
-                    tickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - valueAdjust) * BOGConfig.INSTANCE.scale_speed.get()),5);
+                if (setDelay <= 0 && scale == scales[0]) {
+                    tickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - valueAdjust) * BOGConfig.INSTANCE.scale_speed.get()), 5);
                 }
-
-                /*int localTickDelay;
-                if (setDelay <=0) {
-                    localTickDelay = (int) Math.max(Math.ceil(Math.abs(scaleTarget - value) * BOGConfig.INSTANCE.scale_speed.get()),5);
-                    if (scale == scales[1]) {
-                        tickDelay = localTickDelay;
-                    }
-                } else {localTickDelay = tickDelay;}*/
 
                 scaleData.setTargetScale(newScale);
                 scaleData.setScaleTickDelay(tickDelay);

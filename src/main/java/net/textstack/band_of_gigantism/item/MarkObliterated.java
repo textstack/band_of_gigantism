@@ -29,7 +29,7 @@ import java.util.UUID;
 
 public class MarkObliterated extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkObliterated(Properties properties) {
         super(properties);
@@ -54,8 +54,8 @@ public class MarkObliterated extends Item implements ICurioItem {
         if (Screen.hasShiftDown()) {
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_obliterated_description_flavor"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE,true));
-            tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_knockback.get().floatValue(), LoreStatHelper.Stat.KNOCKBACK,true));
+            tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE, true));
+            tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_knockback.get().floatValue(), LoreStatHelper.Stat.KNOCKBACK, true));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_health.get(), LoreStatHelper.Stat.MAX_HEALTH));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_armor.get(), LoreStatHelper.Stat.ARMOR));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_armor_toughness.get(), LoreStatHelper.Stat.ARMOR_TOUGHNESS));
@@ -73,15 +73,15 @@ public class MarkObliterated extends Item implements ICurioItem {
 
         //yes, this item ACTUALLY gives buffs.
         attributesDefault.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("a95728cb-942d-475a-b664-f96b4ba4b0e4"),
-                BandOfGigantism.MODID+":attack_damage_modifier_obl", c.mark_obliterated_damage.get(), AttributeModifier.Operation.MULTIPLY_BASE));
+                BandOfGigantism.MODID + ":attack_damage_modifier_obl", c.mark_obliterated_damage.get(), AttributeModifier.Operation.MULTIPLY_BASE));
         attributesDefault.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(UUID.fromString("6cc188ba-2451-497b-8031-53d60682d55e"),
-                BandOfGigantism.MODID+":attack_attack_knockback_modifier_obl", c.mark_obliterated_knockback.get(), AttributeModifier.Operation.MULTIPLY_BASE));
+                BandOfGigantism.MODID + ":attack_attack_knockback_modifier_obl", c.mark_obliterated_knockback.get(), AttributeModifier.Operation.MULTIPLY_BASE));
         attributesDefault.put(Attributes.ARMOR, new AttributeModifier(UUID.fromString("82b7d207-e22e-4d21-930d-fa2f7898453e"),
-                BandOfGigantism.MODID+":attack_armor_modifier_obl", c.mark_obliterated_armor.get(), AttributeModifier.Operation.ADDITION));
+                BandOfGigantism.MODID + ":attack_armor_modifier_obl", c.mark_obliterated_armor.get(), AttributeModifier.Operation.ADDITION));
         attributesDefault.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(UUID.fromString("b043fb33-51d9-48b5-9857-2944a3dcfdae"),
-                BandOfGigantism.MODID+":attack_armor_toughness_modifier_obl", c.mark_obliterated_armor_toughness.get(), AttributeModifier.Operation.ADDITION));
+                BandOfGigantism.MODID + ":attack_armor_toughness_modifier_obl", c.mark_obliterated_armor_toughness.get(), AttributeModifier.Operation.ADDITION));
         attributesDefault.put(Attributes.MAX_HEALTH, new AttributeModifier(UUID.fromString("5a15b94f-8ec1-4989-a41e-de8e9effd418"),
-                BandOfGigantism.MODID+":attack_max_health_modifier_obl", c.mark_obliterated_health.get(), AttributeModifier.Operation.ADDITION));
+                BandOfGigantism.MODID + ":attack_max_health_modifier_obl", c.mark_obliterated_health.get(), AttributeModifier.Operation.ADDITION));
 
         return attributesDefault;
     }

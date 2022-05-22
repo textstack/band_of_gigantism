@@ -19,8 +19,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
+import net.textstack.band_of_gigantism.registry.ModEffects;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
@@ -33,7 +33,7 @@ import java.util.UUID;
 
 public class MarkPurified extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkPurified(Properties properties) {
         super(properties);
@@ -46,8 +46,8 @@ public class MarkPurified extends Item implements ICurioItem {
         LivingEntity living = slotContext.entity();
 
         //deal near-mortal damage, prevent healing for 10 seconds
-        living.hurt(MarkDamageSource.BOG_PURIFIED, living.getMaxHealth()-1);
-        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
+        living.hurt(MarkDamageSource.BOG_PURIFIED, living.getMaxHealth() - 1);
+        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
 
         //remove the variable modifiers
         AttributeMap map = living.getAttributes();
@@ -108,15 +108,15 @@ public class MarkPurified extends Item implements ICurioItem {
     private Multimap<Attribute, AttributeModifier> createAttributeMap(LivingEntity player) {
         Multimap<Attribute, AttributeModifier> attributesDefault = HashMultimap.create();
 
-        double armor = Math.floor(player.getAttributeValue(Attributes.ARMOR)*c.mark_purified_ratio.get().floatValue()+player.getAttributeValue(Attributes.ARMOR_TOUGHNESS)*c.mark_purified_ratio_tough.get().floatValue());
-        armor = armor + armor%2; //nobody likes a max health value with a partial heart in it
+        double armor = Math.floor(player.getAttributeValue(Attributes.ARMOR) * c.mark_purified_ratio.get().floatValue() + player.getAttributeValue(Attributes.ARMOR_TOUGHNESS) * c.mark_purified_ratio_tough.get().floatValue());
+        armor = armor + armor % 2; //nobody likes a max health value with a partial heart in it
 
         attributesDefault.put(Attributes.MAX_HEALTH, new AttributeModifier(UUID.fromString("e8c9458e-7db4-41d9-8edf-ae545af2224a"),
-                BandOfGigantism.MODID+":attack_max_health_modifier_purified", armor, AttributeModifier.Operation.ADDITION));
+                BandOfGigantism.MODID + ":attack_max_health_modifier_purified", armor, AttributeModifier.Operation.ADDITION));
         attributesDefault.put(Attributes.ARMOR, new AttributeModifier(UUID.fromString("0fa8852d-e782-4749-80c2-17164a3fbf1e"),
-                BandOfGigantism.MODID+":attack_armor_modifier_purified", -1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                BandOfGigantism.MODID + ":attack_armor_modifier_purified", -1, AttributeModifier.Operation.MULTIPLY_TOTAL));
         attributesDefault.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(UUID.fromString("9a37453b-68f7-41db-add7-d08252df6d3d"),
-                BandOfGigantism.MODID+":attack_armor_toughness_modifier_purified", -1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                BandOfGigantism.MODID + ":attack_armor_toughness_modifier_purified", -1, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
         return attributesDefault;
     }

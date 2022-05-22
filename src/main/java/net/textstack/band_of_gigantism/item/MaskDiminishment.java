@@ -29,9 +29,9 @@ import java.util.List;
 
 public class MaskDiminishment extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
-    private final ScaleType[] scales = {ScaleTypes.WIDTH,ScaleTypes.HEIGHT,ScaleTypes.STEP_HEIGHT,ScaleTypes.REACH,ScaleTypes.VISIBILITY};
+    private final ScaleType[] scales = {ScaleTypes.WIDTH, ScaleTypes.HEIGHT, ScaleTypes.STEP_HEIGHT, ScaleTypes.REACH, ScaleTypes.VISIBILITY};
     private final ScaleType[] scalesInverse = {ScaleTypes.HELD_ITEM};
 
     public MaskDiminishment(Properties properties) {
@@ -82,17 +82,17 @@ public class MaskDiminishment extends Item implements ICurioItem {
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
-        ScaleData scaleData = scales[1].getScaleData(living);
+        ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]) && (Math.abs(scaleBase-1) <= 0.001f || c.multiply_enable.get());
+        return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]) && (Math.abs(scaleBase - 1) <= 0.001f || c.multiply_enable.get());
     }
 
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
 
-        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living,scales[1]);
+        return ICurioItem.super.canUnequip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class MaskDiminishment extends Item implements ICurioItem {
         LivingEntity living = slotContext.entity();
 
         //scale player based on inventory fill percentage
-        if (living.level.getGameTime() % 10 == 0 && ScaleHelper.isDoneScaling(living,scales[1])) {
+        if (living.level.getGameTime() % 10 == 0 && ScaleHelper.isDoneScaling(living, scales[0])) {
             if (living instanceof Player player) {
 
                 NonNullList<ItemStack> list = player.getInventory().items;
@@ -123,14 +123,14 @@ public class MaskDiminishment extends Item implements ICurioItem {
                 }
 
                 if (c.multiply_enable.get()) {
-                    int setScale = (int)(newScale*1000000);
+                    int setScale = (int) (newScale * 1000000);
                     int prevScale = player.getPersistentData().getInt("diminishmentScale");
-                    int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale/1000000.0f, prevScale/1000000.0f, 0);
-                    ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f/setScale, 1000000.0f/prevScale, scaleDelay);
-                    player.getPersistentData().putInt("diminishmentScale",setScale);
+                    int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale / 1000000.0f, prevScale / 1000000.0f, 0);
+                    ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f / setScale, 1000000.0f / prevScale, scaleDelay);
+                    player.getPersistentData().putInt("diminishmentScale", setScale);
                 } else {
-                    int scaleDelay = ScaleHelper.rescale(player,scales,newScale,0);
-                    ScaleHelper.rescale(player,scalesInverse,1/newScale,scaleDelay);
+                    int scaleDelay = ScaleHelper.rescale(player, scales, newScale, 0);
+                    ScaleHelper.rescale(player, scalesInverse, 1 / newScale, scaleDelay);
                 }
             }
         }
@@ -174,6 +174,6 @@ public class MaskDiminishment extends Item implements ICurioItem {
     @Nonnull
     @Override
     public ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
-        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC,1.0f,1.0f);
+        return new ICurio.SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC, 1.0f, 1.0f);
     }
 }

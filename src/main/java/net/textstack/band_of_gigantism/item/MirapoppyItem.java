@@ -18,7 +18,7 @@ import java.util.List;
 
 public class MirapoppyItem extends BlockItem implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public MirapoppyItem(Block block, Properties properties) {
         super(block, properties);

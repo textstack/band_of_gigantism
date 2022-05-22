@@ -18,10 +18,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
-import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
@@ -35,7 +35,7 @@ import java.util.UUID;
 
 public class MarkDescended extends Item implements ICurioItem {
 
-    BOGConfig c = BOGConfig.INSTANCE;
+    final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkDescended(Properties properties) {
         super(properties);
@@ -48,8 +48,8 @@ public class MarkDescended extends Item implements ICurioItem {
         //deal near-mortal damage, prevent healing
         LivingEntity living = slotContext.entity();
         if (!CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) { //this method is called whenever nbt changes, make sure not to kill for that
-            living.hurt(MarkDamageSource.BOG_DESCENDED, living.getMaxHealth()-1);
-            living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(),c.marks_duration.get(),0,false,false));
+            living.hurt(MarkDamageSource.BOG_DESCENDED, living.getMaxHealth() - 1);
+            living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
         }
     }
 
@@ -78,7 +78,7 @@ public class MarkDescended extends Item implements ICurioItem {
                 this.setPosY(stack, posY);
             }
         } else {
-            this.setPosY(stack,posY);
+            this.setPosY(stack, posY);
         }
     }
 
@@ -92,7 +92,7 @@ public class MarkDescended extends Item implements ICurioItem {
 
         //update mark's pos when not equipped
         LivingEntity living = (LivingEntity) entityIn;
-        if (worldIn.getGameTime()%10==0&&!CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
+        if (worldIn.getGameTime() % 10 == 0 && !CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
             int posY = (int) Math.ceil(living.blockPosition().getY());
             this.setPosY(stack, posY);
         }
@@ -109,7 +109,7 @@ public class MarkDescended extends Item implements ICurioItem {
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_descended_description_flavor"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_descended_armor.get(), LoreStatHelper.Stat.ARMOR));
-            tooltip.add(LoreStatHelper.displayStat(c.mark_descended_regeneration.get().floatValue(), LoreStatHelper.Stat.REGENERATION,true));
+            tooltip.add(LoreStatHelper.displayStat(c.mark_descended_regeneration.get().floatValue(), LoreStatHelper.Stat.REGENERATION, true));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_descended_description_shift_0"));
             tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_descended_description_shift_1"));
