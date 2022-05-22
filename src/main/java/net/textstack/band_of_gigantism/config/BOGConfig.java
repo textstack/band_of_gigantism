@@ -4,7 +4,6 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class BOGConfig {
-    //public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
     public static final BOGConfig INSTANCE;
     static {
@@ -41,6 +40,7 @@ public class BOGConfig {
     public final ForgeConfigSpec.DoubleValue band_crustaceous_scale;
     public final ForgeConfigSpec.DoubleValue band_crustaceous_limit_scale;
     public final ForgeConfigSpec.IntValue band_crustaceous_duration;
+    public final ForgeConfigSpec.BooleanValue band_crustaceous_heal;
 
     //false hand
     public final ForgeConfigSpec.DoubleValue false_hand_flat_resistance;
@@ -114,7 +114,7 @@ public class BOGConfig {
         BUILDER.push("general");
             scale_speed = BUILDER.comment("Scaling speed in ticks per unit of scale change. (default 20)").defineInRange("scale_speed",20,1,Integer.MAX_VALUE);
             description_enable = BUILDER.comment("Whether items have detailed descriptions. Disable if you hate information.").define("description_enable", true);
-            multiply_enable = BUILDER.comment("Whether scaling items take into account the player's current scale, allowing multiple to be worn. Might be unstable!").define("multiply_enable",false);
+            multiply_enable = BUILDER.comment("Whether scaling items take into account the player's current scale, allowing multiple to be worn. Might be unstable! (default false)").define("multiply_enable",false);
             general_scale_limit = BUILDER.comment("The absolute max scale that any item in Band of Gigantism can scale the player to (default 32.0)").defineInRange("general_scale_limit",32.0,1.0,64.0);
         BUILDER.pop().push("items").comment("Change item scaling").push("scaling");
 
@@ -145,6 +145,7 @@ public class BOGConfig {
             BUILDER.pop().comment("Band of Crustaceous Convergence settings").push("band_crustaceous");
 
                 band_crustaceous_duration = BUILDER.comment("Duration between getting hit and regenerating, in ticks. (default 200)").defineInRange("band_crustaceous_timer",200,1,Integer.MAX_VALUE);
+                band_crustaceous_heal = BUILDER.comment("If enabled, the regen effect will apply healing rather than set health directly, allowing the regen to be modified by other items. (default true)").define("band_crustaceous_heal",true);
             BUILDER.pop().comment("False Hand settings").push("false_hand");
 
                 false_hand_flat_resistance = BUILDER.comment("Amount of flat damage resistance added when equipping while flipped (default -2.0)").defineInRange("false_hand_flat_resistance",-2.0,-Float.MAX_VALUE,Float.MAX_VALUE);
@@ -198,7 +199,5 @@ public class BOGConfig {
                     mark_obliterated_armor_toughness = BUILDER.comment("Amount to add to the player's armor toughness when equipping. (default 8)").defineInRange("mark_obliterated_armor_toughness",8,Integer.MIN_VALUE,Integer.MAX_VALUE);
                     mark_obliterated_health = BUILDER.comment("Amount to add to the player's max health when equipping. (default 10)").defineInRange("mark_obliterated_health",10,Integer.MIN_VALUE,Integer.MAX_VALUE);
                 BUILDER.pop().pop().pop();
-
-        //SPEC = BUILDER.build();
     }
 }
