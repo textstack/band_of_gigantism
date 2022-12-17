@@ -1,22 +1,28 @@
 package net.textstack.band_of_gigantism.event;
 
+import com.google.common.base.Suppliers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import java.util.List;
+import java.util.function.Supplier;
 
-public class GenericLootModifierMultiple extends LootModifier {
+public class GenericLootModifierMultiple  { //extends LootModifier
+    /*public static final Supplier<Codec<GenericLootModifierMultiple>> CODEC = Suppliers.memoize(()
+            -> RecordCodecBuilder.create(inst -> codecStart(inst).and(ForgeRegistries.ITEMS.getCodec()
+            .fieldOf("item").forGetter(m -> m.item)).apply(inst, GenericLootModifierMultiple::new)));
     private final JsonArray additionArray;
 
     protected GenericLootModifierMultiple(LootItemCondition[] conditionsIn, JsonArray additionArray) {
@@ -24,9 +30,8 @@ public class GenericLootModifierMultiple extends LootModifier {
         this.additionArray = additionArray;
     }
 
-    @Nonnull
     @Override
-    protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+    protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         for (JsonElement additionElement : additionArray) {
             JsonObject additionObject = additionElement.getAsJsonObject();
             Item addition = ForgeRegistries.ITEMS.getValue(new ResourceLocation(additionObject.get("item").getAsString()));
@@ -38,21 +43,8 @@ public class GenericLootModifierMultiple extends LootModifier {
         return generatedLoot;
     }
 
-    public static class Serializer extends GlobalLootModifierSerializer<GenericLootModifierMultiple> {
-
-        @Override
-        public GenericLootModifierMultiple read(ResourceLocation name, JsonObject object, LootItemCondition[] conditionsIn) {
-            JsonArray additionArray = GsonHelper.getAsJsonArray(object, "addition");
-            return new GenericLootModifierMultiple(conditionsIn, additionArray);
-        }
-
-        @Override
-        public JsonObject write(GenericLootModifierMultiple instance) {
-            JsonObject json = makeConditions(instance.conditions);
-            for (JsonElement additionElement : instance.additionArray) {
-                json.addProperty("addition", additionElement.getAsString());
-            }
-            return json;
-        }
-    }
+    @Override
+    public Codec<? extends IGlobalLootModifier> codec() {
+        return CODEC.get();
+    }*/
 }

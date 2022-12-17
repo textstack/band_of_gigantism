@@ -3,7 +3,6 @@ package net.textstack.band_of_gigantism.item;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -107,7 +106,7 @@ public class BandBasic extends Item implements ICurioItem {
         super.onCraftedBy(stack, level, player);
 
         stack.getOrCreateTag().putInt("crafted", 1);
-        stack.setHoverName(new TranslatableComponent("tooltip.band_of_gigantism.band_basic_reveal"));
+        stack.setHoverName(Component.translatable("tooltip.band_of_gigantism.band_basic_reveal"));
 
         double scaleRange = Math.abs(c.band_basic_max_scale.get() - c.band_basic_min_scale.get());
         double scaleLower = Math.min(c.band_basic_max_scale.get(), c.band_basic_min_scale.get());
@@ -162,21 +161,21 @@ public class BandBasic extends Item implements ICurioItem {
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
             if (stack.getOrCreateTag().getInt("crafted") == 1) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_basic_description_flavor"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_basic_description_flavor"));
             } else {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shrink_band_generic_description_flavor"));
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.shrink_band_generic_description_flavor"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
 
                 tooltip.add(LoreStatHelper.displayScale(c.band_basic_scale.get().floatValue()));
             }
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_apathy_description_shift_0"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_1"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_apathy_description_shift_0"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_generic_description_shift_1"));
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
     }
 

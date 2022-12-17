@@ -13,10 +13,7 @@ import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.event.EventHandlerMyBallsInYourMouth;
 import net.textstack.band_of_gigantism.item.BandBasic;
 import net.textstack.band_of_gigantism.item.FalseHand;
-import net.textstack.band_of_gigantism.registry.ModBlocks;
-import net.textstack.band_of_gigantism.registry.ModEffects;
-import net.textstack.band_of_gigantism.registry.ModItems;
-import net.textstack.band_of_gigantism.registry.ModSoundEvents;
+import net.textstack.band_of_gigantism.registry.*;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
 
@@ -40,6 +37,7 @@ public class BandOfGigantism
         ModItems.register(eventBus);
         ModEffects.register(eventBus);
         ModSoundEvents.register(eventBus);
+        ModLootModifiers.register(eventBus);
         ModBlocks.BLOCK_ENTITIES.register(eventBus);
         ModBlocks.BLOCKS.register(eventBus);
 

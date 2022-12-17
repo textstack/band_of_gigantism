@@ -1,54 +1,46 @@
 package net.textstack.band_of_gigantism.event;
 
-import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import com.google.common.base.Suppliers;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Objects;
+import java.util.function.Supplier;
 
 public class GenericLootModifier extends LootModifier {
-    private final Item addition;
-    private final float chance;
+    public static final Supplier<Codec<GenericLootModifier>> CODEC = Suppliers.memoize(()
+            -> RecordCodecBuilder.create(inst -> codecStart(inst).and(ForgeRegistries.ITEMS.getCodec()
+            .fieldOf("item").forGetter(m -> m.item)).apply(inst, GenericLootModifier::new)));
+    private final Item item;
 
-    protected GenericLootModifier(LootItemCondition[] conditionsIn, Item addition, float chance) {
+    protected GenericLootModifier(LootItemCondition[] conditionsIn, Item item) {
         super(conditionsIn);
-        this.addition = addition;
-        this.chance = chance;
+        this.item = item;
     }
 
-    @Nonnull
     @Override
-    protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
-        if (context.getRandom().nextFloat() < chance) {
-            generatedLoot.add(new ItemStack(addition, 1));
+    protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+        if (context.getRandom().nextFloat() < 0.5f) {
+            generatedLoot.add(new ItemStack(item, 1));
         }
+
         return generatedLoot;
     }
 
-    public static class Serializer extends GlobalLootModifierSerializer<GenericLootModifier> {
-
-        @Override
-        public GenericLootModifier read(ResourceLocation name, JsonObject object, LootItemCondition[] conditionsIn) {
-            Item addition = ForgeRegistries.ITEMS.getValue(
-                    new ResourceLocation(GsonHelper.getAsString(object, "addition")));
-            float chance = GsonHelper.getAsFloat(object, "chance");
-            return new GenericLootModifier(conditionsIn, addition, chance);
-        }
-
-        @Override
-        public JsonObject write(GenericLootModifier instance) {
-            JsonObject json = makeConditions(instance.conditions);
-            json.addProperty("addition", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(instance.addition)).toString());
-            return json;
-        }
+    @Override
+    public Codec<? extends IGlobalLootModifier> codec() {
+        return CODEC.get();
     }
 }
+
+//if (context.getRandom().nextFloat() < chance) {
+//            generatedLoot.add(new ItemStack(item, 1));
+//        }

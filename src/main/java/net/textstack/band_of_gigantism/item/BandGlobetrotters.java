@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -137,7 +136,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
             int storedTime = this.getStoredEnergy(stack);
             float limit = c.band_globetrotters_limit.get();
@@ -146,18 +145,18 @@ public class BandGlobetrotters extends Item implements ICurioItem {
 
             float storedTimeMaxToScale = limit / Math.abs(limitScale - scale);
             float newScale = scale + storedTime / storedTimeMaxToScale;
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_flavor"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.globetrotters_band_description_flavor"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayScale(newScale));
             tooltip.add(LoreStatHelper.displayStat(c.band_globetrotters_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE, true));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_0"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_shift_1"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_2"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.globetrotters_band_description_shift_3"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.globetrotters_band_description_shift_0"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_generic_description_shift_1"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.globetrotters_band_description_shift_2"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.globetrotters_band_description_shift_3"));
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
     }
 

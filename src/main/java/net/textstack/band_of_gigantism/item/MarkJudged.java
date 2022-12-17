@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -55,18 +54,18 @@ public class MarkJudged extends Item implements ICurioItem {
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_judged_description_flavor"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_judged_description_flavor"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_judged_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE));
             tooltip.add(LoreStatHelper.displayStat(c.mark_judged_speed.get().floatValue(), LoreStatHelper.Stat.SPEED, true));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_judged_description_shift_1"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_generic_description"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_judged_description_shift_1"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_generic_description"));
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
     }
 

@@ -1,6 +1,7 @@
 package net.textstack.band_of_gigantism.util;
 
-import net.minecraft.network.chat.TranslatableComponent;
+
+import net.minecraft.network.chat.Component;
 
 public class LoreStatHelper {
 
@@ -32,7 +33,7 @@ public class LoreStatHelper {
      * @param isPercent whether to display as a percentage, optional
      * @return the TranslationTextComponent of the display
      */
-    public static TranslatableComponent displayStat(float display, Stat statType, boolean isPercent) {
+    public static Component displayStat(float display, Stat statType, boolean isPercent) {
 
         String stat = switch (statType) {
             case DAMAGE -> "damage";
@@ -66,10 +67,10 @@ public class LoreStatHelper {
             }
         }
 
-        return new TranslatableComponent("tooltip.band_of_gigantism." + stat + isNegative, value);
+        return Component.translatable("tooltip.band_of_gigantism." + stat + isNegative, value);
     }
 
-    public static TranslatableComponent displayStat(float display, Stat statType) {
+    public static Component displayStat(float display, Stat statType) {
         return displayStat(display, statType, false);
     }
 
@@ -80,14 +81,14 @@ public class LoreStatHelper {
      * @param display the new scale the player will be in when equipping
      * @return the TranslationTextComponent of the display
      */
-    public static TranslatableComponent displayScale(float display) {
+    public static Component displayScale(float display) {
 
         int display_percent = (int) (Math.abs(display - 1) * 100);
 
         if (display < 1) {
-            return new TranslatableComponent("tooltip.band_of_gigantism.shrink_band_generic_description_percent", "\u00A76" + display_percent + "%");
+            return Component.translatable("tooltip.band_of_gigantism.shrink_band_generic_description_percent", "\u00A76" + display_percent + "%");
         } else {
-            return new TranslatableComponent("tooltip.band_of_gigantism.band_generic_description_percent", "\u00A76" + display_percent + "%");
+            return Component.translatable("tooltip.band_of_gigantism.band_generic_description_percent", "\u00A76" + display_percent + "%");
         }
     }
 
@@ -98,7 +99,7 @@ public class LoreStatHelper {
      * @param type  whether the text will be in a tooltip or title
      * @return the TranslationTextComponent of the name
      */
-    public static TranslatableComponent displayStrangeName(int kills, StrangeType type) {
+    public static String displayStrangeName(int kills, StrangeType type) {
 
         //this is how coding works right?
         String nameKey = "strange_0";
@@ -129,6 +130,6 @@ public class LoreStatHelper {
             case TOOLTIP -> "tooltip_";
         };
 
-        return new TranslatableComponent("tooltip.band_of_gigantism." + color + nameKey);
+        return "tooltip.band_of_gigantism." + color + nameKey;
     }
 }

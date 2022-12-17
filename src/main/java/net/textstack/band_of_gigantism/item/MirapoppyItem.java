@@ -2,7 +2,6 @@ package net.textstack.band_of_gigantism.item;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -30,14 +29,14 @@ public class MirapoppyItem extends BlockItem implements ICurioItem {
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mirapoppy_description_flavor"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mirapoppy_description_0"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mirapoppy_description_1"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mirapoppy_description_flavor"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mirapoppy_description_0"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mirapoppy_description_1"));
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
     }
 

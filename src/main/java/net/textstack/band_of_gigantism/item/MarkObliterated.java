@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -50,19 +49,19 @@ public class MarkObliterated extends Item implements ICurioItem {
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_obliterated_description_flavor"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_obliterated_description_flavor"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_damage.get().floatValue(), LoreStatHelper.Stat.DAMAGE, true));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_knockback.get().floatValue(), LoreStatHelper.Stat.KNOCKBACK, true));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_health.get(), LoreStatHelper.Stat.MAX_HEALTH));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_armor.get(), LoreStatHelper.Stat.ARMOR));
             tooltip.add(LoreStatHelper.displayStat(c.mark_obliterated_armor_toughness.get(), LoreStatHelper.Stat.ARMOR_TOUGHNESS));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_obliterated_description_shift_0"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_obliterated_description_shift_0"));
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
     }
 

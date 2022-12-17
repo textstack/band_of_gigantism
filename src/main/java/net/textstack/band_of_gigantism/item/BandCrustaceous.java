@@ -3,7 +3,6 @@ package net.textstack.band_of_gigantism.item;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -150,27 +149,27 @@ public class BandCrustaceous extends Item implements ICurioItem {
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_flavor"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_flavor"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayScale(c.band_crustaceous_scale.get().floatValue()));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_shift_0"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_shift_1"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_shift_0"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_shift_1"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
             if (Minecraft.getInstance().player != null) {
                 if (CurioHelper.hasCurio(Minecraft.getInstance().player, ModItems.MARK_FADED.get())) {
-                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_faded_0"));
-                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_faded_1"));
-                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_faded_2"));
+                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_faded_0"));
+                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_faded_1"));
+                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_faded_2"));
                 } else {
-                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_0"));
-                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.band_crustaceous_description_1"));
+                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_0"));
+                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_1"));
                 }
             }
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
     }
 

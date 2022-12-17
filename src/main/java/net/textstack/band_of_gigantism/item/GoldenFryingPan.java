@@ -1,7 +1,6 @@
 package net.textstack.band_of_gigantism.item;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -32,12 +31,12 @@ public class GoldenFryingPan extends SwordItem {
 
         int strangeKills = getStrangeKills(stack);
 
-        tooltip.add(LoreStatHelper.displayStrangeName(strangeKills, LoreStatHelper.StrangeType.TOOLTIP)
-                .append(new TranslatableComponent("tooltip.band_of_gigantism.golden_frying_pan_description_flavor", "\u00A78" + strangeKills)));
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.golden_frying_pan_description_0"));
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.golden_frying_pan_description_1"));
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.golden_frying_pan_description_2"));
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.golden_frying_pan_description_3"));
+        tooltip.add(Component.translatable(LoreStatHelper.displayStrangeName(getStrangeKills(stack), LoreStatHelper.StrangeType.TITLE),
+                "tooltip.band_of_gigantism.golden_frying_pan_description_flavor", "\u00A78" + strangeKills));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_0"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_1"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_2"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_3"));
     }
 
     @Override
@@ -51,8 +50,8 @@ public class GoldenFryingPan extends SwordItem {
         if (target.isDeadOrDying()) {
             target.playSound(ModSoundEvents.GOLD_KILL.get(), 1, 1);
             addStrangeKills(stack);
-            stack.setHoverName(LoreStatHelper.displayStrangeName(getStrangeKills(stack), LoreStatHelper.StrangeType.TITLE)
-                    .append(new TranslatableComponent("item.band_of_gigantism.golden_frying_pan_name_cut")));
+            stack.setHoverName(Component.translatable(LoreStatHelper.displayStrangeName(getStrangeKills(stack), LoreStatHelper.StrangeType.TITLE),
+                            "item.band_of_gigantism.golden_frying_pan_name_cut"));
         } else {
             target.playSound(ModSoundEvents.PAN_HIT.get(), 0.5f, 1);
         }

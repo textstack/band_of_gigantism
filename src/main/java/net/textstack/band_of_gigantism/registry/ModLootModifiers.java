@@ -1,17 +1,31 @@
 package net.textstack.band_of_gigantism.registry;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import com.mojang.serialization.Codec;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.event.GenericLootModifier;
 import net.textstack.band_of_gigantism.event.GenericLootModifierMultiple;
 
-import javax.annotation.Nonnull;
+public class ModLootModifiers {
+    public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIER_SERIALIZER =
+            DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, BandOfGigantism.MODID);
 
-@Mod.EventBusSubscriber(modid = BandOfGigantism.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ADD_ITEM =
+            LOOT_MODIFIER_SERIALIZER.register("add_item", GenericLootModifier.CODEC);
+
+    /*public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ADD_ITEMS =
+            LOOT_MODIFIER_SERIALIZER.register("add_items", GenericLootModifierMultiple.CODEC);*/
+
+    public static void register(IEventBus bus) {
+        LOOT_MODIFIER_SERIALIZER.register(bus);
+    }
+}
+
+/*@Mod.EventBusSubscriber(modid = BandOfGigantism.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModLootModifiers {
 
     @SubscribeEvent
@@ -60,4 +74,4 @@ public class ModLootModifiers {
                         new ResourceLocation(BandOfGigantism.MODID, "piglin_brute"))
         );
     }
-}
+}*/

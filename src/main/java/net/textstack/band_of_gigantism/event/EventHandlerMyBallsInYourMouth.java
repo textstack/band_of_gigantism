@@ -2,7 +2,7 @@ package net.textstack.band_of_gigantism.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,8 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
@@ -41,8 +41,8 @@ public class EventHandlerMyBallsInYourMouth {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onLivingHeal(LivingHealEvent event) {
 
-        if (event.getEntityLiving() instanceof Player) {
-            LivingEntity living = event.getEntityLiving();
+        if (event.getEntity() instanceof Player) {
+            LivingEntity living = event.getEntity();
 
             //disables regen and reduces healing
             if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get()) || Objects.requireNonNull(living).hasEffect(ModEffects.RECOVERING.get())) {
@@ -74,8 +74,8 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent
     public void onLivingDeathEvent(LivingDeathEvent event) {
-        if (event.getEntityLiving() instanceof Player) {
-            LivingEntity living = event.getEntityLiving();
+        if (event.getEntity() instanceof Player) {
+            LivingEntity living = event.getEntity();
             if (CurioHelper.hasCurio(living, ModItems.FALSE_HAND.get())) {
                 ItemStack stack = CurioHelper.hasCurioGet(living, ModItems.FALSE_HAND.get());
                 int flipped = stack.getOrCreateTag().getInt("flipped");
@@ -95,7 +95,7 @@ public class EventHandlerMyBallsInYourMouth {
         if (event.getAttackingPlayer() != null) {
             int value = event.getDroppedExperience();
 
-            if ((event.getEntityLiving().hasEffect(ModEffects.MIRA.get()) || CurioHelper.hasCurio(event.getAttackingPlayer(), ModBlocks.MIRAPOPPY.get().asItem())) && Math.random() < c.mirapoppy_chance.get()) {
+            if ((event.getEntity().hasEffect(ModEffects.MIRA.get()) || CurioHelper.hasCurio(event.getAttackingPlayer(), ModBlocks.MIRAPOPPY.get().asItem())) && Math.random() < c.mirapoppy_chance.get()) {
                 value = value * 2;
                 if (Math.random() < c.mirapoppy_chance_double.get()) {
                     value = value * 2;
@@ -108,8 +108,8 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEntityHurt(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof Player player) {
-            LivingEntity living = event.getEntityLiving();
+        if (event.getEntity() instanceof Player player) {
+            LivingEntity living = event.getEntity();
 
             //for the strains of ascent effect to deal damage as fast as it wants
             if (event.getSource() == MarkDamageSource.BOG_DESCENDED) {
@@ -172,28 +172,29 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent
     public void onCriticalHit(CriticalHitEvent event) {
-        if (event.getEntityLiving() instanceof Player player) {
-
-            //crit increase
-            if (CurioHelper.hasCurio(player, ModItems.MARK_FORGOTTEN.get()) && event.isVanillaCritical()) {
-                event.setDamageModifier(event.getDamageModifier() + c.mark_forgotten_critical_damage.get().floatValue());
-            }
+        Player player = event.getEntity();
+        //crit increase
+        if (CurioHelper.hasCurio(player, ModItems.MARK_FORGOTTEN.get()) && event.isVanillaCritical()) {
+            event.setDamageModifier(event.getDamageModifier() + c.mark_forgotten_critical_damage.get().floatValue());
         }
     }
 
+    static final ResourceLocation FOOD_LEVEL_ELEMENT = new ResourceLocation("minecraft", "food_level");
+    static final ResourceLocation PLAYER_HEALTH_ELEMENT = new ResourceLocation("minecraft", "player_health");
+
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onOverlayRenderPre(RenderGameOverlayEvent.PreLayer event) {
+    public void onOverlayRenderPre(RenderGuiOverlayEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
 
-        if (event.getOverlay() == ForgeIngameGui.FOOD_LEVEL_ELEMENT) {
+        if (event.getOverlay() == GuiOverlayManager.findOverlay(FOOD_LEVEL_ELEMENT)) {
 
             //disable rendering of food
             if (CurioHelper.hasCurio(player, ModItems.MARK_FORGOTTEN.get())) {
                 event.setCanceled(true);
             }
-        } else if (event.getOverlay() == ForgeIngameGui.PLAYER_HEALTH_ELEMENT) {
+        } else if (event.getOverlay() == GuiOverlayManager.findOverlay(PLAYER_HEALTH_ELEMENT)) {
 
             //disable rendering of health
             if (Objects.requireNonNull(player).hasEffect(ModEffects.FORGETFULNESS.get())) {
@@ -208,19 +209,19 @@ public class EventHandlerMyBallsInYourMouth {
 
         if (c.marks_color_chat.get()) {
             //append §[val] to the beginning of messages for marked players
-            String message = event.getMessage();
+            String message = event.getRawText();
             LivingEntity living = event.getPlayer();
             message = colorMark(living, message);
 
             //insert colored text if required
             Component newComponent;
             if (message != null) {
-                newComponent = new TranslatableComponent("chat.type.text", event.getUsername(), message);
+                newComponent = Component.translatable("chat.type.text", event.getUsername(), message);
             } else {
-                newComponent = event.getComponent();
+                newComponent = event.getMessage();
             }
 
-            event.setComponent(newComponent);
+            event.setMessage(newComponent);
         }
     }
 

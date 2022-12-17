@@ -3,7 +3,6 @@ package net.textstack.band_of_gigantism.item;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -48,34 +47,34 @@ public class FalseHand extends Item implements ICurioItem {
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
 
             int flipped = stack.getOrCreateTag().getInt("flipped");
 
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_flavor"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_flavor"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
             if (flipped == 0) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_0"));
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_1"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_0"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_1"));
             } else {
                 tooltip.add(LoreStatHelper.displayStat(c.false_hand_flat_resistance.get().floatValue(), LoreStatHelper.Stat.FLAT_RESISTANCE));
 
                 int storedTime = stack.getOrCreateTag().getInt("timeLeft");
                 if (storedTime >= 60) {
                     int displayTime = 1 + storedTime / 60;
-                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_minutes", "\u00A76" + displayTime));
+                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_shift_0_minutes", "\u00A76" + displayTime));
                 } else {
                     if (storedTime == 0) {
-                        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_second"));
+                        tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_shift_0_second"));
                     } else {
                         int displayTime = 1 + storedTime;
-                        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.false_hand_description_shift_0_seconds", "\u00A76" + displayTime));
+                        tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_shift_0_seconds", "\u00A76" + displayTime));
                     }
                 }
             }
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
     }
 

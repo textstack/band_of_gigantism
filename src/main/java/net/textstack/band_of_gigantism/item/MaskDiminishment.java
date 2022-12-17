@@ -3,7 +3,6 @@ package net.textstack.band_of_gigantism.item;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -142,22 +141,22 @@ public class MaskDiminishment extends Item implements ICurioItem {
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_flavor"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mask_diminishment_description_flavor"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
             tooltip.add(LoreStatHelper.displayScale(c.mask_diminishment_scale.get().floatValue()));
 
             if (c.mask_diminishment_special.get()) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_0"));
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_1"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mask_diminishment_description_0"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mask_diminishment_description_1"));
             }
 
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mask_diminishment_description_shift_0"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mask_diminishment_description_shift_0"));
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
     }
 

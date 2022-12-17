@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -122,7 +121,7 @@ public class MarkUnknown extends Item implements ICurioItem {
 
         if (!c.description_enable.get()) return;
 
-        tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
 
             int[] randomAttributes = attributeValues(stack);
@@ -130,36 +129,36 @@ public class MarkUnknown extends Item implements ICurioItem {
             int randomRegen = regenValue(stack);
             int storedTime = this.getInt(stack);
 
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_flavor"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_0"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_flavor"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_0"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
 
             //time
             if (storedTime >= 60) {
                 int displayTime = 1 + storedTime / 60;
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_minutes", "\u00A76" + displayTime));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_0_minutes", "\u00A76" + displayTime));
             } else {
                 if (storedTime == 0) {
-                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_second"));
+                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_0_second"));
                 } else {
                     int displayTime = 1 + storedTime;
-                    tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_0_seconds", "\u00A76" + displayTime));
+                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_0_seconds", "\u00A76" + displayTime));
                 }
             }
 
             //health
             if (randomAttributes[0] > 0) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_1_positive", "\u00A76" + randomAttributes[0]));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_1_positive", "\u00A76" + randomAttributes[0]));
             } else if (randomAttributes[0] < 0) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_1_negative", "\u00A76" + randomAttributes[0]));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_1_negative", "\u00A76" + randomAttributes[0]));
             }
 
             //speed
             if (randomAttributes[1] > 0) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_2_positive", "\u00A76" + randomAttributes[1] + "%"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_2_positive", "\u00A76" + randomAttributes[1] + "%"));
             } else if (randomAttributes[1] < 0) {
-                tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_2_negative", "\u00A76" + randomAttributes[1] + "%"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_2_negative", "\u00A76" + randomAttributes[1] + "%"));
             }
 
             //regen
@@ -194,11 +193,11 @@ public class MarkUnknown extends Item implements ICurioItem {
                 case 2 -> "\u00A76III ";
                 default -> "";
             };
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_unknown_description_shift_4", effect, amp));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.void"));
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.mark_generic_description"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_4", effect, amp));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_generic_description"));
         } else {
-            tooltip.add(new TranslatableComponent("tooltip.band_of_gigantism.shift"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
     }
 

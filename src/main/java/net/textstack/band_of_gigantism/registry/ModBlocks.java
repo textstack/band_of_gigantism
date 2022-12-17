@@ -29,7 +29,7 @@ public class ModBlocks {
     public static final DeferredRegister<Item> ITEMS = ModItems.ITEMS;
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, BandOfGigantism.MODID);
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, BandOfGigantism.MODID);
 
     public static final RegistryObject<Block> MIRAPOPPY = register("mirapoppy",
             () -> new Mirapoppy(MobEffects.CONFUSION, 30, BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT, MaterialColor.COLOR_PURPLE).sound(SoundType.GRASS).noCollission()),

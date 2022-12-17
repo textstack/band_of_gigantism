@@ -2,6 +2,7 @@ package net.textstack.band_of_gigantism.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -18,15 +19,13 @@ import net.textstack.band_of_gigantism.registry.ModBlocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
-
 public class Mirapoppy extends FlowerBlock implements EntityBlock {
     public Mirapoppy(MobEffect effect, int duration, Properties properties) {
         super(effect, duration, properties);
     }
 
     @Override
-    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Random random) {
+    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         super.animateTick(state, level, pos, random);
 
         VoxelShape voxelshape = this.getShape(state, level, pos, CollisionContext.empty());
