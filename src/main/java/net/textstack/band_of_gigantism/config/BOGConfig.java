@@ -193,11 +193,11 @@ public class BOGConfig {
                     mark_unknown_time = BUILDER.comment("Amount of time before the mark's stats are randomized again. (default 300)").defineInRange("mark_unknown_time",300,1,Integer.MAX_VALUE);
                 BUILDER.pop().comment("Mark of the Obliterated settings").push("mark_obliterated");
 
-                    mark_obliterated_damage = BUILDER.comment("Amount to increase the player's damage by when equipping. (default 1.0)").defineInRange("mark_obliterated_damage",1.0,-Float.MAX_VALUE,Float.MAX_VALUE);
-                    mark_obliterated_knockback = BUILDER.comment("Amount to increase the player's knockback dealt when equipping. (default 1.0)").defineInRange("mark_obliterated_knockback",1.0,-Float.MAX_VALUE,Float.MAX_VALUE);
-                    mark_obliterated_armor = BUILDER.comment("Amount to add to the player's armor when equipping. (default 8)").defineInRange("mark_obliterated_armor",8,Integer.MIN_VALUE,Integer.MAX_VALUE);
-                    mark_obliterated_armor_toughness = BUILDER.comment("Amount to add to the player's armor toughness when equipping. (default 8)").defineInRange("mark_obliterated_armor_toughness",8,Integer.MIN_VALUE,Integer.MAX_VALUE);
-                    mark_obliterated_health = BUILDER.comment("Amount to add to the player's max health when equipping. (default 10)").defineInRange("mark_obliterated_health",10,Integer.MIN_VALUE,Integer.MAX_VALUE);
+                    mark_obliterated_damage = BUILDER.comment("Amount to increase the player's damage by when equipping. (default 0.25)").defineInRange("mark_obliterated_damage",0.25,-Float.MAX_VALUE,Float.MAX_VALUE);
+                    mark_obliterated_knockback = BUILDER.comment("Amount to increase the player's knockback dealt when equipping. (default 0.25)").defineInRange("mark_obliterated_knockback",0.25,-Float.MAX_VALUE,Float.MAX_VALUE);
+                    mark_obliterated_armor = BUILDER.comment("Amount to add to the player's armor when equipping. (default 2)").defineInRange("mark_obliterated_armor",2,Integer.MIN_VALUE,Integer.MAX_VALUE);
+                    mark_obliterated_armor_toughness = BUILDER.comment("Amount to add to the player's armor toughness when equipping. (default 2)").defineInRange("mark_obliterated_armor_toughness",2,Integer.MIN_VALUE,Integer.MAX_VALUE);
+                    mark_obliterated_health = BUILDER.comment("Amount to add to the player's max health when equipping. (default 6)").defineInRange("mark_obliterated_health",6,Integer.MIN_VALUE,Integer.MAX_VALUE);
                 BUILDER.pop().pop().pop();
     }
 }

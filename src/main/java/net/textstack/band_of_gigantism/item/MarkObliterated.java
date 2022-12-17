@@ -44,15 +44,6 @@ public class MarkObliterated extends Item implements ICurioItem {
     }
 
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-
-        //and make sure they die
-        slotContext.entity().hurt(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
-
-        ICurioItem.super.curioTick(slotContext, stack);
-    }
-
-    @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
