@@ -102,6 +102,18 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
+        if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get()) ||
+                CurioHelper.hasCurio(living, ModItems.BAND_CRUSTACEOUS.get()) ||
+                CurioHelper.hasCurio(living, ModItems.BAND_PASSION.get()) ||
+                CurioHelper.hasCurio(living, ModItems.BAND_GENERIC.get()) ||
+                CurioHelper.hasCurio(living, ModItems.LESSER_BAND_GENERIC.get()) ||
+                CurioHelper.hasCurio(living, ModItems.SHRINK_BAND_GENERIC.get()) ||
+                CurioHelper.hasCurio(living, ModItems.MASK_DIMINISHMENT.get()) ||
+                CurioHelper.hasCurio(living, ModItems.BAND_APATHY.get()) ||
+                CurioHelper.hasCurio(living, ModItems.BAND_BASIC.get())) {
+            return false;
+        }
+
         return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]) && (Math.abs(scaleBase - 1) <= 0.001f || c.multiply_enable.get());
     }
 

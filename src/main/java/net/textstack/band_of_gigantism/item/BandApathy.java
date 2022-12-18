@@ -3,6 +3,7 @@ package net.textstack.band_of_gigantism.item;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -10,6 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.registry.ModEffects;
+import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
@@ -45,6 +49,10 @@ public class BandApathy extends Item implements ICurioItem {
             return;
         }
 
+        /*if (CurioHelper.hasCurio(living, ModItems.BAND_PASSION.get())) {
+            living.addEffect(new MobEffectInstance(ModEffects.MIRA_SICKNESS.get(), 600));
+        }*/
+
         //reset scale
         if (c.multiply_enable.get()) {
             if (living instanceof Player player) {
@@ -62,6 +70,8 @@ public class BandApathy extends Item implements ICurioItem {
         if (living.getLevel().isClientSide) {
             return;
         }
+
+        living.removeEffect(ModEffects.MIRA_SICKNESS.get());
 
         //reset scale
         if (c.multiply_enable.get()) {
@@ -82,6 +92,10 @@ public class BandApathy extends Item implements ICurioItem {
         LivingEntity living = slotContext.entity();
         ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
+
+        if (CurioHelper.hasCurio(living, ModItems.BAND_APATHY.get()) || CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get())) {
+            return false;
+        }
 
         return ICurioItem.super.canEquip(slotContext, stack) && ScaleHelper.isDoneScaling(living, scales[0]) && (Math.abs(scaleBase - 1) <= 0.001f || c.multiply_enable.get());
     }

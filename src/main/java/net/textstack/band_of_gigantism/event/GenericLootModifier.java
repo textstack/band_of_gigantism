@@ -28,10 +28,7 @@ public class GenericLootModifier extends LootModifier {
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-        if (context.getRandom().nextFloat() < 0.5f) {
-            generatedLoot.add(new ItemStack(item, 1));
-        }
-
+        generatedLoot.add(new ItemStack(item, 1));
         return generatedLoot;
     }
 

@@ -17,6 +17,11 @@ public class BOGConfig {
     public final ForgeConfigSpec.BooleanValue description_enable;
     public final ForgeConfigSpec.BooleanValue multiply_enable;
     public final ForgeConfigSpec.DoubleValue general_scale_limit;
+    public final ForgeConfigSpec.BooleanValue recovery_allhits;
+    public final ForgeConfigSpec.IntValue recovery_duration;
+    public final ForgeConfigSpec.DoubleValue recovery_chance;
+    public final ForgeConfigSpec.DoubleValue recovery_minimum_damage;
+    public final ForgeConfigSpec.BooleanValue recovery_show_particles;
 
     //marks general
     public final ForgeConfigSpec.IntValue marks_duration;
@@ -112,10 +117,15 @@ public class BOGConfig {
 
     public BOGConfig(ForgeConfigSpec.Builder BUILDER) {
         BUILDER.push("general");
-            scale_speed = BUILDER.comment("Scaling speed in ticks per unit of scale change. (default 20)").defineInRange("scale_speed",20,1,Integer.MAX_VALUE);
+            scale_speed = BUILDER.comment("Scaling speed in ticks per unit of scale change. (default 30)").defineInRange("scale_speed",30,1,Integer.MAX_VALUE);
             description_enable = BUILDER.comment("Whether items have detailed descriptions. Disable if you hate information.").define("description_enable", true);
-            multiply_enable = BUILDER.comment("Whether scaling items take into account the player's current scale, allowing multiple to be worn. Might be unstable! (default false)").define("multiply_enable",false);
-            general_scale_limit = BUILDER.comment("The absolute max scale that any item in Band of Gigantism can scale the player to (default 32.0)").defineInRange("general_scale_limit",32.0,1.0,64.0);
+            multiply_enable = BUILDER.comment("Whether scaling items take into account the player's current scale, allowing multiple to be worn. This may be necessary if there are other mods that use Pehkui. (default true)").define("multiply_enable",true);
+            general_scale_limit = BUILDER.comment("The absolute max scale that any item in Band of Gigantism can scale the player to. (default 32.0)").defineInRange("general_scale_limit",32.0,1.0,64.0);
+            recovery_allhits = BUILDER.comment("Whether players are inflicted with a regen-blocking debuff whenever they are damaged. (default false)").define("recovery_allhits", false);
+            recovery_duration = BUILDER.comment("The length the regen-blocking debuff will be applied for, in ticks. (default 80)").defineInRange("recovery_duration", 80, 10, Integer.MAX_VALUE);
+            recovery_chance = BUILDER.comment("The chance for the regen-blocking debuff to be applied [1.0 = 100%]. (default 1.0)").defineInRange("recovery_chance", 1.0, 0.0, 1.0);
+            recovery_minimum_damage = BUILDER.comment("The minimum amount of damage required before the regen-blocking debuff can be applied, not taking into account armor/resistances. (default 2.0)").defineInRange("recovery_minimum_damage",2.0, 0.0, Double.MAX_VALUE);
+            recovery_show_particles = BUILDER.comment("Whether the regen-blocking debuff shows particles [doesn't affect mark removal] (default false)").define("recovery_show_particles", false);
         BUILDER.pop().push("items").comment("Change item scaling").push("scaling");
 
                 band_generic_scale = BUILDER.comment("(default 2.0)").defineInRange("band_generic_scale",2.0,0.01,32.0);
@@ -157,7 +167,7 @@ public class BOGConfig {
                 mirapoppy_radius = BUILDER.comment("Radius of the placed mirapoppy (default 3)").defineInRange("mirapoppy_radius",3,1,Integer.MAX_VALUE);
             BUILDER.pop().push("marks");
 
-                marks_duration = BUILDER.comment("Duration of the regen-blocking debuff applied when removing marks, in ticks. (default 200)").defineInRange("marks_duration",200,1,Integer.MAX_VALUE);
+                marks_duration = BUILDER.comment("Duration of the regen-blocking debuff applied when removing marks, in ticks [separate from recovery_duration]. (default 200)").defineInRange("marks_duration",200,1,Integer.MAX_VALUE);
                 marks_color_chat = BUILDER.comment("Whether marked players have their chat messages colored. (default true)").define("marks_color_chat",true);
                 BUILDER.comment("Mark of the Descended settings").push("mark_descended");
 

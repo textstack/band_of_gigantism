@@ -1,4 +1,5 @@
 {
+  "type": "band_of_gigantism:add_item",
   "conditions": [
     {
       "condition": "forge:loot_table_id",
@@ -11,9 +12,11 @@
       "condition": "minecraft:random_chance_with_looting",
       "chance": 0.05,
       "looting_multiplier": 0.025
+    },
+    {
+      "condition": "minecraft:random_chance",
+      "chance": 0.001
     }
   ],
-  "addition": "band_of_gigantism:golden_frying_pan",
-  "chance": 0.001,
-  "type": "band_of_gigantism:piglin_brute"
+  "item": "band_of_gigantism:golden_frying_pan"
 }

@@ -27,6 +27,7 @@
   "effect.band_of_gigantism.recovering": "Recovering",
   "effect.band_of_gigantism.crabby": "Crabby",
   "effect.band_of_gigantism.mira": "Mira",
+  "effect.band_of_gigantism.mira_sickness": "Ｃｏｒｐｏｒａ ｎｏｎ ａｇｎｏｓｃｉｓ ｉｎ ａｑｕａ． Ｎｉｈｉｌ ｅｓｔ ｐｏｓｔ ｍｕｒｏｓ． Ｔｕａ ｃｕｔｉｓ ｅｓｔ ｎｏｒｍａｌｉｓ．",
 
   "death.attack.mark_obliterated": "%1$s §4was obliterated",
   "death.attack.mark_faded": "%1$s §8faded into obscurity",
@@ -35,6 +36,7 @@
   "death.attack.mark_unknown": "%1$s §aran out of luck",
   "death.attack.mark_descended": "%1$s§9's insides became outsides",
   "death.attack.mark_judged": "%1$s §cwas adjourned",
+  "death.attack.mira": "%1$s's soul was eviscerated beyond recognition",
 
   "tooltip.band_of_gigantism.obfuscated": "§4§kICantThinkOfASecretMessage",
   "tooltip.band_of_gigantism.shift": "§5Hold §6Shift§5 to see details.",

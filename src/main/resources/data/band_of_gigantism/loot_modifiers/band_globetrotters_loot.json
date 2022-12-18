@@ -1,0 +1,14 @@
+{
+  "type": "band_of_gigantism:add_item",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/bastion_treasure"
+    },
+    {
+      "condition": "minecraft:random_chance",
+      "chance": 0.33
+    }
+  ],
+  "item": "band_of_gigantism:band_globetrotters"
+}

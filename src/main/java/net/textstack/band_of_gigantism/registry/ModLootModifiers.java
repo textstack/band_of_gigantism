@@ -8,7 +8,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.event.GenericLootModifier;
-import net.textstack.band_of_gigantism.event.GenericLootModifierMultiple;
 
 public class ModLootModifiers {
     public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIER_SERIALIZER =
@@ -16,9 +15,6 @@ public class ModLootModifiers {
 
     public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ADD_ITEM =
             LOOT_MODIFIER_SERIALIZER.register("add_item", GenericLootModifier.CODEC);
-
-    /*public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ADD_ITEMS =
-            LOOT_MODIFIER_SERIALIZER.register("add_items", GenericLootModifierMultiple.CODEC);*/
 
     public static void register(IEventBus bus) {
         LOOT_MODIFIER_SERIALIZER.register(bus);

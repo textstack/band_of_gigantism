@@ -108,8 +108,21 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEntityHurt(LivingHurtEvent event) {
-        if (event.getEntity() instanceof Player player) {
-            LivingEntity living = event.getEntity();
+        if (event.getEntity() instanceof Player living) {
+            //LivingEntity living = event.getEntity();
+
+            if (c.recovery_allhits.get()) {
+                if (event.getSource() != MarkDamageSource.BOG_DESCENDED &&
+                        event.getSource() != MarkDamageSource.BOG_FADED &&
+                        event.getSource() != MarkDamageSource.BOG_FORGOTTEN &&
+                        event.getSource() != MarkDamageSource.BOG_JUDGED &&
+                        event.getSource() != MarkDamageSource.BOG_OBLITERATED &&
+                        event.getSource() != MarkDamageSource.BOG_PURIFIED &&
+                        event.getSource() != MarkDamageSource.BOG_UNKNOWN)
+                if ((event.getAmount() > c.recovery_minimum_damage.get()) && (Math.random() < c.recovery_chance.get())) {
+                    living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.recovery_duration.get(), 0, c.recovery_show_particles.get(), false));
+                }
+            }
 
             //for the strains of ascent effect to deal damage as fast as it wants
             if (event.getSource() == MarkDamageSource.BOG_DESCENDED) {
@@ -164,7 +177,7 @@ public class EventHandlerMyBallsInYourMouth {
                 living.addEffect(new MobEffectInstance(ModEffects.FORGETFULNESS.get(), c.mark_forgotten_duration.get(), 0, false, false));
             }
 
-            if (CurioHelper.hasCurio(living, ModItems.BAND_CRUSTACEOUS.get()) && !CurioHelper.hasCurio(living, ModItems.MARK_FADED.get()) && player.getFoodData().getFoodLevel() >= 18 && event.getAmount() > 0) {
+            if (CurioHelper.hasCurio(living, ModItems.BAND_CRUSTACEOUS.get()) && !CurioHelper.hasCurio(living, ModItems.MARK_FADED.get()) && living.getFoodData().getFoodLevel() >= 18 && event.getAmount() > 0) {
                 living.addEffect(new MobEffectInstance(ModEffects.CRABBY.get(), c.band_crustaceous_duration.get(), 0, false, false));
             }
         }

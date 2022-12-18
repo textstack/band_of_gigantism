@@ -24,52 +24,37 @@ buildscript {
     }
 }
 
-plugins {
-    id "com.modrinth.minotaur" version "2.+"
-}
-
 println("Applying plugins...")
 
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'org.spongepowered.mixin'
-apply from: 'common.gradle'
 
-subprojects {
-    dep_forge     = rootProject.dep_forge
-    dep_minecraft = rootProject.dep_minecraft
-    version_mc    = rootProject.version_mc
-    version_forge = rootProject.version_forge
-    version_mcp   = rootProject.version_mcp
-}
-
-mixin {
-    println("Specifying refmaps for Mixin...")
-
-    add sourceSets.main, "enigmaticlegacy.refmap.json"
-}
-
-minecraft {
-    println("Specifying Access Transformer configuration...")
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-}
+println("Specifying project version/group/archivesBaseName...")
+version = "${mod_version}"
+group = "${mod_group}"
+archivesBaseName = "${mod_archives_name}"
 
 dependencies {
     println("Processing dependencies...")
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     annotationProcessor 'com.google.code.gson:gson:2.8.0'
     annotationProcessor 'com.google.guava:guava:21.0'
     annotationProcessor 'org.ow2.asm:asm-tree:7.2'
     annotationProcessor 'org.ow2.asm:asm-commons:7.2'
     annotationProcessor 'org.ow2.asm:asm-util:7.2'
 
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
-    compileOnly fg.deobf("com.github.Virtuoel:Pehkui:${pehkui_version}")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${version_curios}")
+    compileOnly fg.deobf("com.github.Virtuoel:Pehkui:${version_pehkui}")
+    minecraft "net.minecraftforge:forge:${version_forge}"
+}
 
+mixin {
+    add sourceSets.main, "band_of_gigantism.mixin-refmap.json"
+    config "band_of_gigantism.mixin.json"
 }
 
 tasks.withType(Jar) {
@@ -80,8 +65,87 @@ tasks.withType(Jar) {
     }
 }
 
-task updateResources() {
-    // NO-OP
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
 }
 
-tasks.updateResources.dependsOn processResources
+println("Specifying Java compatibility...")
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    println("Specifying MCP mappings...")
+    mappings channel: 'official', version: '1.19.2'
+
+    runs {
+        client {
+            properties 'org.gradle.jvmargs': '-Xms4G -Xmx4G'
+            properties 'fml.earlyprogresswindow': 'false'
+            properties 'mixin.env.disableRefMap': 'true'
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                any {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            properties 'mixin.env.disableRefMap': 'true'
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                any {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    println("Specifying repositories...")
+
+    maven {  url "file:///${project.projectDir}/deps/" }
+    maven {  url = "https://maven.theillusivec4.top/" } // curios
+    maven {  url = "https://repo.spongepowered.org/maven" } // mixin
+    maven {  url = "https://jitpack.io" } // pehkui
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "bandofgigantism",
+                "Specification-Vendor": "idklol",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.jar.archiveVersion,
+                "Implementation-Vendor" :"idklol",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+                "TweakOrder": 0,
+                "MixinConfigs": "band_of_gigantism.mixin.json"
+        ])
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}

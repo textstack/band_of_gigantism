@@ -1,11 +1,10 @@
 {
+  "type": "band_of_gigantism:add_item",
   "conditions": [
     {
       "condition": "forge:loot_table_id",
       "loot_table_id": "minecraft:chests/spawn_bonus_chest"
     }
   ],
-  "addition": "band_of_gigantism:mark_true",
-  "chance": 1,
-  "type": "band_of_gigantism:spawn_bonus_chest"
+  "item": "band_of_gigantism:mark_true"
 }

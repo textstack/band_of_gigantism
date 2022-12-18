@@ -68,10 +68,10 @@ public class MarkDescended extends Item implements ICurioItem {
             } else if (posY >= prevPosY + c.mark_descended_ascend.get()) {
                 int amp;
                 if (prevPosY >= 64) amp = 0;
-                else if (prevPosY > 48) amp = 1;
-                else if (prevPosY > 32) amp = 2;
-                else if (prevPosY > 16) amp = 3;
-                else if (prevPosY > 0) amp = 4;
+                else if (prevPosY > 32) amp = 1;
+                else if (prevPosY > 0) amp = 2;
+                else if (prevPosY > -32) amp = 3;
+                else if (prevPosY > -64) amp = 4;
                 else amp = 5;
                 living.addEffect(new MobEffectInstance(ModEffects.STRAINS_OF_ASCENT.get(), c.mark_descended_duration.get(), amp, false, false));
                 this.setPosY(stack, posY);

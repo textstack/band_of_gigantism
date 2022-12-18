@@ -21,4 +21,6 @@ public class MarkDamageSource extends DamageSource {
             bypassArmor().bypassMagic();
     public static final DamageSource BOG_JUDGED = (new DamageSource("mark_judged")).
             bypassArmor().bypassMagic();
+    public static final DamageSource BOG_MIRA = (new DamageSource("mira")).
+            bypassArmor().bypassMagic();
 }
