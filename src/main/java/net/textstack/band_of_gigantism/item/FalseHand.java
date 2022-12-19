@@ -15,6 +15,7 @@ import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.registry.ModSoundEvents;
+import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,6 +40,11 @@ public class FalseHand extends Item implements ICurioItem {
             stack.getOrCreateTag().putInt("timeLeft", c.false_hand_time.get() - 1);
             stack.getOrCreateTag().putInt("flipped", 0);
         }
+    }
+
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        return ICurioItem.super.canEquip(slotContext, stack) && !CurioHelper.hasCurio(slotContext.entity(), ModItems.FALSE_HAND.get());
     }
 
     @Override

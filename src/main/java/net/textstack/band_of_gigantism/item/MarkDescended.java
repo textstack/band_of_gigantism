@@ -53,6 +53,11 @@ public class MarkDescended extends Item implements ICurioItem {
     }
 
     @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        return ICurioItem.super.canEquip(slotContext, stack) && !CurioHelper.hasCurio(slotContext.entity(), ModItems.MARK_DESCENDED.get());
+    }
+
+    @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         ICurioItem.super.curioTick(slotContext, stack);
 

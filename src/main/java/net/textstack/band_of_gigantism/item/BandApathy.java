@@ -43,20 +43,24 @@ public class BandApathy extends Item implements ICurioItem {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
 
-        LivingEntity living = slotContext.entity();
+        if (slotContext.entity() instanceof Player player) {
 
-        if (living.getLevel().isClientSide) {
-            return;
-        }
+            //check if clientside
+            if (player.getLevel().isClientSide) {
+                return;
+            }
 
-        /*if (CurioHelper.hasCurio(living, ModItems.BAND_PASSION.get())) {
-            living.addEffect(new MobEffectInstance(ModEffects.MIRA_SICKNESS.get(), 600));
-        }*/
+            //check if already equipped
+            if (player.getPersistentData().getBoolean("apathyEquip")) {
+                return;
+            }
+            player.getPersistentData().putBoolean("apathyEquip", true);
 
-        //reset scale
-        if (c.multiply_enable.get()) {
-            if (living instanceof Player player) {
+            //reset scale
+            if (c.multiply_enable.get()) {
+
                 player.getPersistentData().putInt("apathyScale", 1000000);
+
             }
         }
     }
@@ -65,25 +69,28 @@ public class BandApathy extends Item implements ICurioItem {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         ICurioItem.super.onUnequip(slotContext, newStack, stack);
 
-        LivingEntity living = slotContext.entity();
+        if (slotContext.entity() instanceof Player player) {
 
-        if (living.getLevel().isClientSide) {
-            return;
-        }
-
-        living.removeEffect(ModEffects.MIRA_SICKNESS.get());
-
-        //reset scale
-        if (c.multiply_enable.get()) {
-            if (living instanceof Player player) {
-                int prevScale = player.getPersistentData().getInt("apathyScale");
-                int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, 1, prevScale / 1000000.0f, 0);
-                ScaleHelper.rescaleMultiply(living, scalesInverse, 1, 1000000.0f / prevScale, scaleDelay);
-                //player.getPersistentData().putInt("apathyScale", 1000000);
+            //check if clientside
+            if (player.getLevel().isClientSide) {
+                return;
             }
-        } else {
-            int scaleDelay = ScaleHelper.rescale(living, scales, 1, 0);
-            ScaleHelper.rescale(living, scalesInverse, 1, scaleDelay);
+
+            //unset stuff
+            if (CurioHelper.hasCurio(player, ModItems.BAND_PASSION.get())) {
+                player.removeEffect(ModEffects.MIRA_SICKNESS.get());
+            }
+            player.getPersistentData().putBoolean("apathyEquip", false);
+
+            //reset scale
+            if (c.multiply_enable.get()) {
+                int prevScale = player.getPersistentData().getInt("apathyScale");
+                int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, 1, prevScale / 1000000.0f, 0);
+                ScaleHelper.rescaleMultiply(player, scalesInverse, 1, 1000000.0f / prevScale, scaleDelay);
+            } else {
+                int scaleDelay = ScaleHelper.rescale(player, scales, 1, 0);
+                ScaleHelper.rescale(player, scalesInverse, 1, scaleDelay);
+            }
         }
     }
 

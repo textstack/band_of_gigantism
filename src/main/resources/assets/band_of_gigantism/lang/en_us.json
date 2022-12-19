@@ -19,6 +19,7 @@
   "item.band_of_gigantism.band_basic": "Improved Band of Dwarfism",
   "item.band_of_gigantism.band_passion": "Band of Passion",
   "item.band_of_gigantism.band_apathy": "Band of Apathy",
+  "item.band_of_gigantism.mira_gin": "Mira-Gin",
 
   "block.band_of_gigantism.mirapoppy": "Mirapoppy",
 
@@ -236,5 +237,9 @@
 
   "tooltip.band_of_gigantism.mirapoppy_description_flavor": "§9§oIt hurts to hold...",
   "tooltip.band_of_gigantism.mirapoppy_description_0": "§5Mobs occasionally drop extra experience.",
-  "tooltip.band_of_gigantism.mirapoppy_description_1": "§5When placed, this effect applies to nearby mobs."
+  "tooltip.band_of_gigantism.mirapoppy_description_1": "§5When placed, this effect applies to nearby mobs.",
+
+  "tooltip.band_of_gigantism.mira_gin_description_0": "§9Mira (8:00)",
+  "tooltip.band_of_gigantism.mira_gin_description_1": "§5When Applied:",
+  "tooltip.band_of_gigantism.mira_gin_description_2": "§9%1$s% Dodge Chance"
 }

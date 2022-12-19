@@ -4,7 +4,10 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -15,6 +18,9 @@ import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
+import net.textstack.band_of_gigantism.registry.ModEffects;
+import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
@@ -36,11 +42,36 @@ public class MarkObliterated extends Item implements ICurioItem {
 
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        ICurioItem.super.onEquip(slotContext, prevStack, stack);
+
+        //check if already equipped
+        if (slotContext.entity() instanceof ServerPlayer player) {
+            if (player.getPersistentData().getBoolean("obliteratedEquip")) {
+                return;
+            }
+            player.getPersistentData().putBoolean("obliteratedEquip", true);
+        }
 
         //kill
         slotContext.entity().hurt(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
+    }
 
-        ICurioItem.super.onEquip(slotContext, prevStack, stack);
+    @Override
+    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+
+        if (slotContext.entity() instanceof ServerPlayer player) {
+            if (!CurioHelper.hasCurio(player, ModItems.MARK_OBLITERATED.get())) {
+                player.getPersistentData().putBoolean("obliteratedEquip", false);
+                slotContext.entity().hurt(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
+                player.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
+            }
+        }
+    }
+
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        return ICurioItem.super.canEquip(slotContext, stack) && !CurioHelper.hasCurio(slotContext.entity(), ModItems.MARK_OBLITERATED.get());
     }
 
     @Override

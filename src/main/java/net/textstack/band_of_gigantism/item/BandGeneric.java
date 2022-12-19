@@ -3,7 +3,9 @@ package net.textstack.band_of_gigantism.item;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,6 +25,9 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -54,6 +59,32 @@ public class BandGeneric extends Item implements ICurioItem {
             return;
         }
 
+        //check if already equipped
+        if (slotContext.entity() instanceof Player player) {
+
+            //get values
+            int tag = stack.getOrCreateTag().getInt("UniqueTag");
+            int[] ints = player.getPersistentData().getIntArray("bandsEquipped");
+            ArrayList<Integer> tagList = new ArrayList<>(Arrays.stream(ints).boxed().toList());
+
+            //check if in le array
+            boolean check = false;
+            for (int tagCompare : tagList) {
+                if (tag == tagCompare) {
+                    check = true;
+                    break;
+                }
+            }
+            if (check) {
+                return;
+            }
+
+            //add in new value
+            tagList.add(tag);
+            int[] intsNew = tagList.stream().mapToInt(Integer::intValue).toArray();
+            player.getPersistentData().putIntArray("bandsEquipped", intsNew);
+        }
+
         float setScale = switch (itemVal) {
             case 0 -> c.band_generic_scale.get().floatValue();
             case 1 -> c.lesser_band_generic_scale.get().floatValue();
@@ -81,6 +112,29 @@ public class BandGeneric extends Item implements ICurioItem {
             return;
         }
 
+        //clear tag from list
+        if (slotContext.entity() instanceof Player player) {
+
+            //get values
+            int tag = stack.getOrCreateTag().getInt("UniqueTag");
+            int[] ints = player.getPersistentData().getIntArray("bandsEquipped");
+            ArrayList<Integer> tagList = new ArrayList<>(Arrays.stream(ints).boxed().toList());
+
+            //remove value
+            Iterator<Integer> it = tagList.iterator();
+            while(it.hasNext()) {
+                int i = it.next();
+                if (i == tag) {
+                    it.remove();
+                    break;
+                }
+            }
+
+            //finish
+            int[] intsNew = tagList.stream().mapToInt(Integer::intValue).toArray();
+            player.getPersistentData().putIntArray("bandsEquipped", intsNew);
+        }
+
         float setScale = switch (itemVal) {
             case 0 -> c.band_generic_scale.get().floatValue();
             case 1 -> c.lesser_band_generic_scale.get().floatValue();
@@ -95,6 +149,21 @@ public class BandGeneric extends Item implements ICurioItem {
         } else {
             int scaleDelay = ScaleHelper.rescale(living, scales, 1, 0);
             ScaleHelper.rescale(living, scalesInverse, 1, scaleDelay);
+        }
+    }
+
+    @Override
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
+        super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+
+        if (worldIn.isClientSide) {
+            return;
+        }
+
+        //wish i knew a better way to do this... identifier to prevent the onequip method from firing at the wrong time
+        //item nbt data can't be changed during onequip
+        if (stack.getOrCreateTag().getInt("UniqueTag") <= 0) {
+            stack.getOrCreateTag().putInt("UniqueTag", worldIn.random.nextInt());
         }
     }
 

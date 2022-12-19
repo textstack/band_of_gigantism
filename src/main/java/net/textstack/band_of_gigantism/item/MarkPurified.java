@@ -20,6 +20,8 @@ import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.registry.ModEffects;
+import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.util.CurioHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
@@ -51,6 +53,11 @@ public class MarkPurified extends Item implements ICurioItem {
         //remove the variable modifiers
         AttributeMap map = living.getAttributes();
         map.removeAttributeModifiers(this.createAttributeMap(living));
+    }
+
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        return ICurioItem.super.canEquip(slotContext, stack) && !CurioHelper.hasCurio(slotContext.entity(), ModItems.MARK_PURIFIED.get());
     }
 
     @Override

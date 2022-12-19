@@ -47,23 +47,29 @@ public class BandCrustaceous extends Item implements ICurioItem {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
 
-        LivingEntity living = slotContext.entity();
+        if (slotContext.entity() instanceof Player player) {
 
-        if (living.getLevel().isClientSide) {
-            return;
-        }
-
-        //set scale
-        if (c.multiply_enable.get()) {
-            if (living instanceof Player player) {
-                int setScale = (int) (1000000 * c.band_crustaceous_scale.get().floatValue());
-                int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, setScale / 1000000.0f, 1, 0);
-                ScaleHelper.rescaleMultiply(living, scalesInverse, 1000000.0f / setScale, 1, scaleDelay);
-                player.getPersistentData().putInt("crustaceousScale", setScale);
+            //check if clientside
+            if (player.getLevel().isClientSide) {
+                return;
             }
-        } else {
-            int scaleDelay = ScaleHelper.rescale(living, scales, c.band_crustaceous_scale.get().floatValue(), 0);
-            ScaleHelper.rescale(living, scalesInverse, 1.0f / c.band_crustaceous_scale.get().floatValue(), scaleDelay);
+
+            //check if already equipped
+            if (player.getPersistentData().getBoolean("crustaceousEquip")) {
+                return;
+            }
+            player.getPersistentData().putBoolean("crustaceousEquip", true);
+
+            //set scale
+            if (c.multiply_enable.get()) {
+                int setScale = (int) (1000000 * c.band_crustaceous_scale.get().floatValue());
+                int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale / 1000000.0f, 1, 0);
+                ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f / setScale, 1, scaleDelay);
+                player.getPersistentData().putInt("crustaceousScale", setScale);
+            } else {
+                int scaleDelay = ScaleHelper.rescale(player, scales, c.band_crustaceous_scale.get().floatValue(), 0);
+                ScaleHelper.rescale(player, scalesInverse, 1.0f / c.band_crustaceous_scale.get().floatValue(), scaleDelay);
+            }
         }
     }
 
@@ -71,22 +77,24 @@ public class BandCrustaceous extends Item implements ICurioItem {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         ICurioItem.super.onUnequip(slotContext, newStack, stack);
 
-        LivingEntity living = slotContext.entity();
+        if (slotContext.entity() instanceof Player player) {
 
-        if (living.getLevel().isClientSide) {
-            return;
-        }
-
-        //reset scale
-        if (c.multiply_enable.get()) {
-            if (living instanceof Player player) {
-                int prevScale = player.getPersistentData().getInt("crustaceousScale");
-                int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, 1, prevScale / 1000000.0f, 0);
-                ScaleHelper.rescaleMultiply(living, scalesInverse, 1, 1000000.0f / prevScale, scaleDelay);
+            //check if clientside
+            if (player.getLevel().isClientSide) {
+                return;
             }
-        } else {
-            int scaleDelay = ScaleHelper.rescale(living, scales, 1, 0);
-            ScaleHelper.rescale(living, scalesInverse, 1, scaleDelay);
+
+            player.getPersistentData().putBoolean("crustaceousEquip", false);
+
+            //reset scale
+            if (c.multiply_enable.get()) {
+                int prevScale = player.getPersistentData().getInt("crustaceousScale");
+                int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, 1, prevScale / 1000000.0f, 0);
+                ScaleHelper.rescaleMultiply(player, scalesInverse, 1, 1000000.0f / prevScale, scaleDelay);
+            } else {
+                int scaleDelay = ScaleHelper.rescale(player, scales, 1, 0);
+                ScaleHelper.rescale(player, scalesInverse, 1, scaleDelay);
+            }
         }
     }
 

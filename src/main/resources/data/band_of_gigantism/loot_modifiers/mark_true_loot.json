@@ -34,10 +34,6 @@
         },
         {
           "condition": "forge:loot_table_id",
-          "loot_table_id": "minecraft:chests/abandoned_mineshaft"
-        },
-        {
-          "condition": "forge:loot_table_id",
           "loot_table_id": "minecraft:chests/stronghold_corridor"
         },
         {
@@ -60,13 +56,13 @@
     },
     {
       "condition": "minecraft:random_chance",
-      "chance": 1.0
+      "chance": 0.1
     },
     {
       "condition": "minecraft:time_check",
       "value": {
-        "min": 12000,
-        "max": 24000
+        "min": 14000,
+        "max": 22000
       },
       "period": 24000
     }

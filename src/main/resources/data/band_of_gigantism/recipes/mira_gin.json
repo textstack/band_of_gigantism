@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "USU",
+    "SBS",
+    "USU"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:glass_bottle"
+    },
+    "S": {
+      "item": "band_of_gigantism:mirapoppy"
+    },
+    "U": {
+      "item": "minecraft:sweet_berries"
+    }
+  },
+  "result": {
+    "item": "band_of_gigantism:mira_gin"
+  }
+}

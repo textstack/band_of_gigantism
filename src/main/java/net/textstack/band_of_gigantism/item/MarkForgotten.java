@@ -12,6 +12,8 @@ import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.misc.MarkDamageSource;
 import net.textstack.band_of_gigantism.registry.ModEffects;
+import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
@@ -38,6 +40,11 @@ public class MarkForgotten extends Item implements ICurioItem {
         LivingEntity living = slotContext.entity();
         living.hurt(MarkDamageSource.BOG_FORGOTTEN, living.getMaxHealth() - 1);
         living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
+    }
+
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        return ICurioItem.super.canEquip(slotContext, stack) && !CurioHelper.hasCurio(slotContext.entity(), ModItems.MARK_FORGOTTEN.get());
     }
 
     @Override

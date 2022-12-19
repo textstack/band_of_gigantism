@@ -30,9 +30,8 @@ public class GoldenFryingPan extends SwordItem {
         if (!c.description_enable.get()) return;
 
         int strangeKills = getStrangeKills(stack);
-
-        tooltip.add(Component.translatable(LoreStatHelper.displayStrangeName(getStrangeKills(stack), LoreStatHelper.StrangeType.TOOLTIP),
-                "tooltip.band_of_gigantism.golden_frying_pan_description_flavor", "\u00A78" + strangeKills));
+        tooltip.add(Component.translatable(LoreStatHelper.displayStrangeName(getStrangeKills(stack),LoreStatHelper.StrangeType.TOOLTIP))
+                .append(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_flavor", "\u00A78" + strangeKills)));
         tooltip.add(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_0"));
         tooltip.add(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_1"));
         tooltip.add(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_2"));
@@ -50,8 +49,8 @@ public class GoldenFryingPan extends SwordItem {
         if (target.isDeadOrDying()) {
             target.playSound(ModSoundEvents.GOLD_KILL.get(), 1, 1);
             addStrangeKills(stack);
-            stack.setHoverName(Component.translatable(LoreStatHelper.displayStrangeName(getStrangeKills(stack), LoreStatHelper.StrangeType.TITLE),
-                            "item.band_of_gigantism.golden_frying_pan_name_cut"));
+            stack.setHoverName(Component.translatable(LoreStatHelper.displayStrangeName(getStrangeKills(stack), LoreStatHelper.StrangeType.TITLE))
+                    .append(Component.translatable("item.band_of_gigantism.golden_frying_pan_name_cut")));
         } else {
             target.playSound(ModSoundEvents.PAN_HIT.get(), 0.5f, 1);
         }

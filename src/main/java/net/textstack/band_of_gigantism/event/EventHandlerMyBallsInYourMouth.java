@@ -109,7 +109,6 @@ public class EventHandlerMyBallsInYourMouth {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEntityHurt(LivingHurtEvent event) {
         if (event.getEntity() instanceof Player living) {
-            //LivingEntity living = event.getEntity();
 
             if (c.recovery_allhits.get()) {
                 if (event.getSource() != MarkDamageSource.BOG_DESCENDED &&
@@ -120,13 +119,18 @@ public class EventHandlerMyBallsInYourMouth {
                         event.getSource() != MarkDamageSource.BOG_PURIFIED &&
                         event.getSource() != MarkDamageSource.BOG_UNKNOWN)
                 if ((event.getAmount() > c.recovery_minimum_damage.get()) && (Math.random() < c.recovery_chance.get())) {
-                    living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.recovery_duration.get(), 0, c.recovery_show_particles.get(), false));
+                    living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.recovery_duration.get(), 0, false, c.recovery_show_particles.get()));
                 }
             }
 
             //for the strains of ascent effect to deal damage as fast as it wants
             if (event.getSource() == MarkDamageSource.BOG_DESCENDED) {
                 living.invulnerableTime = 0;
+            }
+
+            if (living.hasEffect(ModEffects.MIRA.get())&&Math.random() < c.mira_gin_chance.get()&&event.getAmount()<living.getMaxHealth()*2) {
+                event.setCanceled(true);
+                return;
             }
 
             //flat damage vuln for false hand
@@ -229,7 +233,7 @@ public class EventHandlerMyBallsInYourMouth {
             //insert colored text if required
             Component newComponent;
             if (message != null) {
-                newComponent = Component.translatable("chat.type.text", event.getUsername(), message);
+                newComponent = Component.literal(message);
             } else {
                 newComponent = event.getMessage();
             }

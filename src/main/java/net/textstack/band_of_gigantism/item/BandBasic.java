@@ -30,6 +30,9 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class BandBasic extends Item implements ICurioItem {
@@ -52,6 +55,32 @@ public class BandBasic extends Item implements ICurioItem {
 
         if (living.getLevel().isClientSide) {
             return;
+        }
+
+        //check if already equipped
+        if (slotContext.entity() instanceof Player player) {
+
+            //get values
+            int tag = stack.getOrCreateTag().getInt("UniqueTag");
+            int[] ints = player.getPersistentData().getIntArray("bandsEquipped");
+            ArrayList<Integer> tagList = new ArrayList<>(Arrays.stream(ints).boxed().toList());
+
+            //check if in le array
+            boolean check = false;
+            for (int tagCompare : tagList) {
+                if (tag == tagCompare) {
+                    check = true;
+                    break;
+                }
+            }
+            if (check) {
+                return;
+            }
+
+            //add in new value
+            tagList.add(tag);
+            int[] intsNew = tagList.stream().mapToInt(Integer::intValue).toArray();
+            player.getPersistentData().putIntArray("bandsEquipped", intsNew);
         }
 
         int setScale;
@@ -80,6 +109,29 @@ public class BandBasic extends Item implements ICurioItem {
 
         if (living.getLevel().isClientSide) {
             return;
+        }
+
+        //clear tag from list
+        if (slotContext.entity() instanceof Player player) {
+
+            //get values
+            int tag = stack.getOrCreateTag().getInt("UniqueTag");
+            int[] ints = player.getPersistentData().getIntArray("bandsEquipped");
+            ArrayList<Integer> tagList = new ArrayList<>(Arrays.stream(ints).boxed().toList());
+
+            //remove value
+            Iterator<Integer> it = tagList.iterator();
+            while(it.hasNext()) {
+                int i = it.next();
+                if (i == tag) {
+                    it.remove();
+                    break;
+                }
+            }
+
+            //finish
+            int[] intsNew = tagList.stream().mapToInt(Integer::intValue).toArray();
+            player.getPersistentData().putIntArray("bandsEquipped", intsNew);
         }
 
         //reset scale
@@ -122,6 +174,11 @@ public class BandBasic extends Item implements ICurioItem {
 
         if (worldIn.isClientSide) {
             return;
+        }
+
+        //still wishing
+        if (stack.getOrCreateTag().getInt("UniqueTag") <= 0) {
+            stack.getOrCreateTag().putInt("UniqueTag", worldIn.random.nextInt());
         }
 
         LivingEntity living = (LivingEntity) entityIn;

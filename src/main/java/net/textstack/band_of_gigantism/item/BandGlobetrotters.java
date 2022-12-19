@@ -10,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -57,6 +58,14 @@ public class BandGlobetrotters extends Item implements ICurioItem {
             return;
         }
 
+        if (living instanceof Player player) {
+            //check if already equipped
+            if (player.getPersistentData().getBoolean("globetrottersEquip")) {
+                return;
+            }
+            player.getPersistentData().putBoolean("globetrottersEquip", true);
+        }
+
         //calculate scale
         int storedTime = this.getStoredEnergy(stack);
         float storedTimeMaxToScale = c.band_globetrotters_limit.get() / Math.abs(c.band_globetrotters_limit_scale.get().floatValue() - c.band_globetrotters_scale.get().floatValue());
@@ -82,6 +91,10 @@ public class BandGlobetrotters extends Item implements ICurioItem {
             return;
         }
 
+        if (living instanceof Player player) {
+            player.getPersistentData().putBoolean("globetrottersEquip", false);
+        }
+
         //reset scale
         if (c.multiply_enable.get()) {
             int storedTime = this.getStoredEnergy(stack);
@@ -102,6 +115,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
+        //globetrotter's band can't be used with anything else
         if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get()) ||
                 CurioHelper.hasCurio(living, ModItems.BAND_CRUSTACEOUS.get()) ||
                 CurioHelper.hasCurio(living, ModItems.BAND_PASSION.get()) ||

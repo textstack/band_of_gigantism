@@ -1,6 +1,7 @@
 package net.textstack.band_of_gigantism.registry;
 
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -80,6 +81,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> GOLDEN_FRYING_PAN = ITEMS.register("golden_frying_pan",
             () -> new GoldenFryingPan(Tiers.GOLD, 12, -3.2f, new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).rarity(Rarity.EPIC).stacksTo(1).defaultDurability(4095).fireResistant()));
+
+    public static final RegistryObject<Item> MIRAGIN = ITEMS.register("mira_gin",
+            () -> new MiraGin(new Item.Properties().tab(CreativeModeTab.TAB_BREWING).rarity(Rarity.RARE).stacksTo(16)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

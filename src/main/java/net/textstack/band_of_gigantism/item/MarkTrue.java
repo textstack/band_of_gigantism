@@ -1,8 +1,10 @@
 package net.textstack.band_of_gigantism.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -11,7 +13,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.util.CurioHelper;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -30,6 +35,12 @@ public class MarkTrue extends Item {
 
         if (!c.description_enable.get()) return;
 
+        MutableComponent slotsTooltip = Component.translatable("curios.slot")
+                .append(": ").withStyle(ChatFormatting.GOLD);
+        MutableComponent type = Component.translatable("curios.identifier.curio").withStyle(ChatFormatting.YELLOW);
+        slotsTooltip.append(type);
+
+        tooltip.add(slotsTooltip);
         tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_true_description_flavor"));

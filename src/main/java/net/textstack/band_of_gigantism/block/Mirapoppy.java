@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -20,8 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Mirapoppy extends FlowerBlock implements EntityBlock {
-    public Mirapoppy(MobEffect effect, int duration, Properties properties) {
-        super(effect, duration, properties);
+    public Mirapoppy(MobEffect effect, BlockBehaviour.Properties properties) {
+        super(effect, 30, properties);
     }
 
     @Override

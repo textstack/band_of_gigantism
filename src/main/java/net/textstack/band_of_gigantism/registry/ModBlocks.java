@@ -32,7 +32,7 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, BandOfGigantism.MODID);
 
     public static final RegistryObject<Block> MIRAPOPPY = register("mirapoppy",
-            () -> new Mirapoppy(MobEffects.CONFUSION, 30, BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT, MaterialColor.COLOR_PURPLE).sound(SoundType.GRASS).noCollission()),
+            () -> new Mirapoppy(MobEffects.CONFUSION, BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.COLOR_PURPLE).instabreak().sound(SoundType.GRASS).noCollission().offsetType(BlockBehaviour.OffsetType.XZ)),
             object -> () -> new MirapoppyItem(object.get(), new Item.Properties().tab(CreativeModeTab.TAB_TOOLS).rarity(Rarity.UNCOMMON).stacksTo(1).defaultDurability(0)));
 
     @SuppressWarnings("ConstantConditions")

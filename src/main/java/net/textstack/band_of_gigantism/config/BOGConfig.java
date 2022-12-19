@@ -114,13 +114,14 @@ public class BOGConfig {
     public final ForgeConfigSpec.DoubleValue mirapoppy_chance;
     public final ForgeConfigSpec.DoubleValue mirapoppy_chance_double;
     public final ForgeConfigSpec.IntValue mirapoppy_radius;
+    public final ForgeConfigSpec.DoubleValue mira_gin_chance;
 
     public BOGConfig(ForgeConfigSpec.Builder BUILDER) {
         BUILDER.push("general");
             scale_speed = BUILDER.comment("Scaling speed in ticks per unit of scale change. (default 30)").defineInRange("scale_speed",30,1,Integer.MAX_VALUE);
             description_enable = BUILDER.comment("Whether items have detailed descriptions. Disable if you hate information.").define("description_enable", true);
             multiply_enable = BUILDER.comment("Whether scaling items take into account the player's current scale, allowing multiple to be worn. This may be necessary if there are other mods that use Pehkui. (default true)").define("multiply_enable",true);
-            general_scale_limit = BUILDER.comment("The absolute max scale that any item in Band of Gigantism can scale the player to. (default 32.0)").defineInRange("general_scale_limit",32.0,1.0,64.0);
+            general_scale_limit = BUILDER.comment("The absolute max scale that any item in Band of Gigantism can scale the player to. (default 16.0)").defineInRange("general_scale_limit",16.0,1.0,64.0);
             recovery_allhits = BUILDER.comment("Whether players are inflicted with a regen-blocking debuff whenever they are damaged. (default false)").define("recovery_allhits", false);
             recovery_duration = BUILDER.comment("The length the regen-blocking debuff will be applied for, in ticks. (default 80)").defineInRange("recovery_duration", 80, 10, Integer.MAX_VALUE);
             recovery_chance = BUILDER.comment("The chance for the regen-blocking debuff to be applied [1.0 = 100%]. (default 1.0)").defineInRange("recovery_chance", 1.0, 0.0, 1.0);
@@ -140,10 +141,10 @@ public class BOGConfig {
                 band_basic_min_scale = BUILDER.comment("minimum possible scale (default 0.3)").defineInRange("band_basic_min_scale",0.3,0.01,32);
                 band_basic_max_scale = BUILDER.comment("maximum possible scale (default 0.9)").defineInRange("band_basic_max_scale",0.9,0.01,32);
                 band_passion_scale = BUILDER.comment("(default 1.1)").defineInRange("band_passion_scale",1.1,0.01,32);
-                band_passion_scale_level = BUILDER.comment("scale change per level (default 0.1)").defineInRange("band_passion_scale_level",0.1,0.0,8.0);
+                band_passion_scale_level = BUILDER.comment("scale change per level (default 0.04)").defineInRange("band_passion_scale_level",0.04,0.0,8.0);
                 band_passion_limit_scale = BUILDER.comment("maximum possible scale (default 4.0)").defineInRange("band_passion_limit_scale",4.0,0.01,32);
                 band_apathy_scale = BUILDER.comment("(default 0.9)").defineInRange("band_apathy_scale",0.9,0.01,32);
-                band_apathy_scale_level = BUILDER.comment("scale change per level (default 0.1)").defineInRange("band_apathy_scale_level",0.1,0.0,8.0);
+                band_apathy_scale_level = BUILDER.comment("scale change per level (default 0.04)").defineInRange("band_apathy_scale_level",0.04,0.0,8.0);
                 band_apathy_limit_scale = BUILDER.comment("minimum possible scale (default 0.25)").defineInRange("band_apathy_limit_scale",0.25,0.01,32);
             BUILDER.pop().comment("Mask of Diminishment settings").push("mask_diminishment");
 
@@ -160,11 +161,12 @@ public class BOGConfig {
 
                 false_hand_flat_resistance = BUILDER.comment("Amount of flat damage resistance added when equipping while flipped (default -2.0)").defineInRange("false_hand_flat_resistance",-2.0,-Float.MAX_VALUE,Float.MAX_VALUE);
                 false_hand_time = BUILDER.comment("Amount of time for a flipped false hand to flip back, in seconds. (default 180)").defineInRange("false_hand_time",180,1,Integer.MAX_VALUE);
-            BUILDER.pop().comment("Mirapoppy settings").push("mirapoppy");
+            BUILDER.pop().comment("Mirapoppy/Mira-Gin settings").push("mirapoppy");
 
                 mirapoppy_chance = BUILDER.comment("Chance for experience dropped to double (default 0.25)").defineInRange("mirapoppy_chance",0.25,0,1);
                 mirapoppy_chance_double = BUILDER.comment("Chance for experience dropped to double AGAIN after it has already doubled (default 0.25)").defineInRange("mirapoppy_chance_double",0.25,0,1);
                 mirapoppy_radius = BUILDER.comment("Radius of the placed mirapoppy (default 3)").defineInRange("mirapoppy_radius",3,1,Integer.MAX_VALUE);
+                mira_gin_chance = BUILDER.comment("Chance for the mira effect to negate damage when applied to players [1.0 = 100%] (default 0.10)").defineInRange("mira_gin_chance",0.1,0.0,1.0);
             BUILDER.pop().push("marks");
 
                 marks_duration = BUILDER.comment("Duration of the regen-blocking debuff applied when removing marks, in ticks [separate from recovery_duration]. (default 200)").defineInRange("marks_duration",200,1,Integer.MAX_VALUE);
