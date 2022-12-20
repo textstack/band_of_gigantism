@@ -2,8 +2,10 @@ package net.textstack.band_of_gigantism.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -179,26 +181,27 @@ public class MarkUnknown extends Item implements ICurioItem {
             }
 
             //effect
-            //don't know how this could be localized
             String effect = switch (randomEffects[0]) {
-                case 0 -> "\u00A76Poison";
-                case 1 -> "\u00A76Saturation";
-                case 2 -> "\u00A76Resistance";
-                case 3 -> "\u00A76Strength";
-                case 4 -> "\u00A76Mining Fatigue";
-                case 5 -> "\u00A76Haste";
-                case 6 -> "\u00A76Hunger";
-                case 7 -> "\u00A76Slow Falling";
-                case 8 -> "\u00A76Weakness";
-                case 9 -> "\u00A76Night Vision";
-                default -> "";
+                case 0 -> "effect.minecraft.poison";
+                case 1 -> "effect.minecraft.saturation";
+                case 2 -> "effect.minecraft.resistance";
+                case 3 -> "effect.minecraft.strength";
+                case 4 -> "effect.minecraft.mining_fatigue";
+                case 5 -> "effect.minecraft.haste";
+                case 6 -> "effect.minecraft.hunger";
+                case 7 -> "effect.minecraft.slow_falling";
+                case 8 -> "effect.minecraft.weakness";
+                case 9 -> "effect.minecraft.night_vision";
+                default -> "tooltip.band_of_gigantism.obfuscated";
             };
+            MutableComponent effectComponent = Component.translatable(effect).withStyle(ChatFormatting.GOLD);
+
             String amp = switch (randomEffects[1]) {
                 case 1 -> "\u00A76II ";
                 case 2 -> "\u00A76III ";
                 default -> "";
             };
-            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_4", effect, amp));
+            tooltip.add(effectComponent.append(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_4", amp)));
             tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
             tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_generic_description"));
         } else {

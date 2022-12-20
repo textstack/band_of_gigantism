@@ -3,7 +3,6 @@ package net.textstack.band_of_gigantism.item;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -25,9 +24,6 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -61,28 +57,26 @@ public class BandGeneric extends Item implements ICurioItem {
 
         //check if already equipped
         if (slotContext.entity() instanceof Player player) {
-
-            //get values
-            int tag = stack.getOrCreateTag().getInt("UniqueTag");
-            int[] ints = player.getPersistentData().getIntArray("bandsEquipped");
-            ArrayList<Integer> tagList = new ArrayList<>(Arrays.stream(ints).boxed().toList());
-
-            //check if in le array
-            boolean check = false;
-            for (int tagCompare : tagList) {
-                if (tag == tagCompare) {
-                    check = true;
-                    break;
+            switch (itemVal) {
+                case 0 -> {
+                    if (player.getPersistentData().getBoolean("genericEquip")) {
+                        return;
+                    }
+                    player.getPersistentData().putBoolean("genericEquip", true);
+                }
+                case 1 -> {
+                    if (player.getPersistentData().getBoolean("lesserEquip")) {
+                        return;
+                    }
+                    player.getPersistentData().putBoolean("lesserEquip", true);
+                }
+                case 2 -> {
+                    if (player.getPersistentData().getBoolean("shrinkEquip")) {
+                        return;
+                    }
+                    player.getPersistentData().putBoolean("shrinkEquip", true);
                 }
             }
-            if (check) {
-                return;
-            }
-
-            //add in new value
-            tagList.add(tag);
-            int[] intsNew = tagList.stream().mapToInt(Integer::intValue).toArray();
-            player.getPersistentData().putIntArray("bandsEquipped", intsNew);
         }
 
         float setScale = switch (itemVal) {
@@ -114,25 +108,11 @@ public class BandGeneric extends Item implements ICurioItem {
 
         //clear tag from list
         if (slotContext.entity() instanceof Player player) {
-
-            //get values
-            int tag = stack.getOrCreateTag().getInt("UniqueTag");
-            int[] ints = player.getPersistentData().getIntArray("bandsEquipped");
-            ArrayList<Integer> tagList = new ArrayList<>(Arrays.stream(ints).boxed().toList());
-
-            //remove value
-            Iterator<Integer> it = tagList.iterator();
-            while(it.hasNext()) {
-                int i = it.next();
-                if (i == tag) {
-                    it.remove();
-                    break;
-                }
+            switch (itemVal) {
+                case 0 -> player.getPersistentData().putBoolean("genericEquip", false);
+                case 1 -> player.getPersistentData().putBoolean("lesserEquip", false);
+                case 2 -> player.getPersistentData().putBoolean("shrinkEquip", false);
             }
-
-            //finish
-            int[] intsNew = tagList.stream().mapToInt(Integer::intValue).toArray();
-            player.getPersistentData().putIntArray("bandsEquipped", intsNew);
         }
 
         float setScale = switch (itemVal) {
@@ -153,27 +133,12 @@ public class BandGeneric extends Item implements ICurioItem {
     }
 
     @Override
-    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
-        super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
-
-        if (worldIn.isClientSide) {
-            return;
-        }
-
-        //wish i knew a better way to do this... identifier to prevent the onequip method from firing at the wrong time
-        //item nbt data can't be changed during onequip
-        if (stack.getOrCreateTag().getInt("UniqueTag") <= 0) {
-            stack.getOrCreateTag().putInt("UniqueTag", worldIn.random.nextInt());
-        }
-    }
-
-    @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
         ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get())) {
+        if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get()) || CurioHelper.hasCurio(living, stack.getItem())) {
             return false;
         }
 

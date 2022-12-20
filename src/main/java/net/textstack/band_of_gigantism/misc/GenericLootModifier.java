@@ -1,4 +1,4 @@
-package net.textstack.band_of_gigantism.event;
+package net.textstack.band_of_gigantism.misc;
 
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;

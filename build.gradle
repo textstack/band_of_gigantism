@@ -57,26 +57,13 @@ mixin {
     config "band_of_gigantism.mixin.json"
 }
 
-tasks.withType(Jar) {
+/*tasks.withType(Jar) {
     manifest {
         attributes([
                 "MixinConnector": "${project.group}.MixinConnector"
         ])
     }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file://${project.projectDir}/mcmodsrepo"
-        }
-    }
-}
+}*/
 
 println("Specifying Java compatibility...")
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -96,7 +83,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                any {
+                band_of_gigantism {
                     source sourceSets.main
                 }
             }
@@ -110,13 +97,47 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                any {
+                band_of_gigantism {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        gameTestServer {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            property 'forge.logging.console.level', 'debug'
+
+            property 'forge.enabledGameTestNamespaces', 'band_of_gigantism'
+
+            mods {
+                band_of_gigantism {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            args '--mod', 'band_of_gigantism', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                band_of_gigantism {
                     source sourceSets.main
                 }
             }
         }
     }
 }
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     println("Specifying repositories...")
@@ -145,6 +166,19 @@ jar {
 }
 
 jar.finalizedBy('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation

@@ -32,7 +32,6 @@ public class BandOfGigantism
 
         // main handler for the mod
         bogHandler = new EventHandlerMyBallsInYourMouth();
-        //bogConfig = new BOGConfig();
 
         ModItems.register(eventBus);
         ModEffects.register(eventBus);
@@ -50,7 +49,6 @@ public class BandOfGigantism
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(bogHandler);
-        //MinecraftForge.EVENT_BUS.register(BOGConfig.class);
     }
 
     private void clientSetup(final FMLClientSetupEvent event)

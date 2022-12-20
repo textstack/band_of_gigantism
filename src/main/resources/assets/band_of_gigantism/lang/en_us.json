@@ -39,7 +39,7 @@
   "death.attack.mark_judged": "%1$s §cwas adjourned",
   "death.attack.mira": "%1$s's soul was eviscerated beyond recognition",
 
-  "tooltip.band_of_gigantism.obfuscated": "§4§kICantThinkOfASecretMessage",
+  "tooltip.band_of_gigantism.obfuscated": "§kNothing",
   "tooltip.band_of_gigantism.shift": "§5Hold §6Shift§5 to see details.",
   "tooltip.band_of_gigantism.void": "",
 
@@ -80,6 +80,8 @@
   "tooltip.band_of_gigantism.error": "§6+%1$s §4Invalid Stat",
   "tooltip.band_of_gigantism.error_negative": "§6-%1$s §4Invalid Stat",
 
+
+  "tooltip.band_of_gigantism.tooltip_strange_generic": "§8 - Kills: ",
 
   "tooltip.band_of_gigantism.title_strange_0": "§6Strange ",
   "tooltip.band_of_gigantism.title_strange_10": "§6Unremarkable ",
@@ -227,7 +229,7 @@
   "tooltip.band_of_gigantism.mark_unknown_description_shift_3_negative": "§6-25% §cHealing",
   "tooltip.band_of_gigantism.mark_unknown_description_shift_3_positive_res": "§6+0.75 §9Flat Damage Resistance",
   "tooltip.band_of_gigantism.mark_unknown_description_shift_3_negative_res": "§6+0.75 §cFlat Damage Vulnerability",
-  "tooltip.band_of_gigantism.mark_unknown_description_shift_4": "§6%1$s %2$s§5is applied.",
+  "tooltip.band_of_gigantism.mark_unknown_description_shift_4": " §6%1$s§5is applied.",
 
   "tooltip.band_of_gigantism.mark_judged_description_flavor": "§c§oCome on, let us see you smile.",
   "tooltip.band_of_gigantism.mark_judged_description_0": "§6+4 §9Attack Damage",
@@ -239,7 +241,5 @@
   "tooltip.band_of_gigantism.mirapoppy_description_0": "§5Mobs occasionally drop extra experience.",
   "tooltip.band_of_gigantism.mirapoppy_description_1": "§5When placed, this effect applies to nearby mobs.",
 
-  "tooltip.band_of_gigantism.mira_gin_description_0": "§9Mira (8:00)",
-  "tooltip.band_of_gigantism.mira_gin_description_1": "§5When Applied:",
-  "tooltip.band_of_gigantism.mira_gin_description_2": "§9%1$s% Dodge Chance"
+  "tooltip.band_of_gigantism.mira_gin_description": "%1$s Dodge Chance"
 }

@@ -1,8 +1,11 @@
 package net.textstack.band_of_gigantism.event;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +21,7 @@ import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,7 +33,9 @@ import net.textstack.band_of_gigantism.registry.ModBlocks;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
+import net.textstack.band_of_gigantism.util.LoreStatHelper;
 
+import java.util.List;
 import java.util.Objects;
 
 //i agree, it IS a good handler name!
@@ -72,6 +78,21 @@ public class EventHandlerMyBallsInYourMouth {
         }
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onTooltip(ItemTooltipEvent event) {
+        ItemStack stack = event.getItemStack();
+        CompoundTag tag = stack.getTag();
+        if (tag == null) return;
+        List<Component> tooltip = event.getToolTip();
+
+        if (tag.getBoolean("Strange")) {
+            int strangeKills = tag.getInt("strangeKills");
+            tooltip.add(Component.translatable(LoreStatHelper.displayStrangeName(strangeKills,LoreStatHelper.StrangeType.TOOLTIP))
+                    .append(stack.getHoverName().copy().withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.translatable("tooltip.band_of_gigantism.tooltip_strange_generic", "\u00A78" + strangeKills)));
+        }
+    }
+
     @SubscribeEvent
     public void onLivingDeathEvent(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player) {
@@ -84,6 +105,22 @@ public class EventHandlerMyBallsInYourMouth {
                     living.setHealth(living.getMaxHealth() / 2.0f);
                     stack.getOrCreateTag().putInt("flipped", 1);
                     living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 1, false, false));
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public void onReallyDeadEvent(LivingDeathEvent event) {
+        if (!event.isCanceled() && event.getEntity().isDeadOrDying() && event.getSource().getEntity() instanceof Player player) {
+            ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
+            CompoundTag tag = stack.getTag();
+            if (tag != null && tag.getBoolean("Strange")) {
+                int strangeKills = tag.getInt("strangeKills");
+                if (strangeKills <= 0) {
+                    tag.putInt("strangeKills",1);
+                } else {
+                    tag.putInt("strangeKills",strangeKills+1);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package net.textstack.band_of_gigantism.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -45,10 +46,12 @@ public class MiraGin extends Item {
 
         //if (!c.description_enable.get()) return;
 
-        tooltip.add(Component.translatable("tooltip.band_of_gigantism.mira_gin_description_0"));
+        String value = String.valueOf((int) (Math.abs(c.mira_gin_chance.get()) * 100));
+
+        tooltip.add(Component.translatable("potion.withDuration",Component.translatable("effect.band_of_gigantism.mira"),"8:00").withStyle(ChatFormatting.BLUE));
         tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
-        tooltip.add(Component.translatable("tooltip.band_of_gigantism.mira_gin_description_1"));
-        tooltip.add(Component.translatable("tooltip.band_of_gigantism.mira_gin_description_2",(int) (Math.abs(c.mira_gin_chance.get()) * 100)));
+        tooltip.add(Component.translatable("potion.whenDrank").withStyle(ChatFormatting.DARK_PURPLE));
+        tooltip.add(Component.translatable("tooltip.band_of_gigantism.mira_gin_description",value+"%").withStyle(ChatFormatting.BLUE));
     }
 
     public int getUseDuration(@NotNull ItemStack stack) {

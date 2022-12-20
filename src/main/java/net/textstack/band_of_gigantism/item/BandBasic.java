@@ -30,9 +30,6 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public class BandBasic extends Item implements ICurioItem {
@@ -60,8 +57,13 @@ public class BandBasic extends Item implements ICurioItem {
         //check if already equipped
         if (slotContext.entity() instanceof Player player) {
 
+            if (player.getPersistentData().getBoolean("basicEquip")) {
+                return;
+            }
+            player.getPersistentData().putBoolean("basicEquip", true);
+
             //get values
-            int tag = stack.getOrCreateTag().getInt("UniqueTag");
+            /*int tag = stack.getOrCreateTag().getInt("UniqueTag");
             int[] ints = player.getPersistentData().getIntArray("bandsEquipped");
             ArrayList<Integer> tagList = new ArrayList<>(Arrays.stream(ints).boxed().toList());
 
@@ -80,7 +82,7 @@ public class BandBasic extends Item implements ICurioItem {
             //add in new value
             tagList.add(tag);
             int[] intsNew = tagList.stream().mapToInt(Integer::intValue).toArray();
-            player.getPersistentData().putIntArray("bandsEquipped", intsNew);
+            player.getPersistentData().putIntArray("bandsEquipped", intsNew);*/
         }
 
         int setScale;
@@ -114,8 +116,10 @@ public class BandBasic extends Item implements ICurioItem {
         //clear tag from list
         if (slotContext.entity() instanceof Player player) {
 
+            player.getPersistentData().putBoolean("basicEquip", false);
+
             //get values
-            int tag = stack.getOrCreateTag().getInt("UniqueTag");
+            /*int tag = stack.getOrCreateTag().getInt("UniqueTag");
             int[] ints = player.getPersistentData().getIntArray("bandsEquipped");
             ArrayList<Integer> tagList = new ArrayList<>(Arrays.stream(ints).boxed().toList());
 
@@ -131,7 +135,7 @@ public class BandBasic extends Item implements ICurioItem {
 
             //finish
             int[] intsNew = tagList.stream().mapToInt(Integer::intValue).toArray();
-            player.getPersistentData().putIntArray("bandsEquipped", intsNew);
+            player.getPersistentData().putIntArray("bandsEquipped", intsNew);*/
         }
 
         //reset scale
@@ -177,9 +181,9 @@ public class BandBasic extends Item implements ICurioItem {
         }
 
         //still wishing
-        if (stack.getOrCreateTag().getInt("UniqueTag") <= 0) {
+        /*if (stack.getOrCreateTag().getInt("UniqueTag") <= 0) {
             stack.getOrCreateTag().putInt("UniqueTag", worldIn.random.nextInt());
-        }
+        }*/
 
         LivingEntity living = (LivingEntity) entityIn;
 
@@ -242,7 +246,7 @@ public class BandBasic extends Item implements ICurioItem {
         ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get())) {
+        if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get()) || CurioHelper.hasCurio(living, stack.getItem())) {
             return false;
         }
 
