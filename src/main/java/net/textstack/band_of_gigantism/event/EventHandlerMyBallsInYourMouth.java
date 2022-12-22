@@ -37,7 +37,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.item.MarkUnknown;
-import net.textstack.band_of_gigantism.registry.ModDamageSources;
 import net.textstack.band_of_gigantism.registry.*;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;

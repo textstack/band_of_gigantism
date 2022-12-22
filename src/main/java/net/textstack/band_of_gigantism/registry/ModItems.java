@@ -1,7 +1,6 @@
 package net.textstack.band_of_gigantism.registry;
 
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
