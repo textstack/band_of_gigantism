@@ -37,7 +37,7 @@
   "death.attack.mark_unknown": "%1$s §aran out of luck",
   "death.attack.mark_descended": "%1$s§9's insides became outsides",
   "death.attack.mark_judged": "%1$s §cwas adjourned",
-  "death.attack.mira": "%1$s's soul was eviscerated beyond recognition",
+  "death.attack.mira": "%1$s was eviscerated beyond recognition",
 
   "tooltip.band_of_gigantism.obfuscated": "§kNothing",
   "tooltip.band_of_gigantism.shift": "§5Hold §6Shift§5 to see details.",

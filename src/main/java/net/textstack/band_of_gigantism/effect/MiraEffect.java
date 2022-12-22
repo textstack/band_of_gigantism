@@ -3,7 +3,7 @@ package net.textstack.band_of_gigantism.effect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.textstack.band_of_gigantism.misc.MarkDamageSource;
+import net.textstack.band_of_gigantism.registry.ModDamageSources;
 import org.jetbrains.annotations.NotNull;
 
 public class MiraEffect extends MobEffect {
@@ -15,7 +15,7 @@ public class MiraEffect extends MobEffect {
     public void applyEffectTick(@NotNull LivingEntity living, int amplifier) {
         super.applyEffectTick(living, amplifier);
 
-        living.hurt(MarkDamageSource.BOG_MIRA, Float.MAX_VALUE);
+        living.hurt(ModDamageSources.BOG_MIRA, Float.MAX_VALUE);
     }
 
     @Override

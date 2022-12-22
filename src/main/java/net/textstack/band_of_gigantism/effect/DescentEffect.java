@@ -3,7 +3,7 @@ package net.textstack.band_of_gigantism.effect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.textstack.band_of_gigantism.misc.MarkDamageSource;
+import net.textstack.band_of_gigantism.registry.ModDamageSources;
 import org.jetbrains.annotations.NotNull;
 
 public class DescentEffect extends MobEffect {
@@ -17,9 +17,9 @@ public class DescentEffect extends MobEffect {
 
         //apply damage
         if (amplifier >= 11) { //>10? bye idiot
-            entityLivingBaseIn.hurt(MarkDamageSource.BOG_DESCENDED, Float.MAX_VALUE);
+            entityLivingBaseIn.hurt(ModDamageSources.BOG_DESCENDED, Float.MAX_VALUE);
         } else {
-            entityLivingBaseIn.hurt(MarkDamageSource.BOG_DESCENDED, (amplifier / 2.0f) + 1);
+            entityLivingBaseIn.hurt(ModDamageSources.BOG_DESCENDED, (amplifier / 2.0f) + 1);
         }
     }
 

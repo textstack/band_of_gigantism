@@ -18,7 +18,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.misc.MarkDamageSource;
+import net.textstack.band_of_gigantism.registry.ModDamageSources;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
@@ -47,7 +47,7 @@ public class MarkPurified extends Item implements ICurioItem {
         LivingEntity living = slotContext.entity();
 
         //deal near-mortal damage, prevent healing for 10 seconds
-        living.hurt(MarkDamageSource.BOG_PURIFIED, living.getMaxHealth() - 1);
+        living.hurt(ModDamageSources.BOG_PURIFIED, living.getMaxHealth() - 1);
         living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
 
         //remove the variable modifiers

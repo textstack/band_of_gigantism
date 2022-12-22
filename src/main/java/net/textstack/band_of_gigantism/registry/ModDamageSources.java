@@ -1,9 +1,9 @@
-package net.textstack.band_of_gigantism.misc;
+package net.textstack.band_of_gigantism.registry;
 
 import net.minecraft.world.damagesource.DamageSource;
 
-public class MarkDamageSource extends DamageSource {
-    public MarkDamageSource(String damageTypeIn) {
+public class ModDamageSources extends DamageSource {
+    public ModDamageSources(String damageTypeIn) {
         super(damageTypeIn);
     }
 

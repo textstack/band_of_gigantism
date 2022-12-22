@@ -7,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,7 +16,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.misc.MarkDamageSource;
+import net.textstack.band_of_gigantism.registry.ModDamageSources;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
@@ -53,7 +52,7 @@ public class MarkObliterated extends Item implements ICurioItem {
         }
 
         //kill
-        slotContext.entity().hurt(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
+        slotContext.entity().hurt(ModDamageSources.BOG_OBLITERATED, Float.MAX_VALUE);
     }
 
     @Override
@@ -63,7 +62,7 @@ public class MarkObliterated extends Item implements ICurioItem {
         if (slotContext.entity() instanceof ServerPlayer player) {
             if (!CurioHelper.hasCurio(player, ModItems.MARK_OBLITERATED.get())) {
                 player.getPersistentData().putBoolean("obliteratedEquip", false);
-                slotContext.entity().hurt(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
+                slotContext.entity().hurt(ModDamageSources.BOG_OBLITERATED, Float.MAX_VALUE);
                 player.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
             }
         }

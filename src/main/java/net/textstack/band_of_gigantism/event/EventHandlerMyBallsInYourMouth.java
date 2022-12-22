@@ -1,19 +1,28 @@
 package net.textstack.band_of_gigantism.event;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -28,10 +37,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.item.MarkUnknown;
-import net.textstack.band_of_gigantism.misc.MarkDamageSource;
-import net.textstack.band_of_gigantism.registry.ModBlocks;
-import net.textstack.band_of_gigantism.registry.ModEffects;
-import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.registry.ModDamageSources;
+import net.textstack.band_of_gigantism.registry.*;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 
@@ -110,17 +117,52 @@ public class EventHandlerMyBallsInYourMouth {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOW)
+    @SubscribeEvent(priority = EventPriority.LOW, receiveCanceled = true)
     public void onReallyDeadEvent(LivingDeathEvent event) {
-        if (!event.isCanceled() && event.getEntity().isDeadOrDying() && event.getSource().getEntity() instanceof Player player) {
-            ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-            CompoundTag tag = stack.getTag();
-            if (tag != null && tag.getBoolean("Strange")) {
-                int strangeKills = tag.getInt("strangeKills");
-                if (strangeKills <= 0) {
-                    tag.putInt("strangeKills",1);
-                } else {
-                    tag.putInt("strangeKills",strangeKills+1);
+        if (!event.isCanceled()) {
+            if (event.getSource().getEntity() instanceof Player player) {
+                ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
+                CompoundTag tag = stack.getTag();
+                if (tag != null && tag.getBoolean("Strange")) {
+                    int strangeKills = tag.getInt("strangeKills");
+                    if (strangeKills <= 0) {
+                        tag.putInt("strangeKills", 1);
+                    } else {
+                        tag.putInt("strangeKills", strangeKills + 1);
+                    }
+                }
+            }
+            if (event.getSource() == ModDamageSources.BOG_MIRA) {
+                if(event.getEntity() instanceof ServerPlayer player) {
+                    CurioHelper.hasCurioGet(player, ModItems.BAND_PASSION.get()).shrink(1);
+                    CurioHelper.hasCurioGet(player, ModItems.BAND_APATHY.get()).shrink(1);
+
+                    BlockPos blockpos = player.blockPosition();
+                    RandomSource random = player.getRandom();
+                    ServerLevel server = player.getLevel();
+                    int count = 0;
+
+                    restartMira:
+                    for(int i = 0; i < 128; ++i) {
+                        BlockPos blockpos1 = blockpos;
+                        
+                        for(int j = 0; j < i / 16; ++j) {
+                            blockpos1 = blockpos1.offset(random.nextInt(3) - 1, (random.nextInt(3) - 1) * random.nextInt(3) / 2, random.nextInt(3) - 1);
+                            if (server.getBlockState(blockpos1).isCollisionShapeFullBlock(server, blockpos1)) {
+                                continue restartMira;
+                            }
+                        }
+
+                        BlockState blockstate1 = server.getBlockState(blockpos1);
+
+                        if (blockstate1.isAir()) {
+                            Holder<PlacedFeature> holder = ModPlacements.MIRA_PLACE;
+                            holder.value().place(server, server.getChunkSource().getGenerator(), random, blockpos1);
+                            count = count + 1;
+
+                            if (count >= 6) {break;}
+                        }
+                    }
                 }
             }
         }
@@ -148,20 +190,20 @@ public class EventHandlerMyBallsInYourMouth {
         if (event.getEntity() instanceof Player living) {
 
             if (c.recovery_allhits.get()) {
-                if (event.getSource() != MarkDamageSource.BOG_DESCENDED &&
-                        event.getSource() != MarkDamageSource.BOG_FADED &&
-                        event.getSource() != MarkDamageSource.BOG_FORGOTTEN &&
-                        event.getSource() != MarkDamageSource.BOG_JUDGED &&
-                        event.getSource() != MarkDamageSource.BOG_OBLITERATED &&
-                        event.getSource() != MarkDamageSource.BOG_PURIFIED &&
-                        event.getSource() != MarkDamageSource.BOG_UNKNOWN)
+                if (event.getSource() != ModDamageSources.BOG_DESCENDED &&
+                        event.getSource() != ModDamageSources.BOG_FADED &&
+                        event.getSource() != ModDamageSources.BOG_FORGOTTEN &&
+                        event.getSource() != ModDamageSources.BOG_JUDGED &&
+                        event.getSource() != ModDamageSources.BOG_OBLITERATED &&
+                        event.getSource() != ModDamageSources.BOG_PURIFIED &&
+                        event.getSource() != ModDamageSources.BOG_UNKNOWN)
                 if ((event.getAmount() > c.recovery_minimum_damage.get()) && (Math.random() < c.recovery_chance.get())) {
                     living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.recovery_duration.get(), 0, false, c.recovery_show_particles.get()));
                 }
             }
 
             //for the strains of ascent effect to deal damage as fast as it wants
-            if (event.getSource() == MarkDamageSource.BOG_DESCENDED) {
+            if (event.getSource() == ModDamageSources.BOG_DESCENDED) {
                 living.invulnerableTime = 0;
             }
 
@@ -298,5 +340,26 @@ public class EventHandlerMyBallsInYourMouth {
             newMessage = "\u00A77" + message + "\u00A7r";
         }
         return newMessage;
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onFogRender(ViewportEvent.RenderFog event) {
+        Player player = Objects.requireNonNull(Minecraft.getInstance().player);
+        if (player.hasEffect(ModEffects.MIRA_SICKNESS.get())) {
+            float distanceMod = Objects.requireNonNull(player.getEffect(ModEffects.MIRA_SICKNESS.get())).getDuration()*2+0.8f;
+            RenderSystem.setShaderFogStart(0.0F);
+            RenderSystem.setShaderFogEnd(distanceMod);
+        }
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onFogColor(ViewportEvent.ComputeFogColor event) {
+        if (Objects.requireNonNull(Minecraft.getInstance().player).hasEffect(ModEffects.MIRA_SICKNESS.get())) {
+            event.setRed(200);
+            event.setGreen(100);
+            event.setBlue(175);
+        }
     }
 }

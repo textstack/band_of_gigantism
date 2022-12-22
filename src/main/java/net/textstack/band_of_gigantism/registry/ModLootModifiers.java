@@ -7,7 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.textstack.band_of_gigantism.BandOfGigantism;
-import net.textstack.band_of_gigantism.misc.GenericLootModifier;
+import net.textstack.band_of_gigantism.loot.GenericLootModifier;
 
 public class ModLootModifiers {
     public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIER_SERIALIZER =
