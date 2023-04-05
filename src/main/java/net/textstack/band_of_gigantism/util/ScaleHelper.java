@@ -7,10 +7,8 @@ import virtuoel.pehkui.api.ScaleType;
 import virtuoel.pehkui.api.ScaleTypes;
 
 public class ScaleHelper {
-
-    final BOGConfig c = BOGConfig.INSTANCE;
-
-    private boolean canScale(ScaleType scale) {
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    private boolean canScale(BOGConfig c, ScaleType scale) {
         if (ScaleTypes.WIDTH.equals(scale)) {
             return c.width.get();
         } else if (ScaleTypes.HEIGHT.equals(scale)) {
@@ -48,7 +46,7 @@ public class ScaleHelper {
 
         int tickDelay = Math.max(setDelay, 0);
         for (ScaleType scale : scales) {
-            if (!scaleHelper.canScale(scale)) {
+            if (!scaleHelper.canScale(c, scale)) {
                 continue;
             }
             ScaleData scaleData = scale.getScaleData(entity);
@@ -86,7 +84,7 @@ public class ScaleHelper {
 
         int tickDelay = Math.max(setDelay, 0);
         for (ScaleType scale : scales) {
-            if (!scaleHelper.canScale(scale)) {
+            if (!scaleHelper.canScale(c, scale)) {
                 continue;
             }
 
