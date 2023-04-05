@@ -4,8 +4,34 @@ import net.minecraft.world.entity.Entity;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import virtuoel.pehkui.api.ScaleData;
 import virtuoel.pehkui.api.ScaleType;
+import virtuoel.pehkui.api.ScaleTypes;
 
 public class ScaleHelper {
+
+    final BOGConfig c = BOGConfig.INSTANCE;
+
+    private boolean canScale(ScaleType scale) {
+        if (ScaleTypes.WIDTH.equals(scale)) {
+            return c.width.get();
+        } else if (ScaleTypes.HEIGHT.equals(scale)) {
+            return c.height.get();
+        } else if (ScaleTypes.STEP_HEIGHT.equals(scale)) {
+            return c.step_height.get();
+        } else if (ScaleTypes.DEFENSE.equals(scale)) {
+            return c.defense.get();
+        } else if (ScaleTypes.REACH.equals(scale)) {
+            return c.reach.get();
+        } else if (ScaleTypes.VISIBILITY.equals(scale)) {
+            return c.visibility.get();
+        } else if (ScaleTypes.KNOCKBACK.equals(scale)) {
+            return c.knockback.get();
+        } else if (ScaleTypes.HELD_ITEM.equals(scale)) {
+            return c.held_item.get();
+        } else if (ScaleTypes.ATTACK_SPEED.equals(scale)) {
+            return c.attack_speed.get();
+        }
+        return true;
+    }
 
     /**
      * Scales specified ScaleTypes of the entity to the set value
@@ -17,11 +43,14 @@ public class ScaleHelper {
      * @return the delay used for the first ScaleType in the scales array, or the set delay if set
      */
     public static int rescale(Entity entity, ScaleType[] scales, float value, int setDelay) {
+        ScaleHelper scaleHelper = new ScaleHelper();
         BOGConfig c = BOGConfig.INSTANCE;
 
         int tickDelay = Math.max(setDelay, 0);
         for (ScaleType scale : scales) {
-
+            if (!scaleHelper.canScale(scale)) {
+                continue;
+            }
             ScaleData scaleData = scale.getScaleData(entity);
             float scaleTarget = scaleData.getTargetScale();
 
@@ -52,10 +81,14 @@ public class ScaleHelper {
      * @return the delay used for the first ScaleType in the scales array, or the set delay if set
      */
     public static int rescaleMultiply(Entity entity, ScaleType[] scales, float value, float currentShift, int setDelay) {
+        ScaleHelper scaleHelper = new ScaleHelper();
         BOGConfig c = BOGConfig.INSTANCE;
 
         int tickDelay = Math.max(setDelay, 0);
         for (ScaleType scale : scales) {
+            if (!scaleHelper.canScale(scale)) {
+                continue;
+            }
 
             ScaleData scaleData = scale.getScaleData(entity);
             float scaleTarget = scaleData.getTargetScale();
