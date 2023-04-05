@@ -116,8 +116,32 @@ public class BOGConfig {
     public final ForgeConfigSpec.IntValue mirapoppy_radius;
     public final ForgeConfigSpec.DoubleValue mira_gin_chance;
 
+    //scale types
+    public final ForgeConfigSpec.BooleanValue width;
+    public final ForgeConfigSpec.BooleanValue height;
+    public final ForgeConfigSpec.BooleanValue step_height;
+    public final ForgeConfigSpec.BooleanValue reach;
+    public final ForgeConfigSpec.BooleanValue visibility;
+    public final ForgeConfigSpec.BooleanValue knockback;
+    public final ForgeConfigSpec.BooleanValue held_item;
+    public final ForgeConfigSpec.BooleanValue attack_speed;
+    public final ForgeConfigSpec.BooleanValue defense;
+
     public BOGConfig(ForgeConfigSpec.Builder BUILDER) {
         BUILDER.push("general");
+        BUILDER.comment("Change what scale types the mod can affect").push("scale types");
+
+            width = BUILDER.comment("Width scaling").define("width", true);
+            height = BUILDER.comment("Height scaling").define("height", true);
+            step_height = BUILDER.comment("Step height scaling").define("step_height", true);
+            reach = BUILDER.comment("Reach scaling").define("reach", true);
+            visibility = BUILDER.comment("Visibility scaling").define("visibility", true);
+            knockback = BUILDER.comment("Knockback scaling").define("knockback", true);
+            held_item = BUILDER.comment("Held item scaling").define("held_item", true);
+            attack_speed = BUILDER.comment("Attack speed scaling").define("attack_speed", true);
+            defense = BUILDER.comment("Defense scaling").define("defense", true);
+        BUILDER.pop();
+
             scale_speed = BUILDER.comment("Scaling speed in ticks per unit of scale change. (default 30)").defineInRange("scale_speed",30,1,Integer.MAX_VALUE);
             description_enable = BUILDER.comment("Whether items have detailed descriptions. Disable if you hate information.").define("description_enable", true);
             multiply_enable = BUILDER.comment("Whether scaling items take into account the player's current scale, allowing multiple to be worn. This may be necessary if there are other mods that use Pehkui. (default true)").define("multiply_enable",true);
