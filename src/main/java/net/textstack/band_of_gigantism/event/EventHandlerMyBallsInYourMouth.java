@@ -101,7 +101,7 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent
     public void onLivingDeathEvent(LivingDeathEvent event) {
-        if (event.getEntity() instanceof Player) {
+        if (!event.getSource().isBypassInvul() && event.getEntity() instanceof Player) {
             LivingEntity living = event.getEntity();
             if (CurioHelper.hasCurio(living, ModItems.FALSE_HAND.get())) {
                 ItemStack stack = CurioHelper.hasCurioGet(living, ModItems.FALSE_HAND.get());

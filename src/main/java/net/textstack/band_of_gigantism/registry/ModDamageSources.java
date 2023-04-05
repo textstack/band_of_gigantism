@@ -8,7 +8,7 @@ public class ModDamageSources extends DamageSource {
     }
 
     public static final DamageSource BOG_OBLITERATED = (new DamageSource("mark_obliterated")).
-            bypassArmor().bypassMagic().bypassInvul();
+            bypassArmor().bypassMagic();
     public static final DamageSource BOG_FADED = (new DamageSource("mark_faded")).
             bypassArmor().bypassMagic();
     public static final DamageSource BOG_FORGOTTEN = (new DamageSource("mark_forgotten")).
