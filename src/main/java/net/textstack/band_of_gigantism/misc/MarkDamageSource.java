@@ -9,6 +9,9 @@ public class MarkDamageSource extends DamageSource {
 
     public static final DamageSource BOG_OBLITERATED = (new DamageSource("mark_obliterated")).
             bypassArmor().bypassMagic();
+
+    public static final DamageSource BOG_OBLITERATED_INVULN = (new DamageSource("mark_obliterated_invuln")).
+            bypassArmor().bypassMagic().bypassInvul();
     public static final DamageSource BOG_FADED = (new DamageSource("mark_faded")).
             bypassArmor().bypassMagic();
     public static final DamageSource BOG_FORGOTTEN = (new DamageSource("mark_forgotten")).
