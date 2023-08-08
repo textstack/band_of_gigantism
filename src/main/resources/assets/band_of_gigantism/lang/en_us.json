@@ -29,6 +29,7 @@
   "effect.band_of_gigantism.mira": "Mira",
 
   "death.attack.mark_obliterated": "%1$s §4was obliterated",
+  "death.attack.mark_obliterated_invuln": "%1$s §4was obliterated",
   "death.attack.mark_faded": "%1$s §8faded into obscurity",
   "death.attack.mark_forgotten": "%1$s §6forgot something",
   "death.attack.mark_purified": "%1$s§7's soul melted into pure essence",

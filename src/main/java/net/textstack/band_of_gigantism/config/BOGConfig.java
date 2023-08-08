@@ -104,14 +104,39 @@ public class BOGConfig {
     public final ForgeConfigSpec.IntValue mark_obliterated_armor;
     public final ForgeConfigSpec.IntValue mark_obliterated_armor_toughness;
     public final ForgeConfigSpec.IntValue mark_obliterated_health;
+    public final ForgeConfigSpec.BooleanValue mark_obliterated_bypassinvuln;
 
     //mirapoppy
     public final ForgeConfigSpec.DoubleValue mirapoppy_chance;
     public final ForgeConfigSpec.DoubleValue mirapoppy_chance_double;
     public final ForgeConfigSpec.IntValue mirapoppy_radius;
 
+    //scale types
+    public final ForgeConfigSpec.BooleanValue width;
+    public final ForgeConfigSpec.BooleanValue height;
+    public final ForgeConfigSpec.BooleanValue step_height;
+    public final ForgeConfigSpec.BooleanValue reach;
+    public final ForgeConfigSpec.BooleanValue visibility;
+    public final ForgeConfigSpec.BooleanValue knockback;
+    public final ForgeConfigSpec.BooleanValue held_item;
+    public final ForgeConfigSpec.BooleanValue attack_speed;
+    public final ForgeConfigSpec.BooleanValue defense;
+
     public BOGConfig(ForgeConfigSpec.Builder BUILDER) {
         BUILDER.push("general");
+            BUILDER.comment("Change what scale types the mod can affect").push("scale types");
+
+                width = BUILDER.comment("Width scaling").define("width", true);
+                height = BUILDER.comment("Height scaling").define("height", true);
+                step_height = BUILDER.comment("Step height scaling").define("step_height", true);
+                reach = BUILDER.comment("Reach scaling").define("reach", true);
+                visibility = BUILDER.comment("Visibility scaling").define("visibility", true);
+                knockback = BUILDER.comment("Knockback scaling").define("knockback", true);
+                held_item = BUILDER.comment("Held item scaling").define("held_item", true);
+                attack_speed = BUILDER.comment("Attack speed scaling").define("attack_speed", true);
+                defense = BUILDER.comment("Defense scaling").define("defense", true);
+            BUILDER.pop();
+
             scale_speed = BUILDER.comment("Scaling speed in ticks per unit of scale change. (default 20)").defineInRange("scale_speed",20,1,Integer.MAX_VALUE);
             description_enable = BUILDER.comment("Whether items have detailed descriptions. Disable if you hate information.").define("description_enable", true);
             multiply_enable = BUILDER.comment("Whether scaling items take into account the player's current scale, allowing multiple to be worn. Might be unstable! (default false)").define("multiply_enable",false);
@@ -198,6 +223,7 @@ public class BOGConfig {
                     mark_obliterated_armor = BUILDER.comment("Amount to add to the player's armor when equipping. (default 8)").defineInRange("mark_obliterated_armor",8,Integer.MIN_VALUE,Integer.MAX_VALUE);
                     mark_obliterated_armor_toughness = BUILDER.comment("Amount to add to the player's armor toughness when equipping. (default 8)").defineInRange("mark_obliterated_armor_toughness",8,Integer.MIN_VALUE,Integer.MAX_VALUE);
                     mark_obliterated_health = BUILDER.comment("Amount to add to the player's max health when equipping. (default 10)").defineInRange("mark_obliterated_health",10,Integer.MIN_VALUE,Integer.MAX_VALUE);
+                    mark_obliterated_bypassinvuln = BUILDER.comment("Whether the mark's killing effect bypasses invulnerability").define("mark_obliterated_bypassinvuln", false);
                 BUILDER.pop().pop().pop();
     }
 }

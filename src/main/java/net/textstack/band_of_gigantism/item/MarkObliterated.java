@@ -39,7 +39,11 @@ public class MarkObliterated extends Item implements ICurioItem {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
 
         //kill
-        slotContext.entity().hurt(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
+        if (c.mark_obliterated_bypassinvuln.get()) {
+            slotContext.entity().hurt(MarkDamageSource.BOG_OBLITERATED_INVULN, Float.MAX_VALUE);
+        } else {
+            slotContext.entity().hurt(MarkDamageSource.BOG_OBLITERATED, Float.MAX_VALUE);
+        }
 
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
     }
