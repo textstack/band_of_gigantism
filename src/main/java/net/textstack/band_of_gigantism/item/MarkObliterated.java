@@ -52,7 +52,11 @@ public class MarkObliterated extends Item implements ICurioItem {
         }
 
         //kill
-        slotContext.entity().hurt(ModDamageSources.BOG_OBLITERATED, Float.MAX_VALUE);
+        if (c.mark_obliterated_bypassinvuln.get()) {
+            slotContext.entity().hurt(ModDamageSources.BOG_OBLITERATED_INVULN, Float.MAX_VALUE);
+        } else {
+            slotContext.entity().hurt(ModDamageSources.BOG_OBLITERATED, Float.MAX_VALUE);
+        }
     }
 
     @Override

@@ -109,6 +109,7 @@ public class BOGConfig {
     public final ForgeConfigSpec.IntValue mark_obliterated_armor;
     public final ForgeConfigSpec.IntValue mark_obliterated_armor_toughness;
     public final ForgeConfigSpec.IntValue mark_obliterated_health;
+    public final ForgeConfigSpec.BooleanValue mark_obliterated_bypassinvuln;
 
     //mirapoppy
     public final ForgeConfigSpec.DoubleValue mirapoppy_chance;
@@ -234,6 +235,7 @@ public class BOGConfig {
                     mark_obliterated_armor = BUILDER.comment("Amount to add to the player's armor when equipping. (default 2)").defineInRange("mark_obliterated_armor",2,Integer.MIN_VALUE,Integer.MAX_VALUE);
                     mark_obliterated_armor_toughness = BUILDER.comment("Amount to add to the player's armor toughness when equipping. (default 2)").defineInRange("mark_obliterated_armor_toughness",2,Integer.MIN_VALUE,Integer.MAX_VALUE);
                     mark_obliterated_health = BUILDER.comment("Amount to add to the player's max health when equipping. (default 6)").defineInRange("mark_obliterated_health",6,Integer.MIN_VALUE,Integer.MAX_VALUE);
+                    mark_obliterated_bypassinvuln = BUILDER.comment("Whether the mark's killing effect bypasses invulnerability").define("mark_obliterated_bypassinvuln", false);
                 BUILDER.pop().pop().pop();
     }
 }
