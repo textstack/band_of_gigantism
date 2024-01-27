@@ -31,7 +31,7 @@ public class GoldenFryingPan extends SwordItem {
 
         int strangeKills = getStrangeKills(stack);
         tooltip.add(Component.translatable(LoreStatHelper.displayStrangeName(strangeKills,LoreStatHelper.StrangeType.TOOLTIP))
-                .append(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_flavor", "\u00A78" + strangeKills)));
+                .append(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_flavor", "§8" + strangeKills)));
         tooltip.add(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_0"));
         tooltip.add(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_1"));
         tooltip.add(Component.translatable("tooltip.band_of_gigantism.golden_frying_pan_description_2"));
