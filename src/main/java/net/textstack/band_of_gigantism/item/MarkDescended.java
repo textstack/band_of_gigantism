@@ -4,19 +4,17 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
-import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.item.base.MarkItem;
 import net.textstack.band_of_gigantism.registry.ModDamageSources;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
@@ -24,43 +22,19 @@ import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurio;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MarkDescended extends Item implements ICurioItem {
-
-    final BOGConfig c = BOGConfig.INSTANCE;
+public class MarkDescended extends MarkItem {
 
     public MarkDescended(Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        ICurioItem.super.onUnequip(slotContext, newStack, stack);
-
-        //deal near-mortal damage, prevent healing
-        LivingEntity living = slotContext.entity();
-        if (!CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) { //this method is called whenever nbt changes, make sure not to kill for that
-            living.hurt(ModDamageSources.BOG_DESCENDED, living.getMaxHealth() - 1);
-            living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
-        }
-    }
-
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return ICurioItem.super.canEquip(slotContext, stack) && !CurioHelper.hasCurio(slotContext.entity(), ModItems.MARK_DESCENDED.get());
+        super(properties, ModDamageSources.BOG_DESCENDED);
     }
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        ICurioItem.super.curioTick(slotContext, stack);
-
         LivingEntity living = slotContext.entity();
 
         //either lower the stored position (if the player is lower) or inflict strains of ascent (if player is >5 blocks higher)
@@ -133,22 +107,6 @@ public class MarkDescended extends Item implements ICurioItem {
                 BandOfGigantism.MODID + ":armor_modifier_descended", c.mark_descended_armor.get(), AttributeModifier.Operation.ADDITION));
 
         return attributesDefault;
-    }
-
-    @NotNull
-    @Override
-    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
-        return ICurio.DropRule.ALWAYS_KEEP;
-    }
-
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
-        return new ArrayList<>();
     }
 
     //get posy tag
