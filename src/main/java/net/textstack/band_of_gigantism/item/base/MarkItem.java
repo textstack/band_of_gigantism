@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.util.CurioHelper;
+import net.textstack.band_of_gigantism.util.MarkHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
@@ -32,6 +33,8 @@ public class MarkItem extends Item implements ICurioItem {
         super(p_41383_);
 
         this.unequipDamageType = unequipDamageType;
+
+        MarkHelper.addMark(this);
     }
 
     @Override

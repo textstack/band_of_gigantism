@@ -12,7 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.item.base.MarkItem;
 import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.util.MarkHelper;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -43,7 +45,7 @@ public class MarkTrue extends Item {
             tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_true_description_flavor"));
             tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
             tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_true_description_0"));
-            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_true_description_1"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_true_description_1", "§6" + MarkHelper.getMarks().size()));
         } else {
             tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
@@ -59,17 +61,11 @@ public class MarkTrue extends Item {
             if (player.isCreative() || !player.isAlive() || player.isSpectator()) return;
             NonNullList<ItemStack> list = player.getInventory().items;
 
-            ItemStack stackCheck = stack;
-            int pick = (int) (Math.random() * 7);
-            switch (pick) {
-                case 0 -> stackCheck = new ItemStack(ModItems.MARK_FADED.get());
-                case 1 -> stackCheck = new ItemStack(ModItems.MARK_FORGOTTEN.get());
-                case 2 -> stackCheck = new ItemStack(ModItems.MARK_PURIFIED.get());
-                case 3 -> stackCheck = new ItemStack(ModItems.MARK_DESCENDED.get());
-                case 4 -> stackCheck = new ItemStack(ModItems.MARK_UNKNOWN.get());
-                case 5 -> stackCheck = new ItemStack(ModItems.MARK_JUDGED.get());
-                case 6 -> stackCheck = new ItemStack(ModItems.MARK_OBLITERATED.get());
-            }
+            List<MarkItem> marks = MarkHelper.getMarks();
+
+            int pick = (int) (Math.random() * marks.size());
+            ItemStack stackCheck = new ItemStack(marks.get(pick));
+
             list.set(itemSlot, stackCheck);
         }
     }
