@@ -38,7 +38,7 @@ public class MarkDescended extends MarkItem {
         LivingEntity living = slotContext.entity();
 
         //either lower the stored position (if the player is lower) or inflict strains of ascent (if player is >5 blocks higher)
-        int posY = (int) Math.ceil(living.blockPosition().getY());
+        int posY = living.blockPosition().getY();
         if (stack.getTag() != null) {
             int prevPosY = this.getPosY(stack);
 
@@ -71,7 +71,7 @@ public class MarkDescended extends MarkItem {
         //update mark's pos when not equipped
         LivingEntity living = (LivingEntity) entityIn;
         if (worldIn.getGameTime() % 10 == 0 && !CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
-            int posY = (int) Math.ceil(living.blockPosition().getY());
+            int posY = living.blockPosition().getY();
             this.setPosY(stack, posY);
         }
     }
