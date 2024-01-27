@@ -76,11 +76,14 @@ minecraft {
         client {
             properties 'org.gradle.jvmargs': '-Xms4G -Xmx4G'
             properties 'fml.earlyprogresswindow': 'false'
-            properties 'mixin.env.disableRefMap': 'true'
+            //properties 'mixin.env.disableRefMap': 'true'
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 band_of_gigantism {
@@ -95,6 +98,9 @@ minecraft {
 
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 band_of_gigantism {
