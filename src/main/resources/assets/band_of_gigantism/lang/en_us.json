@@ -82,7 +82,7 @@
   "tooltip.band_of_gigantism.error_negative": "§6-%1$s §4Invalid Stat",
 
 
-  "tooltip.band_of_gigantism.tooltip_strange_generic": "§8 - Kills: ",
+  "tooltip.band_of_gigantism.tooltip_strange_generic": "§8 - Kills: %1$s",
 
   "tooltip.band_of_gigantism.title_strange_0": "§6Strange ",
   "tooltip.band_of_gigantism.title_strange_10": "§6Unremarkable ",

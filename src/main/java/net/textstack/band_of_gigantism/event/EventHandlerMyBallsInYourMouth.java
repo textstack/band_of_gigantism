@@ -95,7 +95,7 @@ public class EventHandlerMyBallsInYourMouth {
             int strangeKills = tag.getInt("strangeKills");
             tooltip.add(Component.translatable(LoreStatHelper.displayStrangeName(strangeKills,LoreStatHelper.StrangeType.TOOLTIP))
                     .append(stack.getHoverName().copy().withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.translatable("tooltip.band_of_gigantism.tooltip_strange_generic", "\u00A78" + strangeKills)));
+                    .append(Component.translatable("tooltip.band_of_gigantism.tooltip_strange_generic", "§8" + strangeKills)));
         }
     }
 
@@ -196,9 +196,9 @@ public class EventHandlerMyBallsInYourMouth {
                         event.getSource() != ModDamageSources.BOG_OBLITERATED &&
                         event.getSource() != ModDamageSources.BOG_PURIFIED &&
                         event.getSource() != ModDamageSources.BOG_UNKNOWN)
-                if ((event.getAmount() > c.recovery_minimum_damage.get()) && (Math.random() < c.recovery_chance.get())) {
-                    living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.recovery_duration.get(), 0, false, c.recovery_show_particles.get()));
-                }
+                    if ((event.getAmount() > c.recovery_minimum_damage.get()) && (Math.random() < c.recovery_chance.get())) {
+                        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.recovery_duration.get(), 0, false, c.recovery_show_particles.get()));
+                    }
             }
 
             //for the strains of ascent effect to deal damage as fast as it wants
@@ -324,19 +324,19 @@ public class EventHandlerMyBallsInYourMouth {
     private String colorMark(LivingEntity living, String message) {
         String newMessage = null;
         if (CurioHelper.hasCurio(living, ModItems.MARK_OBLITERATED.get())) { //sorted in order of (in my opinion) difficulty
-            newMessage = "\u00A74" + message + "\u00A7r";
+            newMessage = "§4" + message + "§r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get())) {
-            newMessage = "\u00A78" + message + "\u00A7r";
+            newMessage = "§8" + message + "§r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_JUDGED.get())) {
-            newMessage = "\u00A7c" + message + "\u00A7r";
+            newMessage = "§c" + message + "§r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
-            newMessage = "\u00A79" + message + "\u00A7r";
+            newMessage = "§9" + message + "§r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
-            newMessage = "\u00A7a" + message + "\u00A7r";
+            newMessage = "§a" + message + "§r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_FORGOTTEN.get())) {
-            newMessage = "\u00A76" + message + "\u00A7r";
+            newMessage = "§6" + message + "§r";
         } else if (CurioHelper.hasCurio(living, ModItems.MARK_PURIFIED.get())) {
-            newMessage = "\u00A77" + message + "\u00A7r";
+            newMessage = "§7" + message + "§r";
         }
         return newMessage;
     }
