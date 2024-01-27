@@ -13,7 +13,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.item.base.MarkItem;
-import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.MarkHelper;
 import org.jetbrains.annotations.NotNull;
 
