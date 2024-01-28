@@ -69,13 +69,13 @@ public class FalseHand extends Item implements ICurioItem {
                 int storedTime = stack.getOrCreateTag().getInt("timeLeft");
                 if (storedTime >= 60) {
                     int displayTime = 1 + storedTime / 60;
-                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_shift_0_minutes", "\u00A76" + displayTime));
+                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_shift_0_minutes", "§6" + displayTime));
                 } else {
                     if (storedTime == 0) {
                         tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_shift_0_second"));
                     } else {
                         int displayTime = 1 + storedTime;
-                        tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_shift_0_seconds", "\u00A76" + displayTime));
+                        tooltip.add(Component.translatable("tooltip.band_of_gigantism.false_hand_description_shift_0_seconds", "§6" + displayTime));
                     }
                 }
             }

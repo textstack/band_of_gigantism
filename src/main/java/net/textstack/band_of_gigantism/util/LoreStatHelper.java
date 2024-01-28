@@ -56,14 +56,14 @@ public class LoreStatHelper {
         String value;
         if (isPercent) {
             int display_percent = (int) (Math.abs(display) * 100);
-            value = "\u00A76" + display_percent + "%";
+            value = "§6" + display_percent + "%";
         } else {
             float display_out = Math.abs(display);
             if (display_out % 1 == 0) {
                 int display_out_solid = (int) display_out;
-                value = "\u00A76" + display_out_solid;
+                value = "§6" + display_out_solid;
             } else {
-                value = "\u00A76" + display_out;
+                value = "§6" + display_out;
             }
         }
 
@@ -86,9 +86,9 @@ public class LoreStatHelper {
         int display_percent = (int) (Math.abs(display - 1) * 100);
 
         if (display < 1) {
-            return Component.translatable("tooltip.band_of_gigantism.shrink_band_generic_description_percent", "\u00A76" + display_percent + "%");
+            return Component.translatable("tooltip.band_of_gigantism.shrink_band_generic_description_percent", "§6" + display_percent + "%");
         } else {
-            return Component.translatable("tooltip.band_of_gigantism.band_generic_description_percent", "\u00A76" + display_percent + "%");
+            return Component.translatable("tooltip.band_of_gigantism.band_generic_description_percent", "§6" + display_percent + "%");
         }
     }
 

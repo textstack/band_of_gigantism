@@ -2,53 +2,42 @@ package net.textstack.band_of_gigantism.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.item.base.MarkItem;
 import net.textstack.band_of_gigantism.registry.ModDamageSources;
-import net.textstack.band_of_gigantism.registry.ModEffects;
-import net.textstack.band_of_gigantism.registry.ModItems;
-import net.textstack.band_of_gigantism.util.CurioHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurio;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MarkPurified extends Item implements ICurioItem {
+public class MarkPurified extends MarkItem {
 
     final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkPurified(Properties properties) {
-        super(properties);
+        super(properties, ModDamageSources.BOG_PURIFIED, ChatFormatting.GRAY);
     }
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+        super.onUnequip(slotContext, newStack, stack);
 
         LivingEntity living = slotContext.entity();
-
-        //deal near-mortal damage, prevent healing for 10 seconds
-        living.hurt(ModDamageSources.BOG_PURIFIED, living.getMaxHealth() - 1);
-        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
 
         //remove the variable modifiers
         AttributeMap map = living.getAttributes();
@@ -56,14 +45,7 @@ public class MarkPurified extends Item implements ICurioItem {
     }
 
     @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return ICurioItem.super.canEquip(slotContext, stack) && !CurioHelper.hasCurio(slotContext.entity(), ModItems.MARK_PURIFIED.get());
-    }
-
-    @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        ICurioItem.super.curioTick(slotContext, stack);
-
         LivingEntity living = slotContext.entity();
 
         //reapply modifiers
@@ -92,22 +74,6 @@ public class MarkPurified extends Item implements ICurioItem {
         } else {
             tooltip.add(Component.translatable("tooltip.band_of_gigantism.shift"));
         }
-    }
-
-    @NotNull
-    @Override
-    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
-        return ICurio.DropRule.ALWAYS_KEEP;
-    }
-
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
-        return new ArrayList<>();
     }
 
     //variable modifiers, able to change as the user wears the curio

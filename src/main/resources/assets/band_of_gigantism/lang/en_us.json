@@ -82,7 +82,7 @@
   "tooltip.band_of_gigantism.error_negative": "§6-%1$s §4Invalid Stat",
 
 
-  "tooltip.band_of_gigantism.tooltip_strange_generic": "§8 - Kills: ",
+  "tooltip.band_of_gigantism.tooltip_strange_generic": "§8 - Kills: %1$s",
 
   "tooltip.band_of_gigantism.title_strange_0": "§6Strange ",
   "tooltip.band_of_gigantism.title_strange_10": "§6Unremarkable ",
@@ -186,7 +186,7 @@
 
   "tooltip.band_of_gigantism.mark_true_description_flavor": "§r§oThat's how it is 'til the end.",
   "tooltip.band_of_gigantism.mark_true_description_0": "§5Upon contact with §6mortal hands§5, this artifact",
-  "tooltip.band_of_gigantism.mark_true_description_1": "§5will collapse into one of its §6seven counterparts§5.",
+  "tooltip.band_of_gigantism.mark_true_description_1": "§5will collapse into one of its %1$s §6counterparts§5.",
 
   "tooltip.band_of_gigantism.mark_obliterated_description_flavor": "§4§o...but it got a SLIGHT DENT in the back.",
   "tooltip.band_of_gigantism.mark_obliterated_description_0": "§6+100% §9Attack Damage",

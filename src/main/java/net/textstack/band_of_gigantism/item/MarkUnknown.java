@@ -6,7 +6,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -17,61 +16,44 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.item.base.MarkItem;
 import net.textstack.band_of_gigantism.registry.ModDamageSources;
-import net.textstack.band_of_gigantism.registry.ModEffects;
 import net.textstack.band_of_gigantism.registry.ModItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurio;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MarkUnknown extends Item implements ICurioItem {
+public class MarkUnknown extends MarkItem {
 
     final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkUnknown(Properties properties) {
-        super(properties);
+        super(properties, ModDamageSources.BOG_UNKNOWN, ChatFormatting.GREEN);
     }
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+        super.onUnequip(slotContext, newStack, stack);
 
         LivingEntity living = slotContext.entity();
         if (!CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
-
-            //deal near-mortal damage, prevent healing for 10 seconds
-            living.hurt(ModDamageSources.BOG_UNKNOWN, living.getMaxHealth() - 1);
-            living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
-
-            //remove the variable modifiers
             AttributeMap map = living.getAttributes();
             map.removeAttributeModifiers(this.createAttributeMap(stack));
         }
     }
 
     @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return ICurioItem.super.canEquip(slotContext, stack) && !CurioHelper.hasCurio(slotContext.entity(), ModItems.MARK_UNKNOWN.get());
-    }
-
-    @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        ICurioItem.super.curioTick(slotContext, stack);
-
         LivingEntity living = slotContext.entity();
 
         if (living.level.getGameTime() % 20 == 0) {
@@ -144,28 +126,28 @@ public class MarkUnknown extends Item implements ICurioItem {
             //time
             if (storedTime >= 60) {
                 int displayTime = 1 + storedTime / 60;
-                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_0_minutes", "\u00A76" + displayTime));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_0_minutes", "§6" + displayTime));
             } else {
                 if (storedTime == 0) {
                     tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_0_second"));
                 } else {
                     int displayTime = 1 + storedTime;
-                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_0_seconds", "\u00A76" + displayTime));
+                    tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_0_seconds", "§6" + displayTime));
                 }
             }
 
             //health
             if (randomAttributes[0] > 0) {
-                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_1_positive", "\u00A76" + randomAttributes[0]));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_1_positive", "§6" + randomAttributes[0]));
             } else if (randomAttributes[0] < 0) {
-                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_1_negative", "\u00A76" + randomAttributes[0]));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_1_negative", "§6" + randomAttributes[0]));
             }
 
             //speed
             if (randomAttributes[1] > 0) {
-                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_2_positive", "\u00A76" + randomAttributes[1] + "%"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_2_positive", "§6" + randomAttributes[1] + "%"));
             } else if (randomAttributes[1] < 0) {
-                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_2_negative", "\u00A76" + randomAttributes[1] + "%"));
+                tooltip.add(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_2_negative", "§6" + randomAttributes[1] + "%"));
             }
 
             //regen
@@ -197,8 +179,8 @@ public class MarkUnknown extends Item implements ICurioItem {
             MutableComponent effectComponent = Component.translatable(effect).withStyle(ChatFormatting.GOLD);
 
             String amp = switch (randomEffects[1]) {
-                case 1 -> "\u00A76II ";
-                case 2 -> "\u00A76III ";
+                case 1 -> "§6II ";
+                case 2 -> "§6III ";
                 default -> "";
             };
             tooltip.add(effectComponent.append(Component.translatable("tooltip.band_of_gigantism.mark_unknown_description_shift_4", amp)));
@@ -218,22 +200,6 @@ public class MarkUnknown extends Item implements ICurioItem {
                 BandOfGigantism.MODID + ":luck_modifier_unknown", 1, AttributeModifier.Operation.MULTIPLY_BASE));
 
         return attributesDefault;
-    }
-
-    @NotNull
-    @Override
-    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
-        return ICurio.DropRule.ALWAYS_KEEP;
-    }
-
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
-        return new ArrayList<>();
     }
 
     //variable modifiers, able to change as the user wears the curio

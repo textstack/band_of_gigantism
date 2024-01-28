@@ -37,9 +37,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.item.MarkUnknown;
+import net.textstack.band_of_gigantism.item.base.MarkItem;
 import net.textstack.band_of_gigantism.registry.*;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
+import net.textstack.band_of_gigantism.util.MarkHelper;
 
 import java.util.List;
 import java.util.Objects;
@@ -95,7 +97,7 @@ public class EventHandlerMyBallsInYourMouth {
             int strangeKills = tag.getInt("strangeKills");
             tooltip.add(Component.translatable(LoreStatHelper.displayStrangeName(strangeKills,LoreStatHelper.StrangeType.TOOLTIP))
                     .append(stack.getHoverName().copy().withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.translatable("tooltip.band_of_gigantism.tooltip_strange_generic", "\u00A78" + strangeKills)));
+                    .append(Component.translatable("tooltip.band_of_gigantism.tooltip_strange_generic", "§8" + strangeKills)));
         }
     }
 
@@ -196,9 +198,9 @@ public class EventHandlerMyBallsInYourMouth {
                         event.getSource() != ModDamageSources.BOG_OBLITERATED &&
                         event.getSource() != ModDamageSources.BOG_PURIFIED &&
                         event.getSource() != ModDamageSources.BOG_UNKNOWN)
-                if ((event.getAmount() > c.recovery_minimum_damage.get()) && (Math.random() < c.recovery_chance.get())) {
-                    living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.recovery_duration.get(), 0, false, c.recovery_show_particles.get()));
-                }
+                    if ((event.getAmount() > c.recovery_minimum_damage.get()) && (Math.random() < c.recovery_chance.get())) {
+                        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.recovery_duration.get(), 0, false, c.recovery_show_particles.get()));
+                    }
             }
 
             //for the strains of ascent effect to deal damage as fast as it wants
@@ -301,20 +303,12 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void serverChat(ServerChatEvent event) {
-
         if (c.marks_color_chat.get()) {
             //append §[val] to the beginning of messages for marked players
-            String message = event.getRawText();
             LivingEntity living = event.getPlayer();
-            message = colorMark(living, message);
+            String message = colorMark(living, event.getRawText());
 
-            //insert colored text if required
-            Component newComponent;
-            if (message != null) {
-                newComponent = Component.literal(message);
-            } else {
-                newComponent = event.getMessage();
-            }
+            Component newComponent = Component.literal(message);
 
             event.setMessage(newComponent);
         }
@@ -322,23 +316,12 @@ public class EventHandlerMyBallsInYourMouth {
 
     //applies color to a message based on their mark
     private String colorMark(LivingEntity living, String message) {
-        String newMessage = null;
-        if (CurioHelper.hasCurio(living, ModItems.MARK_OBLITERATED.get())) { //sorted in order of (in my opinion) difficulty
-            newMessage = "\u00A74" + message + "\u00A7r";
-        } else if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get())) {
-            newMessage = "\u00A78" + message + "\u00A7r";
-        } else if (CurioHelper.hasCurio(living, ModItems.MARK_JUDGED.get())) {
-            newMessage = "\u00A7c" + message + "\u00A7r";
-        } else if (CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
-            newMessage = "\u00A79" + message + "\u00A7r";
-        } else if (CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
-            newMessage = "\u00A7a" + message + "\u00A7r";
-        } else if (CurioHelper.hasCurio(living, ModItems.MARK_FORGOTTEN.get())) {
-            newMessage = "\u00A76" + message + "\u00A7r";
-        } else if (CurioHelper.hasCurio(living, ModItems.MARK_PURIFIED.get())) {
-            newMessage = "\u00A77" + message + "\u00A7r";
+        for (MarkItem markItem : MarkHelper.getMarks()) {
+            if (CurioHelper.hasCurio(living, markItem) && markItem.getChatFormatting() != null) {
+                return markItem.getChatFormatting() + message + "§r";
+            }
         }
-        return newMessage;
+        return message;
     }
 
     @SubscribeEvent
