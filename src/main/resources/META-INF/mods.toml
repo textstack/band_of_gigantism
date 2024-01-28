@@ -3,7 +3,7 @@ loaderVersion="[41,)" #mandatory This is typically bumped every Minecraft versio
 license="MIT"
 [[mods]] #mandatory
 modId="band_of_gigantism" #mandatory
-version="1.19.2-1.1.4" #mandatory
+version="1.19.2-1.2.0" #mandatory
 displayName="Band of Gigantism" #mandatory
 logoFile="logo.png" #optional
 credits="Terraria's Calamity mod, for use of a single texture; Enigmatic Legacy for description style; several other mods for code reference" #optional
