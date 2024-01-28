@@ -50,22 +50,23 @@ public class MarkTrue extends Item {
         }
     }
 
+    private ItemStack selectRandomMark() {
+        List<MarkItem> marks = MarkHelper.getMarks();
+
+        int pick = (int) (Math.random() * marks.size());
+        return new ItemStack(marks.get(pick));
+    }
+
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
-        super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+        if (worldIn.isClientSide() || !(entityIn instanceof Player player)) return;
 
         //replaces the item with one of seven marks
-        if (entityIn instanceof Player player) {
+        if (player.isCreative() || !player.isAlive() || player.isSpectator()) return;
+        NonNullList<ItemStack> list = player.getInventory().items;
 
-            if (player.isCreative() || !player.isAlive() || player.isSpectator()) return;
-            NonNullList<ItemStack> list = player.getInventory().items;
+        ItemStack stackCheck = selectRandomMark();
 
-            List<MarkItem> marks = MarkHelper.getMarks();
-
-            int pick = (int) (Math.random() * marks.size());
-            ItemStack stackCheck = new ItemStack(marks.get(pick));
-
-            list.set(itemSlot, stackCheck);
-        }
+        list.set(itemSlot, stackCheck);
     }
 }
