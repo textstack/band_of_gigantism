@@ -2,6 +2,7 @@ package net.textstack.band_of_gigantism.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,7 +31,7 @@ import java.util.UUID;
 public class MarkDescended extends MarkItem {
 
     public MarkDescended(Properties properties) {
-        super(properties, ModDamageSources.BOG_DESCENDED);
+        super(properties, ModDamageSources.BOG_DESCENDED, ChatFormatting.BLUE);
     }
 
     @Override

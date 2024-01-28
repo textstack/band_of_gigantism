@@ -1,5 +1,6 @@
 package net.textstack.band_of_gigantism.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +17,7 @@ import java.util.List;
 public class MarkForgotten extends MarkItem {
 
     public MarkForgotten(Properties properties) {
-        super(properties, ModDamageSources.BOG_FORGOTTEN);
+        super(properties, ModDamageSources.BOG_FORGOTTEN, ChatFormatting.GOLD);
     }
 
     @Override

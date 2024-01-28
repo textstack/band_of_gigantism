@@ -38,7 +38,7 @@ public class MarkUnknown extends MarkItem {
     final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkUnknown(Properties properties) {
-        super(properties, ModDamageSources.BOG_UNKNOWN);
+        super(properties, ModDamageSources.BOG_UNKNOWN, ChatFormatting.GREEN);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package net.textstack.band_of_gigantism.item.base;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -25,14 +26,23 @@ public class MarkItem extends Item implements ICurioItem {
      * The DamageSource inflicted when the wearer unequips this mark. If this is null, the wearer will not take
      * damage when unequipping the mark.
      */
+    @Nullable
     private final DamageSource unequipDamageType;
+
+    /**
+     * The formatting code appended to the beginning of a player's chat message if they are wearing the mark.
+     * Order of priority is based on the order of registry.
+     */
+    @Nullable
+    private final ChatFormatting formatting;
 
     protected static final BOGConfig c = BOGConfig.INSTANCE; // this will be inherited by all marks
 
-    public MarkItem(Properties p_41383_, @Nullable DamageSource unequipDamageType) {
+    public MarkItem(Properties p_41383_, @Nullable DamageSource unequipDamageType, @Nullable ChatFormatting formatting) {
         super(p_41383_);
 
         this.unequipDamageType = unequipDamageType;
+        this.formatting = formatting;
 
         MarkHelper.addMark(this);
     }
@@ -68,5 +78,10 @@ public class MarkItem extends Item implements ICurioItem {
     @Override
     public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
         return new ArrayList<>();
+    }
+
+    @Nullable
+    public ChatFormatting getChatFormatting() {
+        return formatting;
     }
 }

@@ -2,6 +2,7 @@ package net.textstack.band_of_gigantism.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,7 +30,7 @@ public class MarkPurified extends MarkItem {
     final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkPurified(Properties properties) {
-        super(properties, ModDamageSources.BOG_PURIFIED);
+        super(properties, ModDamageSources.BOG_PURIFIED, ChatFormatting.GRAY);
     }
 
     @Override

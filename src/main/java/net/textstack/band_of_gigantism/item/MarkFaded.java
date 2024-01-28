@@ -2,6 +2,7 @@ package net.textstack.band_of_gigantism.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -24,7 +25,7 @@ import java.util.UUID;
 public class MarkFaded extends MarkItem {
 
     public MarkFaded(Properties properties) {
-        super(properties, ModDamageSources.BOG_FADED);
+        super(properties, ModDamageSources.BOG_FADED, ChatFormatting.DARK_GRAY);
     }
 
     @Override

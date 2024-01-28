@@ -2,6 +2,7 @@ package net.textstack.band_of_gigantism.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,7 +32,7 @@ import java.util.UUID;
 public class MarkObliterated extends MarkItem {
 
     public MarkObliterated(Properties properties) {
-        super(properties, null);
+        super(properties, null, ChatFormatting.DARK_RED);
     }
 
     @Override
