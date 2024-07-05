@@ -150,7 +150,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         LivingEntity theDude = (LivingEntity) entityIn;
         if (worldIn.getGameTime() % 100 == 0 && !CurioHelper.hasCurio(theDude, ModItems.GLOBETROTTERS_BAND.get())) {
             int storedTime = this.getStoredEnergy(stack);
-            if (storedTime < 72000) {
+            if (storedTime < c.band_globetrotters_limit.get()) {
                 this.setStoredEnergy(stack, storedTime + 1);
             }
         }
