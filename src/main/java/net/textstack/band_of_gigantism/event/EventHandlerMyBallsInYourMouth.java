@@ -19,21 +19,21 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
-import net.minecraftforge.event.ServerChatEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
-import net.minecraftforge.event.entity.living.LivingHealEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.CriticalHitEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.gui.overlay.GuiOverlayManager;
+import net.neoforged.neoforge.event.ServerChatEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.item.MarkUnknown;
@@ -49,12 +49,10 @@ import java.util.Objects;
 //i agree, it IS a good handler name!
 @Mod.EventBusSubscriber(modid = BandOfGigantism.MODID)
 public class EventHandlerMyBallsInYourMouth {
-
     final BOGConfig c = BOGConfig.INSTANCE;
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onLivingHeal(LivingHealEvent event) {
-
         if (event.getEntity() instanceof Player) {
             LivingEntity living = event.getEntity();
 
@@ -103,7 +101,7 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent
     public void onLivingDeathEvent(LivingDeathEvent event) {
-        if (!event.getSource().isBypassInvul() && event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player) {
             LivingEntity living = event.getEntity();
             if (CurioHelper.hasCurio(living, ModItems.FALSE_HAND.get())) {
                 ItemStack stack = CurioHelper.hasCurioGet(living, ModItems.FALSE_HAND.get());
@@ -140,7 +138,7 @@ public class EventHandlerMyBallsInYourMouth {
 
                     BlockPos blockpos = player.blockPosition();
                     RandomSource random = player.getRandom();
-                    ServerLevel server = player.getLevel();
+                    ServerLevel server = player.serverLevel();
                     int count = 0;
 
                     restartMira:

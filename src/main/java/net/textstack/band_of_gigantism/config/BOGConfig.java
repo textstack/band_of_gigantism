@@ -1,134 +1,134 @@
 package net.textstack.band_of_gigantism.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class BOGConfig {
-    public static final ForgeConfigSpec SPEC;
+    public static final ModConfigSpec SPEC;
     public static final BOGConfig INSTANCE;
     static {
-        Pair<BOGConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(BOGConfig::new);
+        Pair<BOGConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(BOGConfig::new);
         SPEC = specPair.getRight();
         INSTANCE = specPair.getLeft();
     }
 
     //general
-    public final ForgeConfigSpec.IntValue scale_speed;
-    public final ForgeConfigSpec.BooleanValue description_enable;
-    public final ForgeConfigSpec.BooleanValue multiply_enable;
-    public final ForgeConfigSpec.DoubleValue general_scale_limit;
-    public final ForgeConfigSpec.BooleanValue recovery_allhits;
-    public final ForgeConfigSpec.IntValue recovery_duration;
-    public final ForgeConfigSpec.DoubleValue recovery_chance;
-    public final ForgeConfigSpec.DoubleValue recovery_minimum_damage;
-    public final ForgeConfigSpec.BooleanValue recovery_show_particles;
+    public final ModConfigSpec.IntValue scale_speed;
+    public final ModConfigSpec.BooleanValue description_enable;
+    public final ModConfigSpec.BooleanValue multiply_enable;
+    public final ModConfigSpec.DoubleValue general_scale_limit;
+    public final ModConfigSpec.BooleanValue recovery_allhits;
+    public final ModConfigSpec.IntValue recovery_duration;
+    public final ModConfigSpec.DoubleValue recovery_chance;
+    public final ModConfigSpec.DoubleValue recovery_minimum_damage;
+    public final ModConfigSpec.BooleanValue recovery_show_particles;
 
     //marks general
-    public final ForgeConfigSpec.IntValue marks_duration;
-    public final ForgeConfigSpec.BooleanValue marks_color_chat;
+    public final ModConfigSpec.IntValue marks_duration;
+    public final ModConfigSpec.BooleanValue marks_color_chat;
 
     //band of gigantism
-    public final ForgeConfigSpec.DoubleValue band_generic_scale;
+    public final ModConfigSpec.DoubleValue band_generic_scale;
 
     //lesser band of gigantism
-    public final ForgeConfigSpec.DoubleValue lesser_band_generic_scale;
+    public final ModConfigSpec.DoubleValue lesser_band_generic_scale;
 
     //band of dwarfism
-    public final ForgeConfigSpec.DoubleValue shrink_band_generic_scale;
+    public final ModConfigSpec.DoubleValue shrink_band_generic_scale;
 
     //misshapen band
-    public final ForgeConfigSpec.DoubleValue band_basic_min_scale;
-    public final ForgeConfigSpec.DoubleValue band_basic_max_scale;
-    public final ForgeConfigSpec.DoubleValue band_basic_scale;
+    public final ModConfigSpec.DoubleValue band_basic_min_scale;
+    public final ModConfigSpec.DoubleValue band_basic_max_scale;
+    public final ModConfigSpec.DoubleValue band_basic_scale;
 
     //band of crustaceous convergence
-    public final ForgeConfigSpec.DoubleValue band_crustaceous_scale;
-    public final ForgeConfigSpec.DoubleValue band_crustaceous_limit_scale;
-    public final ForgeConfigSpec.IntValue band_crustaceous_duration;
-    public final ForgeConfigSpec.BooleanValue band_crustaceous_heal;
+    public final ModConfigSpec.DoubleValue band_crustaceous_scale;
+    public final ModConfigSpec.DoubleValue band_crustaceous_limit_scale;
+    public final ModConfigSpec.IntValue band_crustaceous_duration;
+    public final ModConfigSpec.BooleanValue band_crustaceous_heal;
 
     //false hand
-    public final ForgeConfigSpec.DoubleValue false_hand_flat_resistance;
-    public final ForgeConfigSpec.IntValue false_hand_time;
+    public final ModConfigSpec.DoubleValue false_hand_flat_resistance;
+    public final ModConfigSpec.IntValue false_hand_time;
 
     //globetrotter's band
-    public final ForgeConfigSpec.DoubleValue band_globetrotters_scale;
-    public final ForgeConfigSpec.IntValue band_globetrotters_limit;
-    public final ForgeConfigSpec.DoubleValue band_globetrotters_limit_scale;
-    public final ForgeConfigSpec.DoubleValue band_globetrotters_damage;
+    public final ModConfigSpec.DoubleValue band_globetrotters_scale;
+    public final ModConfigSpec.IntValue band_globetrotters_limit;
+    public final ModConfigSpec.DoubleValue band_globetrotters_limit_scale;
+    public final ModConfigSpec.DoubleValue band_globetrotters_damage;
 
     //band of passion
-    public final ForgeConfigSpec.DoubleValue band_passion_scale;
-    public final ForgeConfigSpec.DoubleValue band_passion_scale_level;
-    public final ForgeConfigSpec.DoubleValue band_passion_limit_scale;
+    public final ModConfigSpec.DoubleValue band_passion_scale;
+    public final ModConfigSpec.DoubleValue band_passion_scale_level;
+    public final ModConfigSpec.DoubleValue band_passion_limit_scale;
 
     //band of apathy
-    public final ForgeConfigSpec.DoubleValue band_apathy_scale;
-    public final ForgeConfigSpec.DoubleValue band_apathy_scale_level;
-    public final ForgeConfigSpec.DoubleValue band_apathy_limit_scale;
+    public final ModConfigSpec.DoubleValue band_apathy_scale;
+    public final ModConfigSpec.DoubleValue band_apathy_scale_level;
+    public final ModConfigSpec.DoubleValue band_apathy_limit_scale;
 
     //mask of diminishment
-    public final ForgeConfigSpec.DoubleValue mask_diminishment_scale;
-    public final ForgeConfigSpec.BooleanValue mask_diminishment_special;
+    public final ModConfigSpec.DoubleValue mask_diminishment_scale;
+    public final ModConfigSpec.BooleanValue mask_diminishment_special;
 
     //mark of the descended
-    public final ForgeConfigSpec.IntValue mark_descended_ascend;
-    public final ForgeConfigSpec.IntValue mark_descended_duration;
-    public final ForgeConfigSpec.IntValue mark_descended_armor;
-    public final ForgeConfigSpec.DoubleValue mark_descended_regeneration;
+    public final ModConfigSpec.IntValue mark_descended_ascend;
+    public final ModConfigSpec.IntValue mark_descended_duration;
+    public final ModConfigSpec.IntValue mark_descended_armor;
+    public final ModConfigSpec.DoubleValue mark_descended_regeneration;
 
     //mark of the faded
-    public final ForgeConfigSpec.DoubleValue mark_faded_healing;
-    public final ForgeConfigSpec.DoubleValue mark_faded_flat_resistance;
-    public final ForgeConfigSpec.DoubleValue mark_faded_damage;
+    public final ModConfigSpec.DoubleValue mark_faded_healing;
+    public final ModConfigSpec.DoubleValue mark_faded_flat_resistance;
+    public final ModConfigSpec.DoubleValue mark_faded_damage;
 
     //mark of the forgotten
-    public final ForgeConfigSpec.IntValue mark_forgotten_duration;
-    public final ForgeConfigSpec.DoubleValue mark_forgotten_critical_damage;
-    public final ForgeConfigSpec.DoubleValue mark_forgotten_resistance;
+    public final ModConfigSpec.IntValue mark_forgotten_duration;
+    public final ModConfigSpec.DoubleValue mark_forgotten_critical_damage;
+    public final ModConfigSpec.DoubleValue mark_forgotten_resistance;
 
     //mark of the judged
-    public final ForgeConfigSpec.IntValue mark_judged_duration;
-    public final ForgeConfigSpec.DoubleValue mark_judged_damage;
-    public final ForgeConfigSpec.DoubleValue mark_judged_speed;
+    public final ModConfigSpec.IntValue mark_judged_duration;
+    public final ModConfigSpec.DoubleValue mark_judged_damage;
+    public final ModConfigSpec.DoubleValue mark_judged_speed;
 
     //mark of the purified
-    public final ForgeConfigSpec.DoubleValue mark_purified_ratio;
-    public final ForgeConfigSpec.DoubleValue mark_purified_ratio_tough;
+    public final ModConfigSpec.DoubleValue mark_purified_ratio;
+    public final ModConfigSpec.DoubleValue mark_purified_ratio_tough;
 
     //mark of the unknown
-    public final ForgeConfigSpec.DoubleValue mark_unknown_healing;
-    public final ForgeConfigSpec.DoubleValue mark_unknown_flat_resistance;
-    public final ForgeConfigSpec.DoubleValue mark_unknown_speed;
-    public final ForgeConfigSpec.IntValue mark_unknown_health;
-    public final ForgeConfigSpec.IntValue mark_unknown_time;
+    public final ModConfigSpec.DoubleValue mark_unknown_healing;
+    public final ModConfigSpec.DoubleValue mark_unknown_flat_resistance;
+    public final ModConfigSpec.DoubleValue mark_unknown_speed;
+    public final ModConfigSpec.IntValue mark_unknown_health;
+    public final ModConfigSpec.IntValue mark_unknown_time;
 
     //mark of the obliterated
-    public final ForgeConfigSpec.DoubleValue mark_obliterated_damage;
-    public final ForgeConfigSpec.DoubleValue mark_obliterated_knockback;
-    public final ForgeConfigSpec.IntValue mark_obliterated_armor;
-    public final ForgeConfigSpec.IntValue mark_obliterated_armor_toughness;
-    public final ForgeConfigSpec.IntValue mark_obliterated_health;
-    public final ForgeConfigSpec.BooleanValue mark_obliterated_bypassinvuln;
+    public final ModConfigSpec.DoubleValue mark_obliterated_damage;
+    public final ModConfigSpec.DoubleValue mark_obliterated_knockback;
+    public final ModConfigSpec.IntValue mark_obliterated_armor;
+    public final ModConfigSpec.IntValue mark_obliterated_armor_toughness;
+    public final ModConfigSpec.IntValue mark_obliterated_health;
+    public final ModConfigSpec.BooleanValue mark_obliterated_bypassinvuln;
 
     //mirapoppy
-    public final ForgeConfigSpec.DoubleValue mirapoppy_chance;
-    public final ForgeConfigSpec.DoubleValue mirapoppy_chance_double;
-    public final ForgeConfigSpec.IntValue mirapoppy_radius;
-    public final ForgeConfigSpec.DoubleValue mira_gin_chance;
+    public final ModConfigSpec.DoubleValue mirapoppy_chance;
+    public final ModConfigSpec.DoubleValue mirapoppy_chance_double;
+    public final ModConfigSpec.IntValue mirapoppy_radius;
+    public final ModConfigSpec.DoubleValue mira_gin_chance;
 
     //scale types
-    public final ForgeConfigSpec.BooleanValue width;
-    public final ForgeConfigSpec.BooleanValue height;
-    public final ForgeConfigSpec.BooleanValue step_height;
-    public final ForgeConfigSpec.BooleanValue reach;
-    public final ForgeConfigSpec.BooleanValue visibility;
-    public final ForgeConfigSpec.BooleanValue knockback;
-    public final ForgeConfigSpec.BooleanValue held_item;
-    public final ForgeConfigSpec.BooleanValue attack_speed;
-    public final ForgeConfigSpec.BooleanValue defense;
+    public final ModConfigSpec.BooleanValue width;
+    public final ModConfigSpec.BooleanValue height;
+    public final ModConfigSpec.BooleanValue step_height;
+    public final ModConfigSpec.BooleanValue reach;
+    public final ModConfigSpec.BooleanValue visibility;
+    public final ModConfigSpec.BooleanValue knockback;
+    public final ModConfigSpec.BooleanValue held_item;
+    public final ModConfigSpec.BooleanValue attack_speed;
+    public final ModConfigSpec.BooleanValue defense;
 
-    public BOGConfig(ForgeConfigSpec.Builder BUILDER) {
+    public BOGConfig(ModConfigSpec.Builder BUILDER) {
         BUILDER.push("general");
         BUILDER.comment("Change what scale types the mod can affect").push("scale types");
 
