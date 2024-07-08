@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModBlocks;
-import net.textstack.band_of_gigantism.registry.ModEffects;
+import net.textstack.band_of_gigantism.registry.BogBlocks;
+import net.textstack.band_of_gigantism.registry.BogEffects;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class MirapoppyEntity extends BlockEntity {
     final BOGConfig c = BOGConfig.INSTANCE;
 
     public MirapoppyEntity(BlockPos pos, BlockState state) {
-        super(ModBlocks.MIRAPOPPY_ENTITY.get(), pos, state);
+        super(BogBlocks.MIRAPOPPY_ENTITY.get(), pos, state);
     }
 
     public void tick(Level level, BlockPos pos) {
@@ -29,7 +29,7 @@ public class MirapoppyEntity extends BlockEntity {
 
             for (LivingEntity living : list) {
                 if (!(living instanceof Player))
-                    living.addEffect(new MobEffectInstance(ModEffects.MIRA.get(), 100));
+                    living.addEffect(new MobEffectInstance(BogEffects.MIRA.get(), 100));
             }
         }
     }

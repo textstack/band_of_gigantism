@@ -12,11 +12,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.registry.BogItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
@@ -30,6 +30,7 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.List;
 
 public class BandBasic extends Item implements ICurioItem {
@@ -50,39 +51,21 @@ public class BandBasic extends Item implements ICurioItem {
 
         LivingEntity living = slotContext.entity();
 
-        if (living.getLevel().isClientSide) {
-            return;
+        //check if clientside
+        try (Level level = living.level()) {
+            if (level.isClientSide()) {
+                return;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         //check if already equipped
         if (slotContext.entity() instanceof Player player) {
-
             if (player.getPersistentData().getBoolean("basicEquip")) {
                 return;
             }
             player.getPersistentData().putBoolean("basicEquip", true);
-
-            //get values
-            /*int tag = stack.getOrCreateTag().getInt("UniqueTag");
-            int[] ints = player.getPersistentData().getIntArray("bandsEquipped");
-            ArrayList<Integer> tagList = new ArrayList<>(Arrays.stream(ints).boxed().toList());
-
-            //check if in le array
-            boolean check = false;
-            for (int tagCompare : tagList) {
-                if (tag == tagCompare) {
-                    check = true;
-                    break;
-                }
-            }
-            if (check) {
-                return;
-            }
-
-            //add in new value
-            tagList.add(tag);
-            int[] intsNew = tagList.stream().mapToInt(Integer::intValue).toArray();
-            player.getPersistentData().putIntArray("bandsEquipped", intsNew);*/
         }
 
         int setScale;
@@ -109,33 +92,18 @@ public class BandBasic extends Item implements ICurioItem {
 
         LivingEntity living = slotContext.entity();
 
-        if (living.getLevel().isClientSide) {
-            return;
+        //check if clientside
+        try (Level level = living.level()) {
+            if (level.isClientSide()) {
+                return;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         //clear tag from list
         if (slotContext.entity() instanceof Player player) {
-
             player.getPersistentData().putBoolean("basicEquip", false);
-
-            //get values
-            /*int tag = stack.getOrCreateTag().getInt("UniqueTag");
-            int[] ints = player.getPersistentData().getIntArray("bandsEquipped");
-            ArrayList<Integer> tagList = new ArrayList<>(Arrays.stream(ints).boxed().toList());
-
-            //remove value
-            Iterator<Integer> it = tagList.iterator();
-            while(it.hasNext()) {
-                int i = it.next();
-                if (i == tag) {
-                    it.remove();
-                    break;
-                }
-            }
-
-            //finish
-            int[] intsNew = tagList.stream().mapToInt(Integer::intValue).toArray();
-            player.getPersistentData().putIntArray("bandsEquipped", intsNew);*/
         }
 
         //reset scale
@@ -180,11 +148,6 @@ public class BandBasic extends Item implements ICurioItem {
             return;
         }
 
-        //still wishing
-        /*if (stack.getOrCreateTag().getInt("UniqueTag") <= 0) {
-            stack.getOrCreateTag().putInt("UniqueTag", worldIn.random.nextInt());
-        }*/
-
         LivingEntity living = (LivingEntity) entityIn;
 
         if (worldIn.getGameTime() % 100 == 0 && stack.getOrCreateTag().getInt("crafted") == 1 && ScaleHelper.isDoneScaling(living, scales[1])) {
@@ -197,7 +160,7 @@ public class BandBasic extends Item implements ICurioItem {
                 int setScale = (int) (((1.0 - Math.abs(Math.random() + Math.random() - 1.0)) * scaleRange + scaleLower) * 10000.0);
 
                 //set scale
-                if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get())) {
+                if (CurioHelper.hasCurio(living, BogItems.GLOBETROTTERS_BAND.get())) {
                     if (c.multiply_enable.get()) {
                         int prevSetScale = stack.getOrCreateTag().getInt("scale");
                         int scaleDelay = ScaleHelper.rescaleMultiply(living, scales, setScale / 10000.0f, prevSetScale / 10000.0f, 0);
@@ -246,7 +209,7 @@ public class BandBasic extends Item implements ICurioItem {
         ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get()) || CurioHelper.hasCurio(living, stack.getItem())) {
+        if (CurioHelper.hasCurio(living, BogItems.GLOBETROTTERS_BAND.get()) || CurioHelper.hasCurio(living, stack.getItem())) {
             return false;
         }
 
@@ -262,7 +225,7 @@ public class BandBasic extends Item implements ICurioItem {
 
     @OnlyIn(Dist.CLIENT)
     public static void registerVariants() { //property function has a new mystery integer I just named "thing" for now
-        ItemProperties.register(ModItems.BAND_BASIC.get(), new ResourceLocation(BandOfGigantism.MODID, "crafted"), (stack, world, entity, thing) -> stack.getOrCreateTag().getInt("crafted"));
+        ItemProperties.register(BogItems.BAND_BASIC.get(), new ResourceLocation(BandOfGigantism.MODID, "crafted"), (stack, world, entity, thing) -> stack.getOrCreateTag().getInt("crafted"));
     }
 
     @Override

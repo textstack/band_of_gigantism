@@ -1,4 +1,4 @@
-package net.textstack.band_of_gigantism.item;
+package net.textstack.band_of_gigantism.item.mark;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;

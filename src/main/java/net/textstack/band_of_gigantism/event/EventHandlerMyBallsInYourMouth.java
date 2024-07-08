@@ -5,13 +5,16 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +39,9 @@ import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.item.MarkUnknown;
+import net.textstack.band_of_gigantism.data.BogDamageTypes;
+import net.textstack.band_of_gigantism.data.BogPlacements;
+import net.textstack.band_of_gigantism.item.mark.MarkUnknown;
 import net.textstack.band_of_gigantism.item.base.MarkItem;
 import net.textstack.band_of_gigantism.registry.*;
 import net.textstack.band_of_gigantism.util.CurioHelper;
@@ -45,6 +50,8 @@ import net.textstack.band_of_gigantism.util.MarkHelper;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 //i agree, it IS a good handler name!
 @Mod.EventBusSubscriber(modid = BandOfGigantism.MODID)
@@ -57,7 +64,7 @@ public class EventHandlerMyBallsInYourMouth {
             LivingEntity living = event.getEntity();
 
             //disables regen and reduces healing
-            if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get()) || Objects.requireNonNull(living).hasEffect(ModEffects.RECOVERING.get())) {
+            if (CurioHelper.hasCurio(living, BogItems.MARK_FADED.get()) || Objects.requireNonNull(living).hasEffect(BogEffects.RECOVERING.get())) {
                 if (event.getAmount() <= 1.0f) {
                     event.setCanceled(true);
                     return;
@@ -67,15 +74,15 @@ public class EventHandlerMyBallsInYourMouth {
             }
 
             //increases regen
-            if (CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
+            if (CurioHelper.hasCurio(living, BogItems.MARK_DESCENDED.get())) {
                 if (event.getAmount() <= 1.0f) {
                     event.setAmount(event.getAmount() * (1 + c.mark_descended_regeneration.get().floatValue()));
                 }
             }
 
             //either increases or reduces healing
-            if (CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
-                int regenValue = MarkUnknown.regenValue(CurioHelper.hasCurioGet(living, ModItems.MARK_UNKNOWN.get()));
+            if (CurioHelper.hasCurio(living, BogItems.MARK_UNKNOWN.get())) {
+                int regenValue = MarkUnknown.regenValue(CurioHelper.hasCurioGet(living, BogItems.MARK_UNKNOWN.get()));
                 switch (regenValue) {
                     case 5, 6, 1 -> event.setAmount(event.getAmount() * (1 - c.mark_unknown_healing.get().floatValue()));
                     case 7, 8, 2 -> event.setAmount(event.getAmount() * (1 + c.mark_unknown_healing.get().floatValue()));
@@ -101,10 +108,14 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent
     public void onLivingDeathEvent(LivingDeathEvent event) {
+        if (event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return;
+        }
+
         if (event.getEntity() instanceof Player) {
             LivingEntity living = event.getEntity();
-            if (CurioHelper.hasCurio(living, ModItems.FALSE_HAND.get())) {
-                ItemStack stack = CurioHelper.hasCurioGet(living, ModItems.FALSE_HAND.get());
+            if (CurioHelper.hasCurio(living, BogItems.FALSE_HAND.get())) {
+                ItemStack stack = CurioHelper.hasCurioGet(living, BogItems.FALSE_HAND.get());
                 int flipped = stack.getOrCreateTag().getInt("flipped");
                 if (flipped == 0) {
                     event.setCanceled(true);
@@ -131,14 +142,15 @@ public class EventHandlerMyBallsInYourMouth {
                     }
                 }
             }
-            if (event.getSource() == ModDamageSources.BOG_MIRA) {
+            if (event.getSource().typeHolder().is(BogDamageTypes.BOG_MIRA)) {
                 if(event.getEntity() instanceof ServerPlayer player) {
-                    CurioHelper.hasCurioGet(player, ModItems.BAND_PASSION.get()).shrink(1);
-                    CurioHelper.hasCurioGet(player, ModItems.BAND_APATHY.get()).shrink(1);
+                    CurioHelper.hasCurioGet(player, BogItems.BAND_PASSION.get()).shrink(1);
+                    CurioHelper.hasCurioGet(player, BogItems.BAND_APATHY.get()).shrink(1);
 
                     BlockPos blockpos = player.blockPosition();
                     RandomSource random = player.getRandom();
                     ServerLevel server = player.serverLevel();
+                    Optional<Holder.Reference<PlacedFeature>> optional = server.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolder(BogPlacements.MIRA_PLACE);
                     int count = 0;
 
                     restartMira:
@@ -155,8 +167,11 @@ public class EventHandlerMyBallsInYourMouth {
                         BlockState blockstate1 = server.getBlockState(blockpos1);
 
                         if (blockstate1.isAir()) {
-                            Holder<PlacedFeature> holder = ModPlacements.MIRA_PLACE;
-                            holder.value().place(server, server.getChunkSource().getGenerator(), random, blockpos1);
+                            if (optional.isEmpty()) {
+                                continue;
+                            }
+
+                            optional.get().value().place(server, server.getChunkSource().getGenerator(), random, blockpos1);
                             count = count + 1;
 
                             if (count >= 6) {break;}
@@ -169,11 +184,10 @@ public class EventHandlerMyBallsInYourMouth {
 
     @SubscribeEvent
     public void onLivingExperienceDrop(LivingExperienceDropEvent event) {
-
         if (event.getAttackingPlayer() != null) {
             int value = event.getDroppedExperience();
 
-            if ((event.getEntity().hasEffect(ModEffects.MIRA.get()) || CurioHelper.hasCurio(event.getAttackingPlayer(), ModBlocks.MIRAPOPPY.get().asItem())) && Math.random() < c.mirapoppy_chance.get()) {
+            if ((event.getEntity().hasEffect(BogEffects.MIRA.get()) || CurioHelper.hasCurio(event.getAttackingPlayer(), BogBlocks.MIRAPOPPY.get().asItem())) && Math.random() < c.mirapoppy_chance.get()) {
                 value = value * 2;
                 if (Math.random() < c.mirapoppy_chance_double.get()) {
                     value = value * 2;
@@ -187,33 +201,34 @@ public class EventHandlerMyBallsInYourMouth {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onEntityHurt(LivingHurtEvent event) {
         if (event.getEntity() instanceof Player living) {
+            Holder<DamageType> typeHolder = event.getSource().typeHolder();
 
             if (c.recovery_allhits.get()) {
-                if (event.getSource() != ModDamageSources.BOG_DESCENDED &&
-                        event.getSource() != ModDamageSources.BOG_FADED &&
-                        event.getSource() != ModDamageSources.BOG_FORGOTTEN &&
-                        event.getSource() != ModDamageSources.BOG_JUDGED &&
-                        event.getSource() != ModDamageSources.BOG_OBLITERATED &&
-                        event.getSource() != ModDamageSources.BOG_PURIFIED &&
-                        event.getSource() != ModDamageSources.BOG_UNKNOWN)
+                if (!typeHolder.is(BogDamageTypes.BOG_DESCENDED) &&
+                        !typeHolder.is(BogDamageTypes.BOG_FADED) &&
+                        !typeHolder.is(BogDamageTypes.BOG_FORGOTTEN) &&
+                        !typeHolder.is(BogDamageTypes.BOG_JUDGED) &&
+                        !typeHolder.is(BogDamageTypes.BOG_OBLITERATED) &&
+                        !typeHolder.is(BogDamageTypes.BOG_PURIFIED) &&
+                        !typeHolder.is(BogDamageTypes.BOG_UNKNOWN))
                     if ((event.getAmount() > c.recovery_minimum_damage.get()) && (Math.random() < c.recovery_chance.get())) {
-                        living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.recovery_duration.get(), 0, false, c.recovery_show_particles.get()));
+                        living.addEffect(new MobEffectInstance(BogEffects.RECOVERING.get(), c.recovery_duration.get(), 0, false, c.recovery_show_particles.get()));
                     }
             }
 
             //for the strains of ascent effect to deal damage as fast as it wants
-            if (event.getSource() == ModDamageSources.BOG_DESCENDED) {
+            if (typeHolder.is(BogDamageTypes.BOG_DESCENDED)) {
                 living.invulnerableTime = 0;
             }
 
-            if (living.hasEffect(ModEffects.MIRA.get())&&Math.random() < c.mira_gin_chance.get()&&event.getAmount()<living.getMaxHealth()*2) {
+            if (living.hasEffect(BogEffects.MIRA.get())&&Math.random() < c.mira_gin_chance.get()&&event.getAmount()<living.getMaxHealth()*2) {
                 event.setCanceled(true);
                 return;
             }
 
             //flat damage vuln for false hand
-            if (CurioHelper.hasCurio(living, ModItems.FALSE_HAND.get())) {
-                int flipped = CurioHelper.hasCurioGet(living, ModItems.FALSE_HAND.get()).getOrCreateTag().getInt("flipped");
+            if (CurioHelper.hasCurio(living, BogItems.FALSE_HAND.get())) {
+                int flipped = CurioHelper.hasCurioGet(living, BogItems.FALSE_HAND.get()).getOrCreateTag().getInt("flipped");
                 if (flipped == 1) {
                     float damageReduce = Math.max(event.getAmount() - c.false_hand_flat_resistance.get().floatValue(), 0.0f);
                     if (damageReduce <= 0) {
@@ -226,8 +241,8 @@ public class EventHandlerMyBallsInYourMouth {
             }
 
             //flat damage resistance/vulnerability
-            if (CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
-                int regenValue = MarkUnknown.regenValue(CurioHelper.hasCurioGet(living, ModItems.MARK_UNKNOWN.get()));
+            if (CurioHelper.hasCurio(living, BogItems.MARK_UNKNOWN.get())) {
+                int regenValue = MarkUnknown.regenValue(CurioHelper.hasCurioGet(living, BogItems.MARK_UNKNOWN.get()));
                 switch (regenValue) {
                     case 5, 7, 3 -> event.setAmount(event.getAmount() + c.mark_unknown_flat_resistance.get().floatValue());
                     case 6, 8, 4 -> {
@@ -243,7 +258,7 @@ public class EventHandlerMyBallsInYourMouth {
             }
 
             //flat damage resistance
-            if (CurioHelper.hasCurio(living, ModItems.MARK_FADED.get())) {
+            if (CurioHelper.hasCurio(living, BogItems.MARK_FADED.get())) {
                 float damageReduce = Math.max(event.getAmount() - c.mark_faded_flat_resistance.get().floatValue(), 0.0f);
                 if (damageReduce <= 0) {
                     event.setCanceled(true);
@@ -254,13 +269,13 @@ public class EventHandlerMyBallsInYourMouth {
             }
 
             //normal (ew) resistance
-            if (CurioHelper.hasCurio(living, ModItems.MARK_FORGOTTEN.get())) {
+            if (CurioHelper.hasCurio(living, BogItems.MARK_FORGOTTEN.get())) {
                 event.setAmount(event.getAmount() * (1 + c.mark_forgotten_resistance.get().floatValue()));
-                living.addEffect(new MobEffectInstance(ModEffects.FORGETFULNESS.get(), c.mark_forgotten_duration.get(), 0, false, false));
+                living.addEffect(new MobEffectInstance(BogEffects.FORGETFULNESS.get(), c.mark_forgotten_duration.get(), 0, false, false));
             }
 
-            if (CurioHelper.hasCurio(living, ModItems.BAND_CRUSTACEOUS.get()) && !CurioHelper.hasCurio(living, ModItems.MARK_FADED.get()) && living.getFoodData().getFoodLevel() >= 18 && event.getAmount() > 0) {
-                living.addEffect(new MobEffectInstance(ModEffects.CRABBY.get(), c.band_crustaceous_duration.get(), 0, false, false));
+            if (CurioHelper.hasCurio(living, BogItems.BAND_CRUSTACEOUS.get()) && !CurioHelper.hasCurio(living, BogItems.MARK_FADED.get()) && living.getFoodData().getFoodLevel() >= 18 && event.getAmount() > 0) {
+                living.addEffect(new MobEffectInstance(BogEffects.CRABBY.get(), c.band_crustaceous_duration.get(), 0, false, false));
             }
         }
     }
@@ -269,7 +284,7 @@ public class EventHandlerMyBallsInYourMouth {
     public void onCriticalHit(CriticalHitEvent event) {
         Player player = event.getEntity();
         //crit increase
-        if (CurioHelper.hasCurio(player, ModItems.MARK_FORGOTTEN.get()) && event.isVanillaCritical()) {
+        if (CurioHelper.hasCurio(player, BogItems.MARK_FORGOTTEN.get()) && event.isVanillaCritical()) {
             event.setDamageModifier(event.getDamageModifier() + c.mark_forgotten_critical_damage.get().floatValue());
         }
     }
@@ -286,13 +301,13 @@ public class EventHandlerMyBallsInYourMouth {
         if (event.getOverlay() == GuiOverlayManager.findOverlay(FOOD_LEVEL_ELEMENT)) {
 
             //disable rendering of food
-            if (CurioHelper.hasCurio(player, ModItems.MARK_FORGOTTEN.get())) {
+            if (CurioHelper.hasCurio(player, BogItems.MARK_FORGOTTEN.get())) {
                 event.setCanceled(true);
             }
         } else if (event.getOverlay() == GuiOverlayManager.findOverlay(PLAYER_HEALTH_ELEMENT)) {
 
             //disable rendering of health
-            if (Objects.requireNonNull(player).hasEffect(ModEffects.FORGETFULNESS.get())) {
+            if (Objects.requireNonNull(player).hasEffect(BogEffects.FORGETFULNESS.get())) {
                 event.setCanceled(true);
                 //return;
             }
@@ -326,8 +341,8 @@ public class EventHandlerMyBallsInYourMouth {
     @OnlyIn(Dist.CLIENT)
     public void onFogRender(ViewportEvent.RenderFog event) {
         Player player = Objects.requireNonNull(Minecraft.getInstance().player);
-        if (player.hasEffect(ModEffects.MIRA_SICKNESS.get())) {
-            float distanceMod = Objects.requireNonNull(player.getEffect(ModEffects.MIRA_SICKNESS.get())).getDuration()*2+0.8f;
+        if (player.hasEffect(BogEffects.MIRA_SICKNESS.get())) {
+            float distanceMod = Objects.requireNonNull(player.getEffect(BogEffects.MIRA_SICKNESS.get())).getDuration()*2+0.8f;
             RenderSystem.setShaderFogStart(0.0F);
             RenderSystem.setShaderFogEnd(distanceMod);
         }
@@ -336,7 +351,7 @@ public class EventHandlerMyBallsInYourMouth {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onFogColor(ViewportEvent.ComputeFogColor event) {
-        if (Objects.requireNonNull(Minecraft.getInstance().player).hasEffect(ModEffects.MIRA_SICKNESS.get())) {
+        if (Objects.requireNonNull(Minecraft.getInstance().player).hasEffect(BogEffects.MIRA_SICKNESS.get())) {
             event.setRed(200);
             event.setGreen(100);
             event.setBlue(175);

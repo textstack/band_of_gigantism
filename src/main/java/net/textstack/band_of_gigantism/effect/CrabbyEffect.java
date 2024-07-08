@@ -5,8 +5,9 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
+import net.neoforged.neoforge.event.EventHooks;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.registry.BogItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
 import org.jetbrains.annotations.NotNull;
@@ -45,14 +46,14 @@ public class CrabbyEffect extends MobEffect {
 
                 if (c.band_crustaceous_heal.get()) {
                     float heal = healthLost + healReduce;
-                    heal = net.minecraftforge.event.ForgeEventFactory.onLivingHeal(entityLivingBaseIn, heal);
+                    heal = EventHooks.onLivingHeal(entityLivingBaseIn, heal);
                     if (heal > 0.0f) {
                         float f = entityLivingBaseIn.getHealth();
                         if (f > 0.0f) {
                             float healDiv = 1.0f - f / (f + heal);
                             entityLivingBaseIn.setHealth(Math.min(f + heal, entityLivingBaseIn.getMaxHealth()));
 
-                            if (CurioHelper.hasCurio(entityLivingBaseIn, ModItems.BAND_CRUSTACEOUS.get()) && heal >= 6.0f) {
+                            if (CurioHelper.hasCurio(entityLivingBaseIn, BogItems.BAND_CRUSTACEOUS.get()) && heal >= 6.0f) {
                                 if (c.multiply_enable.get()) {
                                     int prevScale = player.getPersistentData().getInt("crustaceousScale");
                                     int setScale = (int) (Math.min(prevScale * (1 + healDiv), c.band_crustaceous_limit_scale.get().floatValue() * 1000000.0f));
@@ -72,7 +73,7 @@ public class CrabbyEffect extends MobEffect {
                     float healthLostDiv = 1.0f - entityLivingBaseIn.getHealth() / (entityLivingBaseIn.getMaxHealth() + healReduce);
                     entityLivingBaseIn.setHealth(entityLivingBaseIn.getMaxHealth() + healReduce);
 
-                    if (CurioHelper.hasCurio(entityLivingBaseIn, ModItems.BAND_CRUSTACEOUS.get()) && healthLost >= 6.0f) {
+                    if (CurioHelper.hasCurio(entityLivingBaseIn, BogItems.BAND_CRUSTACEOUS.get()) && healthLost >= 6.0f) {
                         if (c.multiply_enable.get()) {
                             int prevScale = player.getPersistentData().getInt("crustaceousScale");
                             int setScale = (int) (Math.min(prevScale * (1 + healthLostDiv), c.band_crustaceous_limit_scale.get().floatValue() * 1000000.0f));
@@ -91,7 +92,7 @@ public class CrabbyEffect extends MobEffect {
         } else {
             if (c.band_crustaceous_heal.get()) {
                 float heal = healthLost;
-                heal = net.minecraftforge.event.ForgeEventFactory.onLivingHeal(entityLivingBaseIn, heal);
+                heal = EventHooks.onLivingHeal(entityLivingBaseIn, heal);
                 if (heal > 0.0f) {
                     float f = entityLivingBaseIn.getHealth();
                     if (f > 0.0f) {
@@ -105,7 +106,7 @@ public class CrabbyEffect extends MobEffect {
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return duration == 1;
     }
 }

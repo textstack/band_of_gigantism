@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.registry.BogItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
@@ -25,6 +25,7 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,10 +45,13 @@ public class MaskDiminishment extends Item implements ICurioItem {
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
 
         if (slotContext.entity() instanceof Player player) {
-
             //check if clientside
-            if (player.getLevel().isClientSide) {
-                return;
+            try (Level level = player.level()) {
+                if (level.isClientSide()) {
+                    return;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
             //check if already equipped
@@ -68,10 +72,13 @@ public class MaskDiminishment extends Item implements ICurioItem {
         ICurioItem.super.onUnequip(slotContext, newStack, stack);
 
         if (slotContext.entity() instanceof Player player) {
-
             //check if clientside
-            if (player.getLevel().isClientSide) {
-                return;
+            try (Level level = player.level()) {
+                if (level.isClientSide()) {
+                    return;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
             //reset var
@@ -95,7 +102,7 @@ public class MaskDiminishment extends Item implements ICurioItem {
         ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        if (CurioHelper.hasCurio(living, ModItems.MASK_DIMINISHMENT.get()) || CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get())) {
+        if (CurioHelper.hasCurio(living, BogItems.MASK_DIMINISHMENT.get()) || CurioHelper.hasCurio(living, BogItems.GLOBETROTTERS_BAND.get())) {
             return false;
         }
 
@@ -115,8 +122,17 @@ public class MaskDiminishment extends Item implements ICurioItem {
 
         LivingEntity living = slotContext.entity();
 
+        //check if clientside
+        try (Level level = living.level()) {
+            if (level.getGameTime() % 10 != 0) {
+                return;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         //scale player based on inventory fill percentage
-        if (living.level.getGameTime() % 10 == 0 && ScaleHelper.isDoneScaling(living, scales[0])) {
+        if (ScaleHelper.isDoneScaling(living, scales[0])) {
             if (living instanceof Player player) {
 
                 NonNullList<ItemStack> list = player.getInventory().items;

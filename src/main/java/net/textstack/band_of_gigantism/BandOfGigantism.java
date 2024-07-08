@@ -10,6 +10,7 @@ import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.common.NeoForge;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.data.BogData;
 import net.textstack.band_of_gigantism.event.EventHandlerMyBallsInYourMouth;
 import net.textstack.band_of_gigantism.item.BandBasic;
 import net.textstack.band_of_gigantism.item.FalseHand;
@@ -33,12 +34,12 @@ public class BandOfGigantism
         // main handler for the mod
         bogHandler = new EventHandlerMyBallsInYourMouth();
 
-        ModItems.register(eventBus);
-        ModEffects.register(eventBus);
-        ModSoundEvents.register(eventBus);
-        ModLootModifiers.register(eventBus);
-        ModBlocks.BLOCK_ENTITIES.register(eventBus);
-        ModBlocks.BLOCKS.register(eventBus);
+        BogItems.register(eventBus);
+        BogEffects.register(eventBus);
+        BogSoundEvents.register(eventBus);
+        BogLootModifiers.register(eventBus);
+        BogBlocks.BLOCK_ENTITIES.register(eventBus);
+        BogBlocks.BLOCKS.register(eventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, BOGConfig.SPEC);
 
@@ -49,6 +50,7 @@ public class BandOfGigantism
         // Register ourselves for server and other game events we are interested in
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(bogHandler);
+        NeoForge.EVENT_BUS.register(BogData.class);
     }
 
     private void clientSetup(final FMLClientSetupEvent event)

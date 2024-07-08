@@ -1,4 +1,4 @@
-package net.textstack.band_of_gigantism.item;
+package net.textstack.band_of_gigantism.item.mark;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -7,7 +7,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -16,10 +15,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.item.base.MarkItem;
-import net.textstack.band_of_gigantism.registry.ModDamageSources;
-import net.textstack.band_of_gigantism.registry.ModEffects;
-import net.textstack.band_of_gigantism.registry.ModItems;
-import net.textstack.band_of_gigantism.util.CurioHelper;
+import net.textstack.band_of_gigantism.data.BogDamageTypes;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
@@ -32,7 +28,7 @@ import java.util.UUID;
 public class MarkObliterated extends MarkItem {
 
     public MarkObliterated(Properties properties) {
-        super(properties, null, ChatFormatting.DARK_RED);
+        super(properties, BogDamageTypes.BOG_OBLITERATED, ChatFormatting.DARK_RED);
     }
 
     @Override
@@ -47,20 +43,9 @@ public class MarkObliterated extends MarkItem {
 
         //kill
         if (c.mark_obliterated_bypassinvuln.get()) {
-            slotContext.entity().hurt(ModDamageSources.BOG_OBLITERATED_INVULN, Float.MAX_VALUE);
+            slotContext.entity().hurt(BogDamageTypes.damageSource(slotContext.entity().level(), BogDamageTypes.BOG_OBLITERATED_INVULN), Float.MAX_VALUE);
         } else {
-            slotContext.entity().hurt(ModDamageSources.BOG_OBLITERATED, Float.MAX_VALUE);
-        }
-    }
-
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        if (slotContext.entity() instanceof ServerPlayer player) {
-            if (!CurioHelper.hasCurio(player, ModItems.MARK_OBLITERATED.get())) {
-                player.getPersistentData().putBoolean("obliteratedEquip", false);
-                slotContext.entity().hurt(ModDamageSources.BOG_OBLITERATED, Float.MAX_VALUE);
-                player.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
-            }
+            slotContext.entity().hurt(BogDamageTypes.damageSource(slotContext.entity().level(), BogDamageTypes.BOG_OBLITERATED), Float.MAX_VALUE);
         }
     }
 

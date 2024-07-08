@@ -2,13 +2,16 @@ package net.textstack.band_of_gigantism.item.base;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModEffects;
+import net.textstack.band_of_gigantism.data.BogDamageTypes;
+import net.textstack.band_of_gigantism.registry.BogEffects;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.MarkHelper;
 import org.jetbrains.annotations.NotNull;
@@ -23,11 +26,11 @@ import java.util.List;
 public class MarkItem extends Item implements ICurioItem {
 
     /**
-     * The DamageSource inflicted when the wearer unequips this mark. If this is null, the wearer will not take
+     * The ResourceKey for the DamageType the player will take upon unequipping the mark. If this is null, the wearer will not take
      * damage when unequipping the mark.
      */
     @Nullable
-    private final DamageSource unequipDamageType;
+    private final ResourceKey<DamageType> unequipDamageType;
 
     /**
      * The formatting code appended to the beginning of a player's chat message if they are wearing the mark.
@@ -38,7 +41,7 @@ public class MarkItem extends Item implements ICurioItem {
 
     protected static final BOGConfig c = BOGConfig.INSTANCE; // this will be inherited by all marks
 
-    public MarkItem(Properties p_41383_, @Nullable DamageSource unequipDamageType, @Nullable ChatFormatting formatting) {
+    public MarkItem(Properties p_41383_, @Nullable ResourceKey<DamageType> unequipDamageType, @Nullable ChatFormatting formatting) {
         super(p_41383_);
 
         this.unequipDamageType = unequipDamageType;
@@ -49,13 +52,13 @@ public class MarkItem extends Item implements ICurioItem {
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        if (unequipDamageType == null) return; // used for obliterated, which does not kill on unequip
+        if (unequipDamageType == null) return;
 
         //deal near-mortal damage, prevent healing
         LivingEntity living = slotContext.entity();
         if (!CurioHelper.hasCurio(living, this)) { //this method is called whenever nbt changes, make sure not to kill for that
-            living.hurt(unequipDamageType, living.getMaxHealth() - 1);
-            living.addEffect(new MobEffectInstance(ModEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
+            living.hurt(BogDamageTypes.damageSource(living.level(), unequipDamageType), living.getMaxHealth() - 1);
+            living.addEffect(new MobEffectInstance(BogEffects.RECOVERING.get(), c.marks_duration.get(), 0, false, false));
         }
     }
 

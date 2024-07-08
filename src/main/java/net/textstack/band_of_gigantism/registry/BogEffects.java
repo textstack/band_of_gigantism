@@ -12,7 +12,7 @@ import net.textstack.band_of_gigantism.effect.MiraEffect;
 
 import java.util.function.Supplier;
 
-public class ModEffects {
+public class BogEffects {
     public static final DeferredRegister<MobEffect> EFFECTS =
             DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, BandOfGigantism.MODID);
 

@@ -1,4 +1,4 @@
-package net.textstack.band_of_gigantism.item;
+package net.textstack.band_of_gigantism.item.mark;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -22,8 +22,8 @@ import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.item.base.MarkItem;
-import net.textstack.band_of_gigantism.registry.ModDamageSources;
-import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.data.BogDamageTypes;
+import net.textstack.band_of_gigantism.registry.BogItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +38,7 @@ public class MarkUnknown extends MarkItem {
     final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkUnknown(Properties properties) {
-        super(properties, ModDamageSources.BOG_UNKNOWN, ChatFormatting.GREEN);
+        super(properties, BogDamageTypes.BOG_UNKNOWN, ChatFormatting.GREEN);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MarkUnknown extends MarkItem {
         super.onUnequip(slotContext, newStack, stack);
 
         LivingEntity living = slotContext.entity();
-        if (!CurioHelper.hasCurio(living, ModItems.MARK_UNKNOWN.get())) {
+        if (!CurioHelper.hasCurio(living, BogItems.MARK_UNKNOWN.get())) {
             AttributeMap map = living.getAttributes();
             map.removeAttributeModifiers(this.createAttributeMap(stack));
         }

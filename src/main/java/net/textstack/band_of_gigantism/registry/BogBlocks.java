@@ -2,7 +2,6 @@ package net.textstack.band_of_gigantism.registry;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
@@ -19,11 +18,11 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public class ModBlocks {
+public class BogBlocks {
 
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(BuiltInRegistries.BLOCK, BandOfGigantism.MODID);
-    public static final DeferredRegister<Item> ITEMS = ModItems.ITEMS;
+    public static final DeferredRegister<Item> ITEMS = BogItems.ITEMS;
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, BandOfGigantism.MODID);

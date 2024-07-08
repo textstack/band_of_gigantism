@@ -1,4 +1,4 @@
-package net.textstack.band_of_gigantism.item;
+package net.textstack.band_of_gigantism.item.mark;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -17,11 +17,12 @@ import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.item.base.MarkItem;
-import net.textstack.band_of_gigantism.registry.ModDamageSources;
+import net.textstack.band_of_gigantism.data.BogDamageTypes;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class MarkPurified extends MarkItem {
     final BOGConfig c = BOGConfig.INSTANCE;
 
     public MarkPurified(Properties properties) {
-        super(properties, ModDamageSources.BOG_PURIFIED, ChatFormatting.GRAY);
+        super(properties, BogDamageTypes.BOG_PURIFIED, ChatFormatting.GRAY);
     }
 
     @Override
@@ -49,12 +50,16 @@ public class MarkPurified extends MarkItem {
         LivingEntity living = slotContext.entity();
 
         //reapply modifiers
-        if (living.level.getGameTime() % 10 == 0) {
-            if (living instanceof Player player) {
-                AttributeMap map = player.getAttributes();
-                map.removeAttributeModifiers(this.createAttributeMap(player)); //required to ensure max heatlh is added properly
-                map.addTransientAttributeModifiers(this.createAttributeMap(player));
+        try (Level level = living.level()) {
+            if (level.getGameTime() % 10 == 0) {
+                if (living instanceof Player player) {
+                    AttributeMap map = player.getAttributes();
+                    map.removeAttributeModifiers(this.createAttributeMap(player)); //required to ensure max health is added properly
+                    map.addTransientAttributeModifiers(this.createAttributeMap(player));
+                }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -9,7 +9,7 @@ import net.textstack.band_of_gigantism.BandOfGigantism;
 
 import java.util.function.Supplier;
 
-public class ModSoundEvents {
+public class BogSoundEvents {
 
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
             DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, BandOfGigantism.MODID);

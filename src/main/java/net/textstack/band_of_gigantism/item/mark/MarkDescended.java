@@ -1,4 +1,4 @@
-package net.textstack.band_of_gigantism.item;
+package net.textstack.band_of_gigantism.item.mark;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -16,9 +16,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.item.base.MarkItem;
-import net.textstack.band_of_gigantism.registry.ModDamageSources;
-import net.textstack.band_of_gigantism.registry.ModEffects;
-import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.data.BogDamageTypes;
+import net.textstack.band_of_gigantism.registry.BogEffects;
+import net.textstack.band_of_gigantism.registry.BogItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +31,7 @@ import java.util.UUID;
 public class MarkDescended extends MarkItem {
 
     public MarkDescended(Properties properties) {
-        super(properties, ModDamageSources.BOG_DESCENDED, ChatFormatting.BLUE);
+        super(properties, BogDamageTypes.BOG_DESCENDED, ChatFormatting.BLUE);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MarkDescended extends MarkItem {
                 else if (prevPosY > -32) amp = 3;
                 else if (prevPosY > -64) amp = 4;
                 else amp = 5;
-                living.addEffect(new MobEffectInstance(ModEffects.STRAINS_OF_ASCENT.get(), c.mark_descended_duration.get(), amp, false, false));
+                living.addEffect(new MobEffectInstance(BogEffects.STRAINS_OF_ASCENT.get(), c.mark_descended_duration.get(), amp, false, false));
                 this.setPosY(stack, posY);
             }
         } else {
@@ -71,7 +71,7 @@ public class MarkDescended extends MarkItem {
 
         //update mark's pos when not equipped
         LivingEntity living = (LivingEntity) entityIn;
-        if (worldIn.getGameTime() % 10 == 0 && !CurioHelper.hasCurio(living, ModItems.MARK_DESCENDED.get())) {
+        if (worldIn.getGameTime() % 10 == 0 && !CurioHelper.hasCurio(living, BogItems.MARK_DESCENDED.get())) {
             int posY = living.blockPosition().getY();
             this.setPosY(stack, posY);
         }

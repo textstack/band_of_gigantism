@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.textstack.band_of_gigantism.entity.MirapoppyEntity;
-import net.textstack.band_of_gigantism.registry.ModBlocks;
+import net.textstack.band_of_gigantism.registry.BogBlocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +46,7 @@ public class Mirapoppy extends FlowerBlock implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return ModBlocks.MIRAPOPPY_ENTITY.get().create(pos, state);
+        return BogBlocks.MIRAPOPPY_ENTITY.get().create(pos, state);
     }
 
     @Nullable

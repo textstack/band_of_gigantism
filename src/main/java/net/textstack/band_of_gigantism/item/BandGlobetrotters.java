@@ -17,7 +17,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.registry.BogItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
@@ -31,6 +31,7 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -54,8 +55,13 @@ public class BandGlobetrotters extends Item implements ICurioItem {
 
         LivingEntity living = slotContext.entity();
 
-        if (living.getLevel().isClientSide) {
-            return;
+        //check if clientside
+        try (Level level = living.level()) {
+            if (level.isClientSide()) {
+                return;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         if (living instanceof Player player) {
@@ -87,8 +93,13 @@ public class BandGlobetrotters extends Item implements ICurioItem {
 
         LivingEntity living = slotContext.entity();
 
-        if (living.getLevel().isClientSide) {
-            return;
+        //check if clientside
+        try (Level level = living.level()) {
+            if (level.isClientSide()) {
+                return;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         if (living instanceof Player player) {
@@ -116,15 +127,15 @@ public class BandGlobetrotters extends Item implements ICurioItem {
         float scaleBase = scaleData.getBaseScale();
 
         //globetrotter's band can't be used with anything else
-        if (CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get()) ||
-                CurioHelper.hasCurio(living, ModItems.BAND_CRUSTACEOUS.get()) ||
-                CurioHelper.hasCurio(living, ModItems.BAND_PASSION.get()) ||
-                CurioHelper.hasCurio(living, ModItems.BAND_GENERIC.get()) ||
-                CurioHelper.hasCurio(living, ModItems.LESSER_BAND_GENERIC.get()) ||
-                CurioHelper.hasCurio(living, ModItems.SHRINK_BAND_GENERIC.get()) ||
-                CurioHelper.hasCurio(living, ModItems.MASK_DIMINISHMENT.get()) ||
-                CurioHelper.hasCurio(living, ModItems.BAND_APATHY.get()) ||
-                CurioHelper.hasCurio(living, ModItems.BAND_BASIC.get())) {
+        if (CurioHelper.hasCurio(living, BogItems.GLOBETROTTERS_BAND.get()) ||
+                CurioHelper.hasCurio(living, BogItems.BAND_CRUSTACEOUS.get()) ||
+                CurioHelper.hasCurio(living, BogItems.BAND_PASSION.get()) ||
+                CurioHelper.hasCurio(living, BogItems.BAND_GENERIC.get()) ||
+                CurioHelper.hasCurio(living, BogItems.LESSER_BAND_GENERIC.get()) ||
+                CurioHelper.hasCurio(living, BogItems.SHRINK_BAND_GENERIC.get()) ||
+                CurioHelper.hasCurio(living, BogItems.MASK_DIMINISHMENT.get()) ||
+                CurioHelper.hasCurio(living, BogItems.BAND_APATHY.get()) ||
+                CurioHelper.hasCurio(living, BogItems.BAND_BASIC.get())) {
             return false;
         }
 
@@ -148,7 +159,7 @@ public class BandGlobetrotters extends Item implements ICurioItem {
 
         //tick up the thingie
         LivingEntity theDude = (LivingEntity) entityIn;
-        if (worldIn.getGameTime() % 100 == 0 && !CurioHelper.hasCurio(theDude, ModItems.GLOBETROTTERS_BAND.get())) {
+        if (worldIn.getGameTime() % 100 == 0 && !CurioHelper.hasCurio(theDude, BogItems.GLOBETROTTERS_BAND.get())) {
             int storedTime = this.getStoredEnergy(stack);
             if (storedTime < c.band_globetrotters_limit.get()) {
                 this.setStoredEnergy(stack, storedTime + 1);

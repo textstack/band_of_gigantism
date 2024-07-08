@@ -8,11 +8,12 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModSoundEvents;
+import net.textstack.band_of_gigantism.registry.BogSoundEvents;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.List;
 
 public class GoldenFryingPan extends SwordItem {
@@ -40,19 +41,22 @@ public class GoldenFryingPan extends SwordItem {
 
     @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
-
-        Level worldIn = attacker.getLevel();
-        if (worldIn.isClientSide()) {
-            return super.hurtEnemy(stack, target, attacker);
+        //check if clientside
+        try (Level level = attacker.level()) {
+            if (level.isClientSide()) {
+                return super.hurtEnemy(stack, target, attacker);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         if (target.isDeadOrDying()) {
-            target.playSound(ModSoundEvents.GOLD_KILL.get(), 1, 1);
+            target.playSound(BogSoundEvents.GOLD_KILL.get(), 1, 1);
             addStrangeKills(stack);
             stack.setHoverName(Component.translatable(LoreStatHelper.displayStrangeName(getStrangeKills(stack), LoreStatHelper.StrangeType.TITLE))
                     .append(Component.translatable("item.band_of_gigantism.golden_frying_pan_name_cut")));
         } else {
-            target.playSound(ModSoundEvents.PAN_HIT.get(), 0.5f, 1);
+            target.playSound(BogSoundEvents.PAN_HIT.get(), 0.5f, 1);
         }
 
         return super.hurtEnemy(stack, target, attacker);

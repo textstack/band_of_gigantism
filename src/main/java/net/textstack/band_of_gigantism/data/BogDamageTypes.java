@@ -1,4 +1,4 @@
-package net.textstack.band_of_gigantism.registry;
+package net.textstack.band_of_gigantism.data;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -9,8 +9,9 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 
-public class ModDamageSources {
+public class BogDamageTypes {
     public static final ResourceKey<DamageType> BOG_OBLITERATED = createKey("mark_obliterated");
+    public static final ResourceKey<DamageType> BOG_OBLITERATED_INVULN = createKey("mark_obliterated_invuln");
     public static final ResourceKey<DamageType> BOG_FADED = createKey("mark_faded");
     public static final ResourceKey<DamageType> BOG_FORGOTTEN = createKey("mark_forgotten");
     public static final ResourceKey<DamageType> BOG_PURIFIED = createKey("mark_purified");
@@ -21,6 +22,7 @@ public class ModDamageSources {
 
     public static void bootstrap(BootstapContext<DamageType> context) {
         context.register(BOG_OBLITERATED, new DamageType("mark_obliterated", 0.0f));
+        context.register(BOG_OBLITERATED_INVULN, new DamageType("mark_obliterated_invuln", 0.0f));
         context.register(BOG_FADED, new DamageType("mark_faded", 0.0f));
         context.register(BOG_FORGOTTEN, new DamageType("mark_forgotten", 0.0f));
         context.register(BOG_PURIFIED, new DamageType("mark_purified", 0.0f));

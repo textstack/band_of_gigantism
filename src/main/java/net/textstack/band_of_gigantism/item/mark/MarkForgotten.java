@@ -1,4 +1,4 @@
-package net.textstack.band_of_gigantism.item;
+package net.textstack.band_of_gigantism.item.mark;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.item.base.MarkItem;
-import net.textstack.band_of_gigantism.registry.ModDamageSources;
+import net.textstack.band_of_gigantism.data.BogDamageTypes;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class MarkForgotten extends MarkItem {
 
     public MarkForgotten(Properties properties) {
-        super(properties, ModDamageSources.BOG_FORGOTTEN, ChatFormatting.GOLD);
+        super(properties, BogDamageTypes.BOG_FORGOTTEN, ChatFormatting.GOLD);
     }
 
     @Override

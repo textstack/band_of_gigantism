@@ -11,11 +11,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModEffects;
-import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.registry.BogEffects;
+import net.textstack.band_of_gigantism.registry.BogItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import net.textstack.band_of_gigantism.util.ScaleHelper;
@@ -29,6 +29,7 @@ import virtuoel.pehkui.api.ScaleTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.List;
 
 public class BandCrustaceous extends Item implements ICurioItem {
@@ -48,10 +49,13 @@ public class BandCrustaceous extends Item implements ICurioItem {
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
 
         if (slotContext.entity() instanceof Player player) {
-
             //check if clientside
-            if (player.getLevel().isClientSide) {
-                return;
+            try (Level level = player.level()) {
+                if (level.isClientSide()) {
+                    return;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
             //check if already equipped
@@ -78,10 +82,13 @@ public class BandCrustaceous extends Item implements ICurioItem {
         ICurioItem.super.onUnequip(slotContext, newStack, stack);
 
         if (slotContext.entity() instanceof Player player) {
-
             //check if clientside
-            if (player.getLevel().isClientSide) {
-                return;
+            try (Level level = player.level()) {
+                if (level.isClientSide()) {
+                    return;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
             player.getPersistentData().putBoolean("crustaceousEquip", false);
@@ -104,33 +111,38 @@ public class BandCrustaceous extends Item implements ICurioItem {
 
         LivingEntity living = slotContext.entity();
 
-        if (living.getLevel().isClientSide) {
-            return;
-        }
+        try (Level level = living.level()) {
+            //check if clientside
+            if (level.isClientSide()) {
+                return;
+            }
 
-        if (living instanceof Player player) {
-            if (player.hasEffect(ModEffects.CRABBY.get())) {
-                if (player.getFoodData().getFoodLevel() < 18) {
-                    player.removeEffect(ModEffects.CRABBY.get());
-                }
-            } else {
-                if (!CurioHelper.hasCurio(player, ModItems.MARK_FADED.get()) && player.getFoodData().getFoodLevel() >= 18 && (player.getMaxHealth() - player.getHealth()) > 0) {
-                    player.addEffect(new MobEffectInstance(ModEffects.CRABBY.get(), c.band_crustaceous_duration.get(), 0, false, false));
-                } else if (player.level.getGameTime() % 40 == 0 && ScaleHelper.isDoneScaling(living, scales[0])) {
-                    if (c.multiply_enable.get()) {
-                        int prevScale = player.getPersistentData().getInt("crustaceousScale");
-                        int setScale = Math.max(prevScale - 50000, (int) (c.band_crustaceous_scale.get().floatValue() * 1000000.0f));
-                        int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale / 1000000.0f, prevScale / 1000000.0f, 0);
-                        ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f / setScale, 1000000.0f / prevScale, scaleDelay);
-                        player.getPersistentData().putInt("crustaceousScale", setScale);
-                    } else {
-                        ScaleData scaleData = ScaleTypes.WIDTH.getScaleData(player);
-                        float newScale = Math.max(scaleData.getTargetScale() - 0.05f, c.band_crustaceous_scale.get().floatValue());
-                        int scaleDelay = ScaleHelper.rescale(player, scales, newScale, 0);
-                        ScaleHelper.rescale(player, scalesInverse, 1.0f / newScale, scaleDelay);
+            if (living instanceof Player player) {
+                if (player.hasEffect(BogEffects.CRABBY.get())) {
+                    if (player.getFoodData().getFoodLevel() < 18) {
+                        player.removeEffect(BogEffects.CRABBY.get());
+                    }
+                } else {
+                    if (!CurioHelper.hasCurio(player, BogItems.MARK_FADED.get()) && player.getFoodData().getFoodLevel() >= 18 && (player.getMaxHealth() - player.getHealth()) > 0) {
+                        player.addEffect(new MobEffectInstance(BogEffects.CRABBY.get(), c.band_crustaceous_duration.get(), 0, false, false));
+                    } else if (level.getGameTime() % 40 == 0 && ScaleHelper.isDoneScaling(living, scales[0])) {
+                        if (c.multiply_enable.get()) {
+                            int prevScale = player.getPersistentData().getInt("crustaceousScale");
+                            int setScale = Math.max(prevScale - 50000, (int) (c.band_crustaceous_scale.get().floatValue() * 1000000.0f));
+                            int scaleDelay = ScaleHelper.rescaleMultiply(player, scales, setScale / 1000000.0f, prevScale / 1000000.0f, 0);
+                            ScaleHelper.rescaleMultiply(player, scalesInverse, 1000000.0f / setScale, 1000000.0f / prevScale, scaleDelay);
+                            player.getPersistentData().putInt("crustaceousScale", setScale);
+                        } else {
+                            ScaleData scaleData = ScaleTypes.WIDTH.getScaleData(player);
+                            float newScale = Math.max(scaleData.getTargetScale() - 0.05f, c.band_crustaceous_scale.get().floatValue());
+                            int scaleDelay = ScaleHelper.rescale(player, scales, newScale, 0);
+                            ScaleHelper.rescale(player, scalesInverse, 1.0f / newScale, scaleDelay);
+                        }
                     }
                 }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -140,7 +152,7 @@ public class BandCrustaceous extends Item implements ICurioItem {
         ScaleData scaleData = scales[0].getScaleData(living);
         float scaleBase = scaleData.getBaseScale();
 
-        if (CurioHelper.hasCurio(living, ModItems.BAND_CRUSTACEOUS.get()) || CurioHelper.hasCurio(living, ModItems.GLOBETROTTERS_BAND.get())) {
+        if (CurioHelper.hasCurio(living, BogItems.BAND_CRUSTACEOUS.get()) || CurioHelper.hasCurio(living, BogItems.GLOBETROTTERS_BAND.get())) {
             return false;
         }
 
@@ -171,7 +183,7 @@ public class BandCrustaceous extends Item implements ICurioItem {
             tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_shift_1"));
             tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
             if (Minecraft.getInstance().player != null) {
-                if (CurioHelper.hasCurio(Minecraft.getInstance().player, ModItems.MARK_FADED.get())) {
+                if (CurioHelper.hasCurio(Minecraft.getInstance().player, BogItems.MARK_FADED.get())) {
                     tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_faded_0"));
                     tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_faded_1"));
                     tooltip.add(Component.translatable("tooltip.band_of_gigantism.band_crustaceous_description_faded_2"));

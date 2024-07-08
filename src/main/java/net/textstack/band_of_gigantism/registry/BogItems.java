@@ -9,11 +9,12 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.item.*;
+import net.textstack.band_of_gigantism.item.mark.*;
 
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public class ModItems {
+public class BogItems {
 
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(BuiltInRegistries.ITEM, BandOfGigantism.MODID);

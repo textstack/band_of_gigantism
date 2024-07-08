@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModEffects;
+import net.textstack.band_of_gigantism.registry.BogEffects;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -36,7 +36,7 @@ public class MiraGin extends Item {
             }
         }
 
-        living.addEffect(new MobEffectInstance(ModEffects.MIRA.get(), 9600, 0));
+        living.addEffect(new MobEffectInstance(BogEffects.MIRA.get(), 9600, 0));
         return super.finishUsingItem(stack, level, living);
     }
 

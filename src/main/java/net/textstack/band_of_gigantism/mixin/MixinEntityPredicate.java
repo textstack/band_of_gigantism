@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModItems;
+import net.textstack.band_of_gigantism.registry.BogItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,7 +45,7 @@ public class MixinEntityPredicate {
 
         //give entities strength when targetting a judged player
         if (target != null || (target = this.targetMob) != null)
-            if (CurioHelper.hasCurio(target, ModItems.MARK_JUDGED.get()) && mob.getClassification(false) == MobCategory.MONSTER) {
+            if (CurioHelper.hasCurio(target, BogItems.MARK_JUDGED.get()) && mob.getClassification(false) == MobCategory.MONSTER) {
                 mob.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, c.mark_judged_duration.get(), 4, false, true));
             }
     }

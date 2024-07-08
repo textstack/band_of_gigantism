@@ -10,7 +10,7 @@ import net.textstack.band_of_gigantism.loot.GenericLootModifier;
 
 import java.util.function.Supplier;
 
-public class ModLootModifiers {
+public class BogLootModifiers {
     public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIER_SERIALIZER =
             DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, BandOfGigantism.MODID);
 

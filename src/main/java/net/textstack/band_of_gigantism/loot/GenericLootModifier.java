@@ -37,7 +37,3 @@ public class GenericLootModifier extends LootModifier {
         return CODEC.get();
     }
 }
-
-//if (context.getRandom().nextFloat() < chance) {
-//            generatedLoot.add(new ItemStack(item, 1));
-//        }

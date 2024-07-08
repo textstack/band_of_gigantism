@@ -9,12 +9,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
-import net.textstack.band_of_gigantism.registry.ModItems;
-import net.textstack.band_of_gigantism.registry.ModSoundEvents;
+import net.textstack.band_of_gigantism.registry.BogItems;
+import net.textstack.band_of_gigantism.registry.BogSoundEvents;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FalseHand extends Item implements ICurioItem {
@@ -44,7 +45,7 @@ public class FalseHand extends Item implements ICurioItem {
 
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return ICurioItem.super.canEquip(slotContext, stack) && !CurioHelper.hasCurio(slotContext.entity(), ModItems.FALSE_HAND.get());
+        return ICurioItem.super.canEquip(slotContext, stack) && !CurioHelper.hasCurio(slotContext.entity(), BogItems.FALSE_HAND.get());
     }
 
     @Override
@@ -92,23 +93,26 @@ public class FalseHand extends Item implements ICurioItem {
         LivingEntity living = slotContext.entity();
 
         if (flipped == 1) {
-            Level world = living.getLevel();
-            if (world.getGameTime() % 20 == 0) {
-                int storedTime = stack.getOrCreateTag().getInt("timeLeft");
-                if (storedTime > 0) {
-                    stack.getOrCreateTag().putInt("timeLeft", storedTime - 1);
-                } else {
-                    living.playSound(ModSoundEvents.CARD_FLIP.get(), 0.5f, 1);
-                    stack.getOrCreateTag().putInt("timeLeft", c.false_hand_time.get() - 1);
-                    stack.getOrCreateTag().putInt("flipped", 0);
+            try (Level level = living.level()) {
+                if (level.getGameTime() % 20 == 0) {
+                    int storedTime = stack.getOrCreateTag().getInt("timeLeft");
+                    if (storedTime > 0) {
+                        stack.getOrCreateTag().putInt("timeLeft", storedTime - 1);
+                    } else {
+                        living.playSound(BogSoundEvents.CARD_FLIP.get(), 0.5f, 1);
+                        stack.getOrCreateTag().putInt("timeLeft", c.false_hand_time.get() - 1);
+                        stack.getOrCreateTag().putInt("flipped", 0);
+                    }
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
     @OnlyIn(Dist.CLIENT)
     public static void registerVariants() { //property function has a new mystery integer I just named "thing" for now
-        ItemProperties.register(ModItems.FALSE_HAND.get(), new ResourceLocation(BandOfGigantism.MODID, "false_hand_flipped"), (stack, world, entity, thing) -> stack.getOrCreateTag().getInt("flipped"));
+        ItemProperties.register(BogItems.FALSE_HAND.get(), new ResourceLocation(BandOfGigantism.MODID, "false_hand_flipped"), (stack, world, entity, thing) -> stack.getOrCreateTag().getInt("flipped"));
     }
 
     @Override
