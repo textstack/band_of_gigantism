@@ -242,5 +242,6 @@
   "tooltip.band_of_gigantism.mirapoppy_description_0": "§5Mobs occasionally drop extra experience.",
   "tooltip.band_of_gigantism.mirapoppy_description_1": "§5When placed, this effect applies to nearby mobs.",
 
-  "tooltip.band_of_gigantism.mira_gin_description": "%1$s Dodge Chance"
+  "tooltip.band_of_gigantism.mira_gin_description": "%1$s Dodge Chance",
+  "tooltip.band_of_gigantism.mira_gin_description_flavor": "§9§oSlightly improves craftsmanship."
 }

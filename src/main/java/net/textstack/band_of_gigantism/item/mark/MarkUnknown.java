@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,30 +57,35 @@ public class MarkUnknown extends MarkItem {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity living = slotContext.entity();
 
-        if (living.level.getGameTime() % 20 == 0) {
-            if (living instanceof Player player) {
-
-                //inflict effect
-                int[] random = effectValues(stack);
-                MobEffect effect = switch (random[0]) {
-                    case 0 -> MobEffects.POISON; //
-                    case 1 -> MobEffects.SATURATION;
-                    case 2 -> MobEffects.DAMAGE_RESISTANCE; //
-                    case 3 -> MobEffects.DAMAGE_BOOST;
-                    case 4 -> MobEffects.DIG_SLOWDOWN; //
-                    case 5 -> MobEffects.DIG_SPEED;
-                    case 6 -> MobEffects.HUNGER; //
-                    case 7 -> MobEffects.SLOW_FALLING;
-                    case 8 -> MobEffects.WEAKNESS; //
-                    case 9 -> MobEffects.NIGHT_VISION;
-                    default -> MobEffects.GLOWING;
-                };
-                living.addEffect(new MobEffectInstance(effect, 220, random[1], false, false));
-
-                //reapply modifiers
-                AttributeMap map = player.getAttributes();
-                map.addTransientAttributeModifiers(this.createAttributeMap(stack));
+        try (Level level = living.level()) {
+            if (level.getGameTime() % 20 != 0) {
+                return;
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (living instanceof Player player) {
+            //inflict effect
+            int[] random = effectValues(stack);
+            MobEffect effect = switch (random[0]) {
+                case 0 -> MobEffects.POISON; //
+                case 1 -> MobEffects.SATURATION;
+                case 2 -> MobEffects.DAMAGE_RESISTANCE; //
+                case 3 -> MobEffects.DAMAGE_BOOST;
+                case 4 -> MobEffects.DIG_SLOWDOWN; //
+                case 5 -> MobEffects.DIG_SPEED;
+                case 6 -> MobEffects.HUNGER; //
+                case 7 -> MobEffects.SLOW_FALLING;
+                case 8 -> MobEffects.WEAKNESS; //
+                case 9 -> MobEffects.NIGHT_VISION;
+                default -> MobEffects.GLOWING;
+            };
+            living.addEffect(new MobEffectInstance(effect, 220, random[1], false, false));
+
+            //reapply modifiers
+            AttributeMap map = player.getAttributes();
+            map.addTransientAttributeModifiers(this.createAttributeMap(stack));
         }
     }
 
@@ -87,7 +93,7 @@ public class MarkUnknown extends MarkItem {
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level worldIn, @NotNull Entity entityIn, int itemSlot, boolean isSelected) {
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
 
-        if (worldIn.isClientSide) {
+        if (worldIn.isClientSide()) {
             return;
         }
 

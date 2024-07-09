@@ -16,6 +16,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.textstack.band_of_gigantism.BandOfGigantism;
 import net.textstack.band_of_gigantism.config.BOGConfig;
+import net.textstack.band_of_gigantism.registry.BogEffects;
 import net.textstack.band_of_gigantism.registry.BogItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
 import net.textstack.band_of_gigantism.util.LoreStatHelper;
@@ -128,6 +129,8 @@ public class BandBasic extends Item implements ICurioItem {
     @Override
     public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
         super.onCraftedBy(stack, level, player);
+
+        if (player.hasEffect(BogEffects.MIRA.get())) return;
 
         stack.getOrCreateTag().putInt("crafted", 1);
         stack.setHoverName(Component.translatable("tooltip.band_of_gigantism.band_basic_reveal"));

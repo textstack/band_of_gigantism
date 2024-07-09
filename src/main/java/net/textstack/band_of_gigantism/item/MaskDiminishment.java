@@ -122,7 +122,6 @@ public class MaskDiminishment extends Item implements ICurioItem {
 
         LivingEntity living = slotContext.entity();
 
-        //check if clientside
         try (Level level = living.level()) {
             if (level.getGameTime() % 10 != 0) {
                 return;

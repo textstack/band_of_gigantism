@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin({TargetGoal.class})
 public class MixinEntityPredicate {
-
     @Shadow
     protected
     LivingEntity targetMob;

@@ -44,7 +44,10 @@ public class MiraGin extends Item {
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
-        //if (!c.description_enable.get()) return;
+        if (c.description_enable.get()) {
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.mira_gin_description_flavor"));
+            tooltip.add(Component.translatable("tooltip.band_of_gigantism.void"));
+        }
 
         String value = String.valueOf((int) (Math.abs(c.mira_gin_chance.get()) * 100));
 

@@ -11,6 +11,7 @@
     "band_of_gigantism:mark_true_loot",
     "band_of_gigantism:mask_diminishment_loot",
     "band_of_gigantism:shrink_band_generic_loot",
-    "band_of_gigantism:shrink_band_generic_igloo_loot"
+    "band_of_gigantism:shrink_band_generic_igloo_loot",
+    "band_of_gigantism:sniffer_digging"
   ]
 }
