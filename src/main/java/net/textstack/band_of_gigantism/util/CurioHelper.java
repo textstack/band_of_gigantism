@@ -3,8 +3,10 @@ package net.textstack.band_of_gigantism.util;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.util.LazyOptional;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import java.util.Optional;
 
@@ -20,8 +22,12 @@ public class CurioHelper {
         if (entity == null) {
             throw new RuntimeException("[BOG] Tried checking the curio for a null entity!");
         }
-        final Optional<SlotResult> data = CuriosApi.getCuriosHelper().findFirstCurio(entity, curio);
-        return data.isPresent();
+
+        LazyOptional<ICuriosItemHandler> maybeCuriosInventory = CuriosApi.getCuriosInventory(entity);
+
+        if (!maybeCuriosInventory.isPresent() || maybeCuriosInventory.resolve().isEmpty()) return false;
+
+        return maybeCuriosInventory.resolve().get().findFirstCurio(curio).isPresent();
     }
 
     /**
@@ -35,11 +41,12 @@ public class CurioHelper {
         if (entity == null) {
             throw new RuntimeException("[BOG] Tried checking the curio for a null entity!");
         }
-        final Optional<SlotResult> data = CuriosApi.getCuriosHelper().findFirstCurio(entity, curio);
-        ItemStack stack = null;
-        if (data.isPresent()) {
-            stack = data.get().stack();
-        }
-        return stack;
+
+        LazyOptional<ICuriosItemHandler> maybeCuriosInventory = CuriosApi.getCuriosInventory(entity);
+
+        if (!maybeCuriosInventory.isPresent() || maybeCuriosInventory.resolve().isEmpty()) return null;
+
+        final Optional<SlotResult> data = maybeCuriosInventory.resolve().get().findFirstCurio(curio);
+        return data.map(SlotResult::stack).orElse(null);
     }
 }
