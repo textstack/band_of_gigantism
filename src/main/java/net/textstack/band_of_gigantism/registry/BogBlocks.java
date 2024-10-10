@@ -1,6 +1,7 @@
 package net.textstack.band_of_gigantism.registry;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -28,7 +29,7 @@ public class BogBlocks {
             DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, BandOfGigantism.MODID);
 
     public static final Supplier<Block> MIRAPOPPY = register("mirapoppy",
-            () -> new Mirapoppy(MobEffects.CONFUSION, BlockBehaviour.Properties.of().instabreak().sound(SoundType.GRASS).noCollission().offsetType(BlockBehaviour.OffsetType.XZ)),
+            () -> new Mirapoppy(() -> MobEffects.CONFUSION, BlockBehaviour.Properties.of().instabreak().sound(SoundType.GRASS).noCollission().offsetType(BlockBehaviour.OffsetType.XZ)),
             object -> () -> new MirapoppyItem(object.get(), new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).defaultDurability(0)));
 
     @SuppressWarnings("ConstantConditions")

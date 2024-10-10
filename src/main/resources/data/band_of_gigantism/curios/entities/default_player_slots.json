@@ -1,5 +1,5 @@
 {
-  "entities": ["minecraft:player"],
+  "entities": ["player"],
   "slots": [
     "bracelet",
     "curio"

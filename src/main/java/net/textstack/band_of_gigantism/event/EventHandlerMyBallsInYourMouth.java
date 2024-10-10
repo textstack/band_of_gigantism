@@ -51,15 +51,14 @@ import net.textstack.band_of_gigantism.util.MarkHelper;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 //i agree, it IS a good handler name!
 @Mod.EventBusSubscriber(modid = BandOfGigantism.MODID)
 public class EventHandlerMyBallsInYourMouth {
-    final BOGConfig c = BOGConfig.INSTANCE;
+    static final BOGConfig c = BOGConfig.INSTANCE;
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onLivingHeal(LivingHealEvent event) {
+    public static void onLivingHeal(LivingHealEvent event) {
         if (event.getEntity() instanceof Player) {
             LivingEntity living = event.getEntity();
 
@@ -92,7 +91,7 @@ public class EventHandlerMyBallsInYourMouth {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onTooltip(ItemTooltipEvent event) {
+    public static void onTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
         CompoundTag tag = stack.getTag();
         if (tag == null) return;
@@ -107,7 +106,7 @@ public class EventHandlerMyBallsInYourMouth {
     }
 
     @SubscribeEvent
-    public void onLivingDeathEvent(LivingDeathEvent event) {
+    public static void onLivingDeathEvent(LivingDeathEvent event) {
         if (event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return;
         }
@@ -116,7 +115,7 @@ public class EventHandlerMyBallsInYourMouth {
             LivingEntity living = event.getEntity();
             if (CurioHelper.hasCurio(living, BogItems.FALSE_HAND.get())) {
                 ItemStack stack = CurioHelper.hasCurioGet(living, BogItems.FALSE_HAND.get());
-                int flipped = stack.getOrCreateTag().getInt("flipped");
+                int flipped = stack != null ? stack.getOrCreateTag().getInt("flipped") : 1;
                 if (flipped == 0) {
                     event.setCanceled(true);
                     living.setHealth(living.getMaxHealth() / 2.0f);
@@ -128,7 +127,7 @@ public class EventHandlerMyBallsInYourMouth {
     }
 
     @SubscribeEvent(priority = EventPriority.LOW, receiveCanceled = true)
-    public void onReallyDeadEvent(LivingDeathEvent event) {
+    public static void onReallyDeadEvent(LivingDeathEvent event) {
         if (!event.isCanceled()) {
             if (event.getSource().getEntity() instanceof Player player) {
                 ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
@@ -144,8 +143,8 @@ public class EventHandlerMyBallsInYourMouth {
             }
             if (event.getSource().typeHolder().is(BogDamageTypes.BOG_MIRA)) {
                 if(event.getEntity() instanceof ServerPlayer player) {
-                    CurioHelper.hasCurioGet(player, BogItems.BAND_PASSION.get()).shrink(1);
-                    CurioHelper.hasCurioGet(player, BogItems.BAND_APATHY.get()).shrink(1);
+                    Objects.requireNonNull(CurioHelper.hasCurioGet(player, BogItems.BAND_PASSION.get())).shrink(1);
+                    Objects.requireNonNull(CurioHelper.hasCurioGet(player, BogItems.BAND_APATHY.get())).shrink(1);
 
                     BlockPos blockpos = player.blockPosition();
                     RandomSource random = player.getRandom();
@@ -183,7 +182,7 @@ public class EventHandlerMyBallsInYourMouth {
     }
 
     @SubscribeEvent
-    public void onLivingExperienceDrop(LivingExperienceDropEvent event) {
+    public static void onLivingExperienceDrop(LivingExperienceDropEvent event) {
         if (event.getAttackingPlayer() != null) {
             int value = event.getDroppedExperience();
 
@@ -199,7 +198,7 @@ public class EventHandlerMyBallsInYourMouth {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onEntityHurt(LivingHurtEvent event) {
+    public static void onEntityHurt(LivingHurtEvent event) {
         if (event.getEntity() instanceof Player living) {
             Holder<DamageType> typeHolder = event.getSource().typeHolder();
 
@@ -228,7 +227,8 @@ public class EventHandlerMyBallsInYourMouth {
 
             //flat damage vuln for false hand
             if (CurioHelper.hasCurio(living, BogItems.FALSE_HAND.get())) {
-                int flipped = CurioHelper.hasCurioGet(living, BogItems.FALSE_HAND.get()).getOrCreateTag().getInt("flipped");
+                ItemStack item = CurioHelper.hasCurioGet(living, BogItems.FALSE_HAND.get());
+                int flipped = item != null ? item.getOrCreateTag().getInt("flipped") : 0;
                 if (flipped == 1) {
                     float damageReduce = Math.max(event.getAmount() - c.false_hand_flat_resistance.get().floatValue(), 0.0f);
                     if (damageReduce <= 0) {
@@ -281,7 +281,7 @@ public class EventHandlerMyBallsInYourMouth {
     }
 
     @SubscribeEvent
-    public void onCriticalHit(CriticalHitEvent event) {
+    public static void onCriticalHit(CriticalHitEvent event) {
         Player player = event.getEntity();
         //crit increase
         if (CurioHelper.hasCurio(player, BogItems.MARK_FORGOTTEN.get()) && event.isVanillaCritical()) {
@@ -294,7 +294,7 @@ public class EventHandlerMyBallsInYourMouth {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void onOverlayRenderPre(RenderGuiOverlayEvent.Pre event) {
+    public static void onOverlayRenderPre(RenderGuiOverlayEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
 
@@ -315,7 +315,7 @@ public class EventHandlerMyBallsInYourMouth {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void serverChat(ServerChatEvent event) {
+    public static void serverChat(ServerChatEvent event) {
         if (c.marks_color_chat.get()) {
             //append §[val] to the beginning of messages for marked players
             LivingEntity living = event.getPlayer();
@@ -328,7 +328,7 @@ public class EventHandlerMyBallsInYourMouth {
     }
 
     //applies color to a message based on their mark
-    private String colorMark(LivingEntity living, String message) {
+    private static String colorMark(LivingEntity living, String message) {
         for (MarkItem markItem : MarkHelper.getMarks()) {
             if (CurioHelper.hasCurio(living, markItem) && markItem.getChatFormatting() != null) {
                 return markItem.getChatFormatting() + message + "§r";
@@ -337,9 +337,9 @@ public class EventHandlerMyBallsInYourMouth {
         return message;
     }
 
-    @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onFogRender(ViewportEvent.RenderFog event) {
+    @SubscribeEvent
+    public static void onFogRender(ViewportEvent.RenderFog ignoredEvent) {
         Player player = Objects.requireNonNull(Minecraft.getInstance().player);
         if (player.hasEffect(BogEffects.MIRA_SICKNESS.get())) {
             float distanceMod = Objects.requireNonNull(player.getEffect(BogEffects.MIRA_SICKNESS.get())).getDuration()*2+0.8f;
@@ -348,9 +348,9 @@ public class EventHandlerMyBallsInYourMouth {
         }
     }
 
-    @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onFogColor(ViewportEvent.ComputeFogColor event) {
+    @SubscribeEvent
+    public static void onFogColor(ViewportEvent.ComputeFogColor event) {
         if (Objects.requireNonNull(Minecraft.getInstance().player).hasEffect(BogEffects.MIRA_SICKNESS.get())) {
             event.setRed(200);
             event.setGreen(100);

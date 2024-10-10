@@ -18,6 +18,7 @@ import java.util.Objects;
 public class MixinFoodStats {
     @Redirect( //replaces the "getBoolean" function to always output false when the player has recovering/faded
             method = "tick",
+            remap = false,
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/GameRules;getBoolean(Lnet/minecraft/world/level/GameRules$Key;)Z"))
     private boolean onTick(GameRules instance, GameRules.Key<GameRules.BooleanValue> key, Player player) {
         //prevents hunger-based regen from working, otherwise it would uselessly deplete itself

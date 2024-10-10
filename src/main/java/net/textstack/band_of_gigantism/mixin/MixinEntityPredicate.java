@@ -9,33 +9,33 @@ import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.textstack.band_of_gigantism.config.BOGConfig;
 import net.textstack.band_of_gigantism.registry.BogItems;
 import net.textstack.band_of_gigantism.util.CurioHelper;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin({TargetGoal.class})
 public class MixinEntityPredicate {
-    @Shadow
+    @Shadow(remap = false)
     protected
     LivingEntity targetMob;
-    @Shadow
+
+    @Shadow(remap = false)
     @Final
     @Mutable
     protected
     Mob mob;
 
-    final BOGConfig c = BOGConfig.INSTANCE;
+    @Unique
+    final BOGConfig band_of_gigantism$c = BOGConfig.INSTANCE;
 
     public MixinEntityPredicate() {
     }
 
     @Inject(
             method = {"canContinueToUse"},
-            at = {@At(value = "TAIL")}
+            at = {@At(value = "TAIL")},
+            remap = false
             //cancellable = true
     )
     private void onCanContinueToUse(CallbackInfoReturnable<Double> info) {
@@ -45,7 +45,7 @@ public class MixinEntityPredicate {
         //give entities strength when targetting a judged player
         if (target != null || (target = this.targetMob) != null)
             if (CurioHelper.hasCurio(target, BogItems.MARK_JUDGED.get()) && mob.getClassification(false) == MobCategory.MONSTER) {
-                mob.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, c.mark_judged_duration.get(), 4, false, true));
+                mob.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, band_of_gigantism$c.mark_judged_duration.get(), 4, false, true));
             }
     }
 }

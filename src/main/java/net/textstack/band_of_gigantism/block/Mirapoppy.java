@@ -20,9 +20,11 @@ import net.textstack.band_of_gigantism.registry.BogBlocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Supplier;
+
 public class Mirapoppy extends FlowerBlock implements EntityBlock {
-    public Mirapoppy(MobEffect effect, BlockBehaviour.Properties properties) {
-        super(effect, 30, properties);
+    public Mirapoppy(Supplier<MobEffect> effectSupplier, BlockBehaviour.Properties properties) {
+        super(effectSupplier, 30, properties);
     }
 
     @Override
